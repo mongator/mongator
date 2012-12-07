@@ -65,12 +65,26 @@
             return $this->get{{ name|ucfirst }}();
         }
 {% endfor %}
-{# referencesOne #}
-{% for name in config_class.referencesOne|keys %}
+{% if not config_class.isEmbedded %}
+{# relationsManyOne #}
+{% for name in config_class.relationsManyOne|keys %}
         if ('{{ name }}' == $name) {
             return $this->get{{ name|ucfirst }}();
         }
 {% endfor %}
+{# relationsManyMany #}
+{% for name in config_class.relationsManyMany|keys %}
+        if ('{{ name }}' == $name) {
+            return $this->get{{ name|ucfirst }}();
+        }
+{% endfor %}
+{# relationsManyThrough #}
+{% for name in config_class.relationsManyThrough|keys %}
+        if ('{{ name }}' == $name) {
+            return $this->get{{ name|ucfirst }}();
+        }
+{% endfor %}
+{% endif %}
 {# referencesMany #}
 {% for name in config_class.referencesMany|keys %}
         if ('{{ name }}' == $name) {
