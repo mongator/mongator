@@ -15,6 +15,9 @@
         "php":               ">=5.3.0",
         "mandango/mondator": "dev-master"
     },
+    "replace": {
+        "mandango/mandango": "dev-master"
+    },
     "autoload": {
         "psr-0": { "Mandango\\": "src/" }
     }
