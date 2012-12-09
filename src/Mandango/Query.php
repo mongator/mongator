@@ -603,4 +603,20 @@ abstract class Query implements \Countable, \IteratorAggregate
 
         return $cursor;
     }
+
+    /**
+     * Generate a unique key for this query
+     *
+     * @return string md5
+     */
+    public function generateKey() {
+        $keys = get_object_vars($this);
+        $keys['class'] = get_class($this);
+        $keys['metadata'] = $this->repository->getMetadata();
+        $keys['dbname'] = $this->repository->getConnection()->getDbName();
+        
+        unset($keys['repository']); 
+
+        return md5(serialize($keys));
+    }
 }
