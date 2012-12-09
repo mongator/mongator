@@ -22,8 +22,8 @@ use Mandango\Archive;
  */
 abstract class Document extends AbstractDocument
 {
-    private $isNew = true;
-    private $id;
+    protected $isNew = true;
+    protected $id;
 
     /**
      * Returns the repository.

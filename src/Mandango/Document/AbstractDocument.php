@@ -35,7 +35,7 @@ abstract class AbstractDocument
      */
     public function __construct(Mandango $mandango)
     {
-        $this->mandango = $mandango;
+        $this->setMandango($mandango);
     }
 
     /**
@@ -47,6 +47,16 @@ abstract class AbstractDocument
     }
 
     /**
+     * Set the mandango.
+     *
+     * @return Mandango The mandango.
+     */
+    public function setMandango(Mandango $mandango)
+    {
+        return $this->mandango = $mandango;
+    }
+
+    /**
      * Returns the mandango.
      *
      * @return Mandango The mandango.
@@ -55,6 +65,7 @@ abstract class AbstractDocument
     {
         return $this->mandango;
     }
+
 
     /**
      * Returns the document metadata.
@@ -359,4 +370,22 @@ abstract class AbstractDocument
 
         return $info;
     }
+
+    public function __sleep() {
+        $rc = new \ReflectionObject($this);
+        
+        $names = array();
+        $filter = array('mandango');
+
+        while ($rc instanceof \ReflectionClass) {
+            foreach ($rc->getProperties() as $prop) {
+                if ( !in_array($prop->getName(), $filter) ) $names[] = $prop->getName();
+            }
+
+            $rc = $rc->getParentClass();
+        }
+
+        return array_unique($names);
+    }
+
 }
