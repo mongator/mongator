@@ -47,6 +47,26 @@ abstract class AbstractDocument
     }
 
     /**
+     * Sleep - prepare the object for serialization
+     */
+    public function __sleep() {
+        $rc = new \ReflectionObject($this);
+        
+        $names = array();
+        $filter = array('mandango');
+
+        while ($rc instanceof \ReflectionClass) {
+            foreach ($rc->getProperties() as $prop) {
+                if ( !in_array($prop->getName(), $filter) ) $names[] = $prop->getName();
+            }
+
+            $rc = $rc->getParentClass();
+        }
+
+        return array_unique($names);
+    }
+
+    /**
      * Set the mandango.
      *
      * @return Mandango The mandango.
@@ -369,23 +389,6 @@ abstract class AbstractDocument
         }
 
         return $info;
-    }
-
-    public function __sleep() {
-        $rc = new \ReflectionObject($this);
-        
-        $names = array();
-        $filter = array('mandango');
-
-        while ($rc instanceof \ReflectionClass) {
-            foreach ($rc->getProperties() as $prop) {
-                if ( !in_array($prop->getName(), $filter) ) $names[] = $prop->getName();
-            }
-
-            $rc = $rc->getParentClass();
-        }
-
-        return array_unique($names);
     }
 
 }
