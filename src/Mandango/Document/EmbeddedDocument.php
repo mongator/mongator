@@ -13,6 +13,7 @@ namespace Mandango\Document;
 
 use Mandango\Archive;
 use Mandango\Group\EmbeddedGroup;
+use Mandango\Twig\Mandango as MandangoTwig;
 
 /**
  * The base class for embedded documents.
@@ -80,7 +81,7 @@ abstract class EmbeddedDocument extends AbstractDocument
 
         $parentDocument = $rap['root'];
         foreach ($exPath as $embedded) {
-            $parentDocument = $parentDocument->{'get'.ucfirst($embedded)}();
+            $parentDocument = $parentDocument->{'get'.MandangoTwig::toCamelCase($embedded)}();
             if ($parentDocument instanceof EmbeddedGroup) {
                 return false;
             }
