@@ -85,6 +85,12 @@
         }
 {% endfor %}
 {% endif %}
+{# referencesOne #}
+{% for name in config_class.referencesOne|keys %}
+        if ('{{ name }}' == $name) {
+            return $this->get{{ name|ucfirst }}();
+        }
+{% endfor %}
 {# referencesMany #}
 {% for name in config_class.referencesMany|keys %}
         if ('{{ name }}' == $name) {
