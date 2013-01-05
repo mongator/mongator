@@ -20,6 +20,13 @@
         $reset = false;
 
 {% endif %}
+{% else %}
+{% if config_class.events.preInsert or config_class._parent_events.preInsert %}
+        if ( $isNew ) $this->preInsertEvent();
+{% endif %}
+{% if config_class.events.preUpdate or config_class._parent_events.preUpdate %}
+        if ( !$isNew ) $this->preUpdateEvent();
+{% endif %}
 {% endif %}
 {# fields #}
 {% if config_class.fields|length %}
@@ -154,6 +161,15 @@
 {% endfor %}
             }
         }
+{% endif %}
+
+{% if config_class.isEmbedded %}
+{% if config_class.events.postInsert or config_class._parent_events.postInsert %}
+        if ( $isNew ) $this->postInsertEvent();
+{% endif %}
+{% if config_class.events.postUpdate or config_class._parent_events.postUpdate %}
+        if ( !$isNew ) $this->postUpdateEvent();
+{% endif %}
 {% endif %}
 
         return $query;
