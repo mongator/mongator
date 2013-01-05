@@ -566,7 +566,7 @@ EOF
         );
 
         // document base
-        $output = new Output($this->definitions['document']->getOutput()->getDir().'/Base', true);
+        $output = new Output($this->definitions['document']->getOutput()->getDir(), true);
 
         $this->definitions['document_base'] = $definition = new Definition($classes['document_base'], $output);
         $definition->setAbstract(true);
@@ -607,7 +607,7 @@ EOF
             );
 
             // repository base
-            $output = new Output($this->definitions['repository']->getOutput()->getDir().'/Base', true);
+            $output = new Output($this->definitions['repository']->getOutput()->getDir(), true);
 
             $this->definitions['repository_base'] = $definition = new Definition($classes['repository_base'], $output);
             $definition->setAbstract(true);
@@ -638,8 +638,8 @@ EOF
 EOF
             );
 
-            // query base
-            $output = new Output($this->definitions['query']->getOutput()->getDir().'/Base', true);
+            // query 
+            $output = new Output($this->definitions['query']->getOutput()->getDir(), true);
 
             $this->definitions['query_base'] = $definition = new Definition($classes['query_base'], $output);
             $definition->setAbstract(true);
