@@ -159,6 +159,7 @@ class Core extends Extension
      */
     protected function doPreGlobalProcess()
     {
+
         $this->globalInheritableAndInheritanceProcess();
         $this->globalHasReferencesProcess();
         $this->globalOnDeleteProcess();
@@ -837,12 +838,16 @@ EOF
                 $configClass['inheritance']['field'] = $inheritable['field'];
             }
         }
+
     }
 
     private function globalHasReferencesProcess()
     {
+        $loop = 0;
         do {
              $continue = false;
+             if ( ++$loop >= 10000 ) throw new \RuntimeException('preventing infinty loop in references, maybe typo or not defined class name.');
+           
              foreach ($this->configClasses as $class => $configClass) {
                  if (isset($configClass['_has_references'])) {
                      continue;
@@ -852,6 +857,7 @@ EOF
                  if ($configClass['referencesOne'] || $configClass['referencesMany']) {
                      $hasReferences = true;
                  }
+
                  foreach (array_merge($configClass['embeddedsOne'], $configClass['embeddedsMany']) as $name => $embedded) {
                      if (!isset($this->configClasses[$embedded['class']]['_has_references'])) {
                          $continue = true;
@@ -861,6 +867,7 @@ EOF
                          $hasReferences = true;
                      }
                  }
+
                  $configClass['_has_references'] = $hasReferences;
              }
          } while ($continue);
