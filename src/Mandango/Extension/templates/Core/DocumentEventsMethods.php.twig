@@ -12,7 +12,7 @@
         parent::{{ method }}();
 {% endfor %}
 {# methods #}
-{% for method in methods %}
+{% for method in methods|sort %}
         $this->{{ method }}();
 {% endfor %}
     }
