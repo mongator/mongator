@@ -391,5 +391,4 @@ abstract class AbstractDocument
 
         return $info;
     }
-
 }

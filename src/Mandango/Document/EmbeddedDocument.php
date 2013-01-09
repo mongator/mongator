@@ -107,4 +107,15 @@ abstract class EmbeddedDocument extends AbstractDocument
 
         return false !== strpos($rap['path'], '._add');
     }
+
+    /**
+     * When a object is clonated whe mark all fields as modified.
+     */
+    public function __clone() {
+        if (isset($this->data['fields'])) {
+            foreach ($this->data['fields'] as $name => $value) {
+                $this->fieldsModified[$name] = $value;
+            }
+        }
+    }
 }
