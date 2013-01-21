@@ -12,7 +12,6 @@
 namespace Mandango\Group;
 
 use Mandango\Archive;
-use Mandango\Twig\Mandango as Twig;
 
 /**
  * ReferenceGroup.
@@ -69,7 +68,7 @@ class ReferenceGroup extends Group
      */
     protected function doInitializeSavedData()
     {
-        return (array) $this->getParent()->{'get'.Twig::toCamelCase($this->getField())}();
+        return (array) $this->getParent()->{'get'.ucfirst($this->getField())}();
     }
 
     /**

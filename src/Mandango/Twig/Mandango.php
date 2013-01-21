@@ -24,7 +24,7 @@ class Mandango extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'ucfirst'    => new \Twig_Filter_Function('\\Mandango\Twig\Mandango::toCamelCase'),
+            'ucfirst'    => new \Twig_Filter_Function('ucfirst'),
             'var_export' => new \Twig_Filter_Function('var_export'),
         );
     }
@@ -86,9 +86,4 @@ class Mandango extends \Twig_Extension
         return str_replace("\n", "\n".str_repeat(' ', $indent), $code);
     }
     
-    static public function toCamelCase($string) 
-    {
-        $func = create_function('$c', 'return strtoupper($c[1]);');
-        return preg_replace_callback('/_([a-z])/', $func, ucfirst($string));
-    }
 }

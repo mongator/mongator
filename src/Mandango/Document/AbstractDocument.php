@@ -13,7 +13,6 @@ namespace Mandango\Document;
 
 use Mandango\Archive;
 use Mandango\Mandango;
-use Mandango\Twig\Mandango as MandangoTwig;
 
 /**
  * The abstract class for documents.
@@ -362,29 +361,29 @@ abstract class AbstractDocument
             if (in_array($name, $referenceFields)) {
                 continue;
             }
-            $info['fields'][$name] = $this->{'get'.MandangoTwig::toCamelCase($name)}();
+            $info['fields'][$name] = $this->{'get'.ucfirst($name)}();
         }
 
         // referencesOne
         foreach ($metadata['referencesOne'] as $name => $referenceOne) {
-            $info['referencesOne'][$name] = $this->{'get'.MandangoTwig::toCamelCase($referenceOne['field'])}();
+            $info['referencesOne'][$name] = $this->{'get'.ucfirst($referenceOne['field'])}();
         }
 
         // referencesMany
         foreach ($metadata['referencesMany'] as $name => $referenceMany) {
-            $info['referencesMany'][$name] = $this->{'get'.MandangoTwig::toCamelCase($referenceMany['field'])}();
+            $info['referencesMany'][$name] = $this->{'get'.ucfirst($referenceMany['field'])}();
         }
 
         // embeddedsOne
         foreach ($metadata['embeddedsOne'] as $name => $embeddedOne) {
-            $embedded = $this->{'get'.MandangoTwig::toCamelCase($name)}();
+            $embedded = $this->{'get'.ucfirst($name)}();
             $info['embeddedsOne'][$name] = $embedded ? $embedded->debug() : null;
         }
 
         // embeddedsMany
         foreach ($metadata['embeddedsMany'] as $name => $embeddedMany) {
             $info['embeddedsMany'][$name] = array();
-            foreach ($this->{'get'.MandangoTwig::toCamelCase($name)}() as $key => $value) {
+            foreach ($this->{'get'.ucfirst($name)}() as $key => $value) {
                 $info['embeddedsMany'][$name][$key] = $value->debug();
             }
         }
