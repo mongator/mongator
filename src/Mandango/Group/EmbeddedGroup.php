@@ -121,6 +121,8 @@ class EmbeddedGroup extends Group
 
         $saved = array();
         foreach ($data as $key => $datum) {
+            if ( !$datum ) continue;
+            
             $saved[] = $document = new $documentClass($mandango);
             $document->setDocumentData($datum);
             $document->setRootAndPath($rap['root'], $rap['path'].'.'.$key);
