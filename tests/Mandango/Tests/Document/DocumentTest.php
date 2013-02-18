@@ -56,7 +56,7 @@ class DocumentTest extends TestCase
         $article->addQueryHash($query1->getHash());
         $article->addFieldCache('title');
         $this->assertSame(array('title' => 1), $query1->getFieldsCache());
-        $article->addFieldCache('source.name');
+        $article->addFieldCache('source');
         $this->assertSame(array('title' => 1, 'source.name' => 1), $query1->getFieldsCache());
         $article->addQueryHash($query2->getHash());
         $article->addFieldCache('note');
