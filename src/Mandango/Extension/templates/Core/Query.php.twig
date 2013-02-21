@@ -61,7 +61,7 @@
                 $identityMap = $identityMaps['_root'];
             }
 {% endif %}
-            {{ mandango_id_generator_from_mongo(config_class, '$data[\'_id\']', 8) }}
+            {{ mandango_id_generator_to_php(config_class, '$data[\'_id\']', 8) }}
             $id = (string) $data['_id'];
             if (isset($identityMap[$id])) {
                 $document = $identityMap[$id];
