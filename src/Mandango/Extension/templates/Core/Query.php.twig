@@ -38,7 +38,7 @@
         }
 
         $documents = array();
-        foreach ($this->createCursor() as $id => $data) {
+        foreach ($this->createCursor() as $data) {
 {% if config_class.inheritable and 'single' == config_class.inheritable.type %}
             $documentClass = null;
             $identityMap = null;
@@ -61,6 +61,8 @@
                 $identityMap = $identityMaps['_root'];
             }
 {% endif %}
+            {{ mandango_id_generator_from_mongo(config_class, '$data[\'_id\']', 8) }}
+            $id = (string) $data['_id'];
             if (isset($identityMap[$id])) {
                 $document = $identityMap[$id];
                 $document->addQueryHash($this->getHash());
