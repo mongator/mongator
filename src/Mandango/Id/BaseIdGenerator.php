@@ -33,4 +33,12 @@ abstract class BaseIdGenerator
      * Returns the code to convert an id to the mongo value.
      */
     abstract public function getToMongoCode();
+
+    /**
+     * Returns the code to convert a mongo id to the id used in mandango. Nothing done by default
+     *
+     */
+    public function getToPHPCode() {
+        return '';
+    }
 }

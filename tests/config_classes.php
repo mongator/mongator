@@ -399,4 +399,11 @@ return array(
     'Model\IdGeneratorSingleInheritanceChild' => array(
         'inheritance' => array('class' => 'Model\IdGeneratorSingleInheritanceParent', 'value' => 'child'),
     ),
+
+    'Model\ABIdGenerator' => array(
+        'idGenerator' => 'ab-id',
+        'fields' => array(
+            'name' => 'string',
+        )
+    ),
 );

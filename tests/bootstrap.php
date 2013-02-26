@@ -8,6 +8,7 @@ $loader->add('Model', __DIR__);
 $configClasses = require __DIR__.'/config_classes.php';
 
 use Mandango\Mondator\Mondator;
+use Mandango\Id\IdGeneratorContainer;
 
 $mondator = new Mondator();
 $mondator->setConfigClasses($configClasses);
@@ -20,4 +21,5 @@ $mondator->setExtensions(array(
     new Mandango\Extension\DocumentArrayAccess(),
     new Mandango\Extension\DocumentPropertyOverloading(),
 ));
+IdGeneratorContainer::add('ab-id', 'Mandango\Tests\Id\ABIdGenerator');
 $mondator->process();

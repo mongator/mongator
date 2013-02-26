@@ -119,4 +119,14 @@ class CoreIdGeneratorTest extends TestCase
         $this->assertSame(2, $parent->getId());
         $this->assertSame(3, $child->getId());
     }
+
+    public function testABIdGenerator()
+    {
+        $document = $this->mandango->create('Model\ABIdGenerator')->setName('foo')->save();
+        $id = $document->getId();
+        $this->assertInstanceOf('Mandango\Tests\Id\ABId', $id);
+        $identityMap = $this->mandango->getRepository('Model\ABIdGenerator')->getIdentityMap();
+        $this->assertTrue($identityMap->has($id));
+    }
 }
+

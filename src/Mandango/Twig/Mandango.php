@@ -32,10 +32,16 @@ class Mandango extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'mandango_id_generator'          => new \Twig_Function_Method($this, 'mandangoIdGenerator'),
-            'mandango_id_generator_to_mongo' => new \Twig_Function_Method($this, 'mandangoIdGeneratorToMongo'),
-            'mandango_type_to_mongo'         => new \Twig_Function_Method($this, 'mandangoTypeToMongo'),
-            'mandango_type_to_php'           => new \Twig_Function_Method($this, 'mandangoTypeToPHP'),
+            'mandango_id_generator' =>
+                new \Twig_Function_Method($this, 'mandangoIdGenerator'),
+            'mandango_id_generator_to_mongo' =>
+                new \Twig_Function_Method($this, 'mandangoIdGeneratorToMongo'),
+            'mandango_id_generator_to_php' =>
+                new \Twig_Function_Method($this, 'mandangoIdGeneratorToPHP'),
+            'mandango_type_to_mongo' =>
+                new \Twig_Function_Method($this, 'mandangoTypeToMongo'),
+            'mandango_type_to_php' =>
+                new \Twig_Function_Method($this, 'mandangoTypeToPHP'),
         );
     }
 
@@ -54,6 +60,16 @@ class Mandango extends \Twig_Extension
     {
         $idGenerator = IdGeneratorContainer::get($configClass['idGenerator']['name']);
         $code = $idGenerator->getToMongoCode();
+        $code = str_replace('%id%', $id, $code);
+        $code = static::indentCode($code, $indent);
+
+        return $code;
+    }
+
+    public function mandangoIdGeneratorToPHP($configClass, $id, $indent = 8)
+    {
+        $idGenerator = IdGeneratorContainer::get($configClass['idGenerator']['name']);
+        $code = $idGenerator->getToPHPCode();
         $code = str_replace('%id%', $id, $code);
         $code = static::indentCode($code, $indent);
 
