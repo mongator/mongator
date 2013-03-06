@@ -17,7 +17,10 @@
             if (!$this->isNew()) {
 {% endif %}
                 $this->get{{ name | ucfirst }}();
-                if ($value === $this->data['fields']['{{ name }}']) {
+                if ( 
+                    ( is_object($value) && $value == $this->data['fields']['{{ name }}'] ) ||
+                    ( !is_object($value) && $value === $this->data['fields']['{{ name }}'] )
+                ) {
                     return $this;
                 }
             } else {
@@ -28,13 +31,19 @@
                 $this->data['fields']['{{ name }}'] = $value;
                 return $this;
             }
-        } elseif ($value === $this->data['fields']['{{ name }}']) {
+        } elseif (
+            ( is_object($value) && $value == $this->data['fields']['{{ name }}'] ) ||
+            ( !is_object($value) && $value === $this->data['fields']['{{ name }}'] )
+        ) {
             return $this;
         }
 
         if (!isset($this->fieldsModified['{{ name }}']) && !array_key_exists('{{ name }}', $this->fieldsModified)) {
             $this->fieldsModified['{{ name }}'] = $this->data['fields']['{{ name }}'];
-        } elseif ($value === $this->fieldsModified['{{ name }}']) {
+        } elseif (
+            ( is_object($value) && $value == $this->fieldsModified['{{ name }}'] ) ||
+            ( !is_object($value) && $value === $this->fieldsModified['{{ name }}'] )
+        ) {
             unset($this->fieldsModified['{{ name }}']);
         }
 
