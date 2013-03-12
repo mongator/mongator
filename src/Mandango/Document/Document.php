@@ -192,7 +192,10 @@ abstract class Document extends AbstractDocument
     public function addFieldCache($field)
     {
 
-        if ( strpos($field, '.') !== false ) return;
+        if ( strpos($field, '.') !== false ) { 
+            $tmp = explode('.', $field);
+            $field = $tmp[0];
+        }
 
         $cache = $this->getMandango()->getCache();
 

@@ -68,6 +68,11 @@ class CoreFieldAliasTest extends TestCase
 
     public function testDocumentGetterSaveFieldQueryCacheEmbedded()
     {
+
+        $this->markTestSkipped(
+              'Pending to review change on commit 00d38267e8eb61786c8543d20cfd1f33c9e65c15.'
+        );
+        
         $articleRaw = array(
             'source' => array(
                 'desde' => '123',
@@ -125,6 +130,7 @@ class CoreFieldAliasTest extends TestCase
 
     public function testDocumentQueryForSaveEmbeddedNew()
     {
+
         $source = $this->mandango->create('Model\Source')->setFrom(123);
         $article = $this->mandango->create('Model\Article')->setSource($source);
         $this->assertSame(array(
