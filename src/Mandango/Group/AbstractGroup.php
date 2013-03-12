@@ -36,7 +36,7 @@ abstract class AbstractGroup implements \Countable, \IteratorAggregate
     /**
      * Adds document/s to the add queue of the group.
      *
-     * @param Mandango\Document\AbstractDocument|array $documents One or more documents.
+     * @param \Mandango\Document\AbstractDocument|array $documents One or more documents.
      *
      * @api
      */
@@ -75,7 +75,7 @@ abstract class AbstractGroup implements \Countable, \IteratorAggregate
     /**
      * Adds document/s to the remove queue of the group.
      *
-     * @param Mandango\Document\AbstractDocument|array $documents One of more documents.
+     * @param \Mandango\Document\AbstractDocument|array $documents One of more documents.
      *
      * @api
      */
@@ -133,7 +133,9 @@ abstract class AbstractGroup implements \Countable, \IteratorAggregate
         $documents = array_merge($this->getSaved(), $this->getAdd());
 
         foreach ($this->getRemove() as $document) {
-            unset($documents[array_search($document, $documents)]);
+            if (false !== $key = array_search($document, $documents)) {
+                unset($documents[$key]);
+            }
         }
 
         return array_values($documents);

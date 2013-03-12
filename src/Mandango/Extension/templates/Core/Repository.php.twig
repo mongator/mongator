@@ -168,12 +168,12 @@
                 $document->clearModified();
                 $identityMap[(string) $data['_id']] = $document;
 
-                {% if config_class._has_groups %}
-                                    $document->resetGroups();
-                {% endif %}
-                {% if config_class.events.postInsert or config_class._parent_events.postInsert %}
-                                $document->postInsertEvent();
-                {% endif %}
+{% if config_class._has_groups %}
+                $document->resetGroups();
+{% endif %}
+{% if config_class.events.postInsert or config_class._parent_events.postInsert %}
+                $document->postInsertEvent();
+{% endif %}
             }
 {% endif %}
         }
@@ -185,7 +185,7 @@
                 $document->preUpdateEvent();
 {% endif %}
                 $query = $document->queryForSave();
-                $collection->update(array('_id' => $document->getId()), $query, $updateOptions);
+                $collection->update(array('_id' => $this->idToMongo($document->getId())), $query, $updateOptions);
                 $document->clearModified();
 {% if config_class._has_groups %}
                 $document->resetGroups();
@@ -213,7 +213,7 @@
 {% if config_class.events.preDelete or config_class._parent_events.preDelete %}
             $document->preDeleteEvent();
 {% endif %}
-            $ids[] = $id = $document->getId();
+            $ids[] = $id = $this->idToMongo($document->getId());
         }
 
         foreach ($documents as $document) {
@@ -300,7 +300,7 @@
     /**
      * Returns the parent repository.
      *
-     * @return Repository The parent repository.
+     * @return \{{ config_class.inheritance.class }} The parent repository.
      */
     public function getParentRepository()
     {
@@ -310,7 +310,7 @@
     /**
      * Returns the last parent repository.
      *
-     * @return Repository The last parent repository.
+     * @return \Mandango\Repository The last parent repository.
      */
     public function getLastParentRepository()
     {
@@ -366,7 +366,7 @@
      *
      * @return string The inheritable type for the class.
      *
-     * @throws InvalidArgumentException If the class is not a type class.
+     * @throws \InvalidArgumentException If the class is not a type class.
      */
     public function getInheritableTypeForClass($class)
     {
