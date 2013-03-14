@@ -39,6 +39,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        if (!class_exists('Mongo')) {
+            $this->markTestSkipped('Mongo is not available.');
+        }
 
         if (!static::$staticConnection) {
             static::$staticConnection = new Connection($this->server, $this->dbName);
