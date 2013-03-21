@@ -42,6 +42,16 @@ abstract class AbstractGroup implements \Countable, \IteratorAggregate
      */
     public function add($documents)
     {
+
+        $pendingRemove = $this->getRemove();
+        if ($this->getRemove()) {
+            if ($this->all()) {
+                throw new \RuntimeException('Adding to group with pending remove is not permitted');
+            } else {
+                $this->clearAdd();
+                $this->clearRemove();
+            }
+        }
         if (!is_array($documents)) {
             $documents = array($documents);
         }

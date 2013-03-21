@@ -59,6 +59,40 @@ class AbstractGroupTest extends TestCase
         $group->clearRemove();
         $this->assertSame(array(), $group->getRemove());
     }
+    public function testAddAfterRemoveWithEmptyGroup()
+    {
+        $documents = array(
+            $this->mandango->create('Model\Article'),
+            $this->mandango->create('Model\Article'),
+            $this->mandango->create('Model\Article'),
+        );
+
+        $group = new AbstractGroup('Model\Comment');
+        $group->add($documents);
+        $group->remove($documents);
+        $group->add($documents[0]);
+        $this->assertSame(array(), $group->getRemove());
+        $this->assertSame(array($documents[0]), $group->getAdd());
+    }
+
+    public function testAddAfterRemoveWithNonEmptyGroup()
+    {
+        $documents = array(
+            $this->mandango->create('Model\Article'),
+            $this->mandango->create('Model\Article'),
+            $this->mandango->create('Model\Article'),
+        );
+
+        $group = new AbstractGroup('Model\Comment');
+        $group->add(array($documents[0], $documents[1]));
+        $group->remove($documents[0]);
+        try {
+            $group->add($documents[2]);
+        } catch (\RuntimeException $e) {
+            return;
+        }
+        $this->fail('Expected exception was not raised');
+    }
 
     public function testSaved()
     {
