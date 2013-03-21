@@ -355,14 +355,14 @@ class CoreQueryForSaveTest extends TestCase
         $comments[0]->setName(234)->setText(null)->setLine(345)->setNote(null);
         $infos = $comments[0]->getInfos()->getSaved();
         $infos[0]->setName(456)->setText(567)->setNote(null)->setLine(null);
-        $comments[0]->getInfos()->remove($infos[1]);
         $comments[1]->setName('mon')->setText('go');
-        $article->getComments()->remove($comments[2]);
-        $article->getComments()->remove($comments[3]);
         $article->getComments()->add($this->mandango->create('Model\Comment')->setName('inserting1')->setText(123));
         $article->getComments()->add($this->mandango->create('Model\Comment')->setName('inserting2')->setText(321));
         $comments[0]->getInfos()->add($this->mandango->create('Model\Info')->setName('insertinfo1')->setNote(678));
         $comments[1]->getInfos()->add($this->mandango->create('Model\Info')->setName('insertinfo2')->setNote(876));
+        $comments[0]->getInfos()->remove($infos[1]);
+        $article->getComments()->remove($comments[2]);
+        $article->getComments()->remove($comments[3]);
 
         $this->assertSame(array(
             '$set' => array(
