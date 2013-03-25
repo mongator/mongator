@@ -81,6 +81,7 @@ class Core extends Extension
             $this->initCollectionNameProcess();
         }
         $this->initIndexesProcess();
+        $this->initBehaviorsProcess();
 
         $this->initFieldsProcess();
         $this->initReferencesProcess();
@@ -285,6 +286,13 @@ class Core extends Extension
     {
         if (!isset($this->configClass['indexes'])) {
             $this->configClass['indexes'] = array();
+        }
+    }
+
+    private function initBehaviorsProcess()
+    {
+        if (!isset($this->configClass['behaviors'])) {
+            $this->configClass['behaviors'] = array();
         }
     }
 
@@ -1024,6 +1032,10 @@ EOF
             // indexes
             $info['indexes'] = $configClass['indexes'];
             $info['_indexes'] = $configClass['_indexes'];
+
+            // behaviors
+            $info['behaviors'] = $configClass['behaviors'];
+
 
             $info = \Mandango\Mondator\Dumper::exportArray($info, 12);
 
