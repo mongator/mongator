@@ -63,7 +63,7 @@ interface ConnectionInterface
     /**
      * Returns the mongo connection object.
      *
-     * @return \Mongo The mongo collection object.
+     * @return \MongoClient The mongo collection object.
      *
      * @api
      */

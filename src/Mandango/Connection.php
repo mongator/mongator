@@ -35,7 +35,7 @@ class Connection implements ConnectionInterface
      *
      * @param string $server  The server.
      * @param string $dbName  The database name.
-     * @param array  $options The \Mongo options (optional).
+     * @param array  $options The \MongoClient options (optional).
      *
      * @api
      */
@@ -183,13 +183,13 @@ class Connection implements ConnectionInterface
     {
         if (null === $this->mongo) {
             if (null !== $this->loggerCallable) {
-                $this->mongo = new \Mandango\Logger\LoggableMongo($this->server, $this->options);
+                $this->mongo = new \Mandango\Logger\LoggableMongo($this->server);
                 $this->mongo->setLoggerCallable($this->loggerCallable);
                 if (null !== $this->logDefault) {
                     $this->mongo->setLogDefault($this->logDefault);
                 }
             } else {
-                $this->mongo = new \Mongo($this->server, $this->options);
+                $this->mongo = new \MongoClient($this->server, $this->options);
             }
         }
 
