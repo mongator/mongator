@@ -15,8 +15,18 @@ use Mandango\Cache\FilesystemCache;
 
 class FilesystemCacheTest extends Cache
 {
+    private $folder;
     protected function getCacheDriver()
     {
-        return new FilesystemCache(sys_get_temp_dir().'/mandango_filesystem_cache_tests'.mt_rand(111111, 999999));
+        $this->folder = sys_get_temp_dir().'/mandango_filesystem_cache_tests'.mt_rand(111111, 999999);
+        return new FilesystemCache($this->folder);
+    }
+
+    public function testGetWithFileCache() {
+        $this->cache->set('read', 'foo');
+        $this->assertSame('foo', $this->cache->get('read'));
+
+        unlink($this->folder . '/read.php');
+        $this->assertSame('foo', $this->cache->get('read'));
     }
 }

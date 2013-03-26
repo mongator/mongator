@@ -19,6 +19,7 @@ namespace Mandango\Cache;
 class FilesystemCache implements CacheInterface
 {
     private $dir;
+    private $data = array();
 
     /**
      * Constructor.
@@ -35,6 +36,7 @@ class FilesystemCache implements CacheInterface
      */
     public function has($key)
     {
+        if ( isset($data[$key]) ) return true;
         return file_exists($this->dir.'/'.$key.'.php');
     }
 
@@ -45,7 +47,10 @@ class FilesystemCache implements CacheInterface
     {
         $file = $this->dir.'/'.$key.'.php';
 
-        return file_exists($file) ? require($file) : null;
+        if ( isset($this->data[$key]) ) return $this->data[$key];
+        if ( !file_exists($file) ) return null;
+        
+        return $this->data[$key] = require($file);
     }
 
     /**
@@ -68,6 +73,8 @@ EOF;
         if (false === @file_put_contents($file, $content, LOCK_EX)) {
             throw new \RuntimeException(sprintf('Unable to write the "%s" file.', $file));
         }
+
+        $data[$key] = $value;
     }
 
     /**
@@ -79,6 +86,8 @@ EOF;
         if (file_exists($file) && false === @unlink($file)) {
             throw new \RuntimeException(sprintf('Unable to remove the "%s" file.', $file));
         }
+
+        if ( isset($this->data[$key]) ) unset($this->data[$key]);
     }
 
     /**
@@ -86,6 +95,8 @@ EOF;
      */
     public function clear()
     {
+        $this->data = array();
+
         if (is_dir($this->dir)) {
             foreach (new \DirectoryIterator($this->dir) as $file) {
                 if ($file->isFile()) {
