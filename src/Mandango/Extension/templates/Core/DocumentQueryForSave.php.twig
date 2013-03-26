@@ -137,7 +137,8 @@
 {% if embedded.inherited is not defined or not embedded.inherited %}
                 if (isset($this->data['embeddedsMany']['{{ name }}'])) {
                     $group = $this->data['embeddedsMany']['{{ name }}'];
-                    foreach ($group->getSaved() as $document) {
+                    $saved = $group->getSaved();
+                    foreach ($saved as $document) {
                         $query = $document->queryForSave($query, $isNew);
                     }
                     $groupRap = $group->getRootAndPath();
@@ -150,7 +151,8 @@
                             }
                             $q = $q[$name];
                         }
-                        $query['$pushAll'][$groupRap['path']][] = $q;
+                        $op = ($saved) ? '$pushAll' : '$set';
+                        $query[$op][$groupRap['path']][] = $q;
                     }
                     foreach ($group->getRemove() as $document) {
                         $rap = $document->getRootAndPath();

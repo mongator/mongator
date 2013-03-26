@@ -50,6 +50,7 @@ abstract class AbstractGroup implements \Countable, \IteratorAggregate
             } else {
                 $this->clearAdd();
                 $this->clearRemove();
+                $this->saved = array();
             }
         }
         if (!is_array($documents)) {
