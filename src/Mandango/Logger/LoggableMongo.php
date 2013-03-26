@@ -16,7 +16,7 @@ namespace Mandango\Logger;
  *
  * @author Pablo Díez <pablodip@gmail.com>
  */
-class LoggableMongo extends \Mongo
+class LoggableMongo extends \MongoClient
 {
     private $loggerCallable;
     private $logDefault = array();
