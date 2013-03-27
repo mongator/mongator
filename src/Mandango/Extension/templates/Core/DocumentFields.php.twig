@@ -82,7 +82,8 @@
                 !$new
             ) {
                 $collection = $this->getMandango()->getRepository(get_class($rap['root']))->getCollection();
-                $data = $collection->findOne(array('_id' => $rap['root']->getId()), array($field => 1));
+                $queryField = preg_replace('/\.\d+/', '', $field);
+                $data = $collection->findOne(array('_id' => $rap['root']->getId()), array($queryField => 1));
                 foreach (explode('.', $rap['path'].'.{{ field.dbName }}') as $key) {
                     if (!isset($data[$key])) {
                         $data = null;

@@ -97,17 +97,7 @@ class EmbeddedGroup extends Group
             return $data;
         }
 
-        if ($rap['root']->isNew()) {
-            return array();
-        }
-
-        $result = $rap['root']
-            ->getRepository()
-            ->getCollection()
-            ->findOne(array('_id' => $rap['root']->getId()), array($rap['path']))
-        ;
-
-        return ($result && isset($result[$rap['path']])) ? $result[$rap['path']] : array();
+        return array();
     }
 
     /**
