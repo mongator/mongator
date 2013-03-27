@@ -200,40 +200,44 @@ class RepositoryTest extends TestCase
         $identityMap = $repository->getIdentityMap();
 
         $identityMap->clear();
-        $this->assertEquals($articles[1], $article1 = $repository->findOneById($articles[1]->getId()));
-        $this->assertEquals($articles[3], $article3 = $repository->findOneById($articles[3]->getId()));
+        $article1 = $repository->findOneById($articles[1]->getId());
+        $this->assertEquals($articles[1]->getId(), $article1->getId());
         $this->assertSame($article1, $repository->findOneById($articles[1]->getId()));
-        $this->assertSame($article3, $repository->findOneById($articles[3]->getId()));
 
         $identityMap->clear();
-        $this->assertEquals($articles[1], $article1 = $repository->findOneById($articles[1]->getId()->__toString()));
-        $this->assertEquals($articles[3], $article3 = $repository->findOneById($articles[3]->getId()->__toString()));
-        $this->assertSame($article1, $repository->findOneById($articles[1]->getId()->__toString()));
+        $article3 = $repository->findOneById($articles[3]->getId()->__toString());
+        $this->assertEquals($articles[3]->getId(), $article3->getId());
         $this->assertSame($article3, $repository->findOneById($articles[3]->getId()->__toString()));
 
         $identityMap->clear();
-        $this->assertEquals(array(
-            $articles[1]->getId()->__toString() => $articles[1],
-            $articles[3]->getId()->__toString() => $articles[3],
-            $articles[4]->getId()->__toString() => $articles[4],
-        ), $articles1 = $repository->findById($ids1 = array(
-            $articles[1]->getId(),
+
+        $ids = array(
             $articles[3]->getId(),
             $articles[4]->getId(),
-        )));
-        $this->assertSame($articles1, $repository->findById($ids1));
+            $articles[5]->getId(),
+        );
 
-        $this->assertEquals(array(
-            $articles[1]->getId()->__toString() => $articles[1],
-            $articles[4]->getId()->__toString() => $articles[4],
-            $articles[7]->getId()->__toString() => $articles[7],
-        ), $articles2 = $repository->findById($ids2 = array(
-            $articles[1]->getId(),
-            $articles[4]->getId(),
-            $articles[7]->getId(),
-        )));
-        $this->assertSame($articles1[$articles[1]->getId()->__toString()], $articles2[$articles[1]->getId()->__toString()]);
-        $this->assertSame($articles1[$articles[4]->getId()->__toString()], $articles2[$articles[4]->getId()->__toString()]);
+        $i = 3; $articles1 = array();
+        foreach ( $repository->findById($ids) as $article ) {
+            $this->assertEquals($article->getId(), $articles[$i++]->getId());
+            $articles1[$article->getId()->__toString()] = $article;
+        }
+
+        $this->assertSame($articles1, $repository->findById($ids));
+
+        $ids = array(
+            (string)$articles[6]->getId(),
+            (string)$articles[7]->getId(),
+            (string)$articles[8]->getId(),
+        );
+
+        $i = 6; $articles2 = array();
+        foreach ( $repository->findById($ids) as $article ) {
+            $this->assertEquals($article->getId(), $articles[$i++]->getId());
+            $articles2[$article->getId()->__toString()] = $article;
+        }
+
+        $this->assertSame($articles2, $repository->findById($ids));
     }
 
 

@@ -75,7 +75,7 @@ abstract class Query implements \Countable, \IteratorAggregate
         $this->hash = md5($hash);
 
         $this->criteria = array();
-        $this->fields = array('_id' => 1);
+        $this->fields = array();
         $this->references = array();
         $this->snapshot = false;
 

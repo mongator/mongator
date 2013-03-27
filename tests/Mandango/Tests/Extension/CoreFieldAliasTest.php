@@ -69,9 +69,9 @@ class CoreFieldAliasTest extends TestCase
     public function testDocumentGetterSaveFieldQueryCacheEmbedded()
     {
 
-        $this->markTestSkipped(
+        /*$this->markTestSkipped(
               'Pending to review change on commit 00d38267e8eb61786c8543d20cfd1f33c9e65c15.'
-        );
+        );*/
         
         $articleRaw = array(
             'source' => array(

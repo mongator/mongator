@@ -443,11 +443,11 @@ class CoreDocumentTest extends TestCase
 
     public function testEmbeddedsOneGetterSaveFieldsCacheQuering()
     {
-
+/*
         $this->markTestSkipped(
               'Pending to review change on commit 00d38267e8eb61786c8543d20cfd1f33c9e65c15.'
         );
-
+*/
         $articleRaw = array(
             'source' => array(
                 'name' => 'foo',
@@ -1002,13 +1002,13 @@ class CoreDocumentTest extends TestCase
         foreach ($comments as $comment) {
             $comment->getName();
         }
-        $this->assertSame(array('comments' => 1), $query->getFieldsCache());
+        $this->assertSame(array('comments' => 1, 'comments.name' => 1), $query->getFieldsCache());
         $commentNew = $this->mandango->create('Model\Comment');
         $comments->add($commentNew);
         $commentNew->getName();
-        $this->assertSame(array('comments' => 1), $query->getFieldsCache());
+        $this->assertSame(array('comments' => 1, 'comments.name' => 1), $query->getFieldsCache());
         $savedInfos = $savedComments[0]->getInfos()->getSaved();
-        $this->assertSame(array('comments' => 1), $query->getFieldsCache());
+        $this->assertSame(array('comments' => 1, 'comments.name' => 1, 'comments.infos' => 1), $query->getFieldsCache());
     }
 
     public function testEmbeddedsManyNoQueryNewDocument()
