@@ -70,11 +70,11 @@
                 &&
                 !$this->isEmbeddedManyNew()
             ) {
-                $field = $rap['path'].'.{{ field.dbName }}';
+                $field = preg_replace('/\.\d+/', '', $rap['path'].'.{{ field.dbName }}');
                 $rap['root']->addFieldCache($field);
                 $collection = $this->getMandango()->getRepository(get_class($rap['root']))->getCollection();
                 $data = $collection->findOne(array('_id' => $rap['root']->getId()), array($field => 1));
-                foreach (explode('.', $field) as $key) {
+                foreach (explode('.', $rap['path'].'.{{ field.dbName }}') as $key) {
                     if (!isset($data[$key])) {
                         $data = null;
                         break;

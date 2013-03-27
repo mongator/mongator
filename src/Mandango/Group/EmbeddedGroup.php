@@ -122,7 +122,7 @@ class EmbeddedGroup extends Group
 
         $saved = array();
         foreach ($data as $key => $datum) {
-            if ( !$datum ) continue;
+            if ( $datum === null ) continue;
             
             $saved[] = $document = new $documentClass($mandango);
             $document->setDocumentData($datum);
