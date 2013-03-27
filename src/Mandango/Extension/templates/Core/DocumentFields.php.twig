@@ -70,47 +70,7 @@
         $this->addFieldCache('{{ field.dbName }}');
 {% endif %}
 
-        if (!isset($this->data['fields']['{{ name }}'])) {
-{% if config_class.isEmbedded %}
-            if (
-                (!isset($this->data['fields']) || !array_key_exists('{{ name }}', $this->data['fields']))
-                &&
-                $rap 
-                &&
-                !$this->isEmbeddedOneChangedInParent()
-                &&
-                !$new
-            ) {
-                $collection = $this->getMandango()->getRepository(get_class($rap['root']))->getCollection();
-                $queryField = preg_replace('/\.\d+/', '', $field);
-                $data = $collection->findOne(array('_id' => $rap['root']->getId()), array($queryField => 1));
-                foreach (explode('.', $rap['path'].'.{{ field.dbName }}') as $key) {
-                    if (!isset($data[$key])) {
-                        $data = null;
-                        break;
-                    }
-                    $data = $data[$key];
-                }
-                if (null !== $data) {
-                    {{ mandango_type_to_php(field.type, "$data", "$this->data['fields']['" ~ name ~ "']") }}
-                }
-            }
-            if (!isset($this->data['fields']['{{ name }}'])) {
-                $this->data['fields']['{{ name }}'] = null;
-            }
-{% else %}
-            if ($this->isNew()) {
-                $this->data['fields']['{{ name }}'] = null;
-            } elseif (!isset($this->data['fields']) || !array_key_exists('{{ name }}', $this->data['fields'])) {
-                $data = $this->getRepository()->getCollection()->findOne(array('_id' => $this->getId()), array('{{ field.dbName }}' => 1));
-                if (isset($data['{{ field.dbName }}'])) {
-                    {{ mandango_type_to_php(field.type, "$data['" ~ field.dbName ~ "']", "$this->data['fields']['" ~ name ~ "']") }}
-                } else {
-                    $this->data['fields']['{{ name }}'] = null;
-                }
-            }
-{% endif %}
-        }
+        if (!isset($this->data['fields']['{{ name }}'])) $this->data['fields']['{{ name }}'] = null;
 
         return $this->data['fields']['{{ name }}'];
     }
