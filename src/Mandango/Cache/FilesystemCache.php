@@ -36,7 +36,7 @@ class FilesystemCache implements CacheInterface
      */
     public function has($key)
     {
-        if ( isset($data[$key]) ) return true;
+        if ( isset($this->data[$key]) ) return true;
         return file_exists($this->dir.'/'.$key.'.php');
     }
 
@@ -74,7 +74,7 @@ EOF;
             throw new \RuntimeException(sprintf('Unable to write the "%s" file.', $file));
         }
 
-        $data[$key] = $value;
+        $this->data[$key] = $value;
     }
 
     /**
