@@ -89,26 +89,15 @@ class EmbeddedGroup extends Group
      */
     protected function doInitializeSavedData()
     {
+        $rap = $this->getRootAndPath();
+        $rap['root']->addFieldCache($rap['path']);
+
         $data = $this->getSavedData();
         if ( $data !== null ) {
             return $data;
         }
 
-        $rap = $this->getRootAndPath();
-
-        if ($rap['root']->isNew()) {
-            return array();
-        }
-
-        $rap['root']->addFieldCache($rap['path']);
-
-        $result = $rap['root']
-            ->getRepository()
-            ->getCollection()
-            ->findOne(array('_id' => $rap['root']->getId()), array($rap['path']))
-        ;
-
-        return ($result && isset($result[$rap['path']])) ? $result[$rap['path']] : array();
+        return array();
     }
 
     /**

@@ -44,9 +44,8 @@ class CoreDocumentTest extends TestCase
         );
         $this->mandango->getRepository('Model\Article')->getCollection()->insert($articleRaw);
 
-        $article = $this->mandango->create('Model\Article');
-        $article->setId($articleRaw['_id']);
-        $article->setIsNew(false);
+        $article = $this->mandango->getRepository('Model\Article')->findOneById($articleRaw['_id']);
+
         $this->assertSame($article, $article->setTitle('foo'));
         $this->assertFalse($article->isFieldModified('title'));
         $this->assertSame($article, $article->setTitle('foo'));
@@ -61,9 +60,9 @@ class CoreDocumentTest extends TestCase
         );
         $this->mandango->getRepository('Model\Article')->getCollection()->insert($articleRaw);
 
-        $article = $this->mandango->create('Model\Article');
-        $article->setId($articleRaw['_id']);
-        $article->setIsNew(false);
+        $this->mandango->getRepository('Model\Article')->getIdentityMap()->clear();
+        $article = $this->mandango->getRepository('Model\Article')->findOneById($articleRaw['_id']);
+
         $this->assertSame('foo', $article->getTitle());
         $this->assertSame('123', $article->getContent());
         $this->assertNull($article->getNote());
@@ -388,9 +387,8 @@ class CoreDocumentTest extends TestCase
         );
         $this->mandango->getRepository('Model\Article')->getCollection()->insert($articleRaw);
 
-        $article = $this->mandango->create('Model\Article');
-        $article->setId($articleRaw['_id']);
-        $article->setIsNew(false);
+        $this->mandango->getRepository('Model\Article')->getIdentityMap()->clear();
+        $article = $this->mandango->getRepository('Model\Article')->findOneById($articleRaw['_id']);
 
         $source = $article->getSource();
         $this->assertNotNull($source);
@@ -443,11 +441,11 @@ class CoreDocumentTest extends TestCase
 
     public function testEmbeddedsOneGetterSaveFieldsCacheQuering()
     {
-
+/*
         $this->markTestSkipped(
               'Pending to review change on commit 00d38267e8eb61786c8543d20cfd1f33c9e65c15.'
         );
-
+*/
         $articleRaw = array(
             'source' => array(
                 'name' => 'foo',
@@ -868,7 +866,8 @@ class CoreDocumentTest extends TestCase
             ->save()
         ;
 
-        $article = $this->mandango->create('Model\Article')->setId($article->getId())->setIsNew(false);
+        $this->mandango->getRepository('Model\Article')->getIdentityMap()->clear();
+        $article = $this->mandango->getRepository('Model\Article')->findOneById($article->getId());
 
         $this->assertSame(array(
             'id'       => $article->getId(),
@@ -948,9 +947,9 @@ class CoreDocumentTest extends TestCase
             ),
         );
         $this->mandango->getRepository('Model\Article')->getCollection()->insert($articleRaw);
-
-        $article = $this->mandango->create('Model\Article');
-        $article->setId($articleRaw['_id'])->setIsnew(false);
+ 
+        $this->mandango->getRepository('Model\Article')->getIdentityMap()->clear();
+        $article = $this->mandango->getRepository('Model\Article')->findOneById($articleRaw['_id']);
 
         $comments = $article->getComments()->getSaved();
 
@@ -1002,13 +1001,13 @@ class CoreDocumentTest extends TestCase
         foreach ($comments as $comment) {
             $comment->getName();
         }
-        $this->assertSame(array('comments' => 1), $query->getFieldsCache());
+        $this->assertSame(array('comments' => 1, 'comments.name' => 1), $query->getFieldsCache());
         $commentNew = $this->mandango->create('Model\Comment');
         $comments->add($commentNew);
         $commentNew->getName();
-        $this->assertSame(array('comments' => 1), $query->getFieldsCache());
+        $this->assertSame(array('comments' => 1, 'comments.name' => 1), $query->getFieldsCache());
         $savedInfos = $savedComments[0]->getInfos()->getSaved();
-        $this->assertSame(array('comments' => 1), $query->getFieldsCache());
+        $this->assertSame(array('comments' => 1, 'comments.name' => 1, 'comments.infos' => 1), $query->getFieldsCache());
     }
 
     public function testEmbeddedsManyNoQueryNewDocument()
@@ -1044,8 +1043,8 @@ class CoreDocumentTest extends TestCase
         );
         $this->mandango->getRepository('Model\Article')->getCollection()->insert($articleRaw);
 
-        $article = $this->mandango->create('Model\Article');
-        $article->setId($articleRaw['_id'])->setIsnew(false);
+        $this->mandango->getRepository('Model\Article')->getIdentityMap()->clear();
+        $article = $this->mandango->getRepository('Model\Article')->findOneById($articleRaw['_id']);
 
         $this->assertSame(3, $article->getComments()->count());
     }
@@ -1177,38 +1176,6 @@ class CoreDocumentTest extends TestCase
         ));
         $this->assertFalse($book->isFieldModified('comment'));
         $this->assertFalse($book->isFieldModified('isHere'));
-    }
-
-    public function testSetDocumentDataNullValues()
-    {
-        $articleRaw = array(
-            'title'   => 'foo',
-            'content' => 'bar',
-            'line'    => 'ups',
-            'source' => array(
-                'name' => 'foobar',
-                'note' => 'fooups',
-            ),
-        );
-        $this->mandango->getRepository('Model\Article')->getCollection()->insert($articleRaw);
-
-        $article = $this->mandango->create('Model\Article');
-        $article->setDocumentData(array(
-            '_id' => $articleRaw['_id'],
-            'source' => array(),
-            '_fields' => array(
-                'title'   => 1,
-                'content' => 1,
-                'source' => array(
-                    'name' => 1,
-                ),
-            ),
-        ));
-        $this->assertNull($article->getTitle());
-        $this->assertNull($article->getContent());
-        $this->assertSame('ups', $article->getLine());
-        $this->assertNull($article->getSource()->getName());
-        $this->assertSame('fooups', $article->getSource()->getNote());
     }
 
     public function testSetDocumentDataEmbeddedsOne()

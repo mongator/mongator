@@ -80,7 +80,7 @@ class QueryTest extends TestCase
     public function testFields()
     {
         $query = $this->query;
-        $this->assertSame(array('_id' => 1), $query->getFields());
+        $this->assertSame(array(), $query->getFields());
 
         $fields = array('title' => 1, 'content' => 1);
         $this->assertSame($query, $query->fields($fields));
@@ -307,16 +307,30 @@ class QueryTest extends TestCase
         $this->query->timeout($value);
     }
 
-    public function testAll()
+    public function testAllCache()
     {
         $baseArticles = $this->createArticles(10);
 
         foreach ($baseArticles as $baseArticle) {
             $this->assertFalse($this->identityMap->has($baseArticle->getId()));
         }
-
         $articles = $this->query->all();
-        $this->assertEquals($baseArticles, $articles);
+
+        $this->getCollection('Model\Article')->remove();
+
+        foreach ($articles  as $article) {
+            $this->assertTrue(strlen($article->getTitle()) > 0 );
+        }
+    }
+
+    public function testAll()
+    {
+        $baseArticles = $this->createArticles(10);
+        
+        foreach ($baseArticles as $baseArticle) {
+            $this->assertFalse($this->identityMap->has($baseArticle->getId()));
+        }
+        $articles = $this->query->all();
 
         foreach ($articles as $article) {
             $this->assertTrue($this->identityMap->has($article->getId()));
@@ -325,6 +339,9 @@ class QueryTest extends TestCase
 
         $query = new \Model\ArticleQuery($this->mandango->getRepository('Model\Article'));
         $articles2 = $query->all();
+
+        $this->assertCount(10, $articles2);
+
         foreach ($articles2 as $key => $article2) {
             $this->assertSame($article2, $articles[$key]);
             $this->assertSame(array($this->query->getHash(), $query->getHash()), $article2->getQueryHashes());
@@ -512,9 +529,12 @@ class QueryTest extends TestCase
             $this->assertFalse($this->identityMap->has($article->getId()));
         }
 
-        $this->assertEquals($articles, iterator_to_array($this->query));
+        $array = iterator_to_array($this->query); 
+        $this->assertEquals(count($articles), count($array));
 
+        $i = 0; $keys = array_keys($array);
         foreach ($articles as $article) {
+            $this->assertEquals($article->getId(), $array[$keys[$i++]]->getId());
             $this->assertTrue($this->identityMap->has($article->getId()));
         }
     }
@@ -528,7 +548,7 @@ class QueryTest extends TestCase
         }
 
         $articleOne = array_shift($articles);
-        $this->assertEquals($articleOne, $this->query->one());
+        $this->assertEquals($articleOne->getId(), $this->query->one()->getId());
 
         $this->assertTrue($this->identityMap->has($articleOne->getId()));
         foreach ($articles as $article) {

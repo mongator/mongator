@@ -21,22 +21,6 @@
         }
 {% endif %}
 
-        $fields = array();
-        foreach (array_keys($this->getFields()) as $field) {
-            if (false === strpos($field, '.')) {
-                $fields[$field] = 1;
-                continue;
-            }
-            $f =& $fields;
-            foreach (explode('.', $field) as $name) {
-                if (!isset($f[$name])) {
-                    $f[$name] = array();
-                }
-                $f =& $f[$name];
-            }
-            $f = 1;
-        }
-
         $documents = array();
         foreach ($this->createCursor() as $data) {
 {% if config_class.inheritable and 'single' == config_class.inheritable.type %}
@@ -73,7 +57,6 @@
                     $data['file'] = $file;
                 }
                 $data['_query_hash'] = $this->getHash();
-                $data['_fields'] = $fields;
 
                 $document = new $documentClass($mandango);
                 $document->setDocumentData($data);

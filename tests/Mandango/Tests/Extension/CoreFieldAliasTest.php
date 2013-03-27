@@ -30,9 +30,9 @@ class CoreFieldAliasTest extends TestCase
         );
         $this->mandango->getRepository('Model\Article')->getCollection()->insert($articleRaw);
 
-        $article = $this->mandango->create('Model\Article');
-        $article->setId($articleRaw['_id']);
-        $article->setIsNew(false);
+        $this->mandango->getRepository('Model\Article')->getIdentityMap()->clear();
+        $article = $this->mandango->getRepository('Model\Article')->findOneById($articleRaw['_id']);
+
         $this->assertSame('123', $article->getDatabase());
     }
 
@@ -45,9 +45,9 @@ class CoreFieldAliasTest extends TestCase
         );
         $this->mandango->getRepository('Model\Article')->getCollection()->insert($articleRaw);
 
-        $article = $this->mandango->create('Model\Article');
-        $article->setId($articleRaw['_id']);
-        $article->setIsNew(false);
+        $this->mandango->getRepository('Model\Article')->getIdentityMap()->clear();
+        $article = $this->mandango->getRepository('Model\Article')->findOneById($articleRaw['_id']);
+
         $this->assertSame('123', $article->getSource()->getFrom());
     }
 
@@ -69,9 +69,9 @@ class CoreFieldAliasTest extends TestCase
     public function testDocumentGetterSaveFieldQueryCacheEmbedded()
     {
 
-        $this->markTestSkipped(
+        /*$this->markTestSkipped(
               'Pending to review change on commit 00d38267e8eb61786c8543d20cfd1f33c9e65c15.'
-        );
+        );*/
         
         $articleRaw = array(
             'source' => array(
