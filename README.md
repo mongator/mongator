@@ -9,6 +9,6 @@ Mandango is a simple, powerful and ultrafast Object Document Mapper (ODM) for PH
 
 See the documentation in [http://mandango.org/doc/](http://mandango.org/doc/)
 
-## Documented fork changes
+## Issues and enchandmeds 
 
-[Usage of serialize](https://github.com/yunait/mandango/wiki/Usage-of-serialize)
+At Yunait we made many fixes and enhancements you can find list at [List of bugs and enhancements ](https://github.com/yunait/mandango/issues?state=closed)
