@@ -23,11 +23,9 @@ class ConnectionTest extends TestCase
         $mongoDB = $connection->getMongoDB();
 
         if ( class_exists('MongoClient') ) {
-            $this->assertNotInstanceOf('\Mongo', $mongo);
             $this->assertInstanceOf('\MongoClient', $mongo);
         } else {
             $this->assertInstanceOf('\Mongo', $mongo);
-            $this->assertNotInstanceOf('\MongoClient', $mongo);     
         }
 
         $this->assertInstanceOf('\MongoDB', $mongoDB);
