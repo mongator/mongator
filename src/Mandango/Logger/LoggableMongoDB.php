@@ -27,7 +27,7 @@ class LoggableMongoDB extends \MongoDB
      * @param \Mandango\Logger\LoggableMongo $mongo A LoggableMongo instance.
      * @param string                         $name  The database name.
      */
-    public function __construct(LoggableMongo $mongo, $name)
+    public function __construct($mongo, $name)
     {
         $this->mongo = $mongo;
         $this->time = new Time();

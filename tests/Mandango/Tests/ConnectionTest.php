@@ -138,7 +138,14 @@ class ConnectionTest extends TestCase
         $mongo   = $connection->getMongo();
         $mongoDB = $connection->getMongoDB();
 
-        $this->assertInstanceOf('\Mandango\Logger\LoggableMongo', $mongo);
+        if ( class_exists('MongoClient') ) {
+            $this->assertNotInstanceOf('\Mandango\Logger\LoggableMongo', $mongo);
+            $this->assertInstanceOf('\Mandango\Logger\LoggableMongoClient', $mongo);
+        } else {
+            $this->assertInstanceOf('\Mandango\Logger\LoggableMongo', $mongo);
+            $this->assertNotInstanceOf('\Mandango\Logger\LoggableMongoClient', $mongo);     
+        }
+        
         $this->assertInstanceOf('\Mandango\Logger\LoggableMongoDB', $mongoDB);
         $this->assertSame($loggerCallable, $mongo->getLoggerCallable());
         $this->assertSame($logDefault, $mongo->getLogDefault());
