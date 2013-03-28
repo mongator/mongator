@@ -183,13 +183,22 @@ class Connection implements ConnectionInterface
     {
         if (null === $this->mongo) {
             if (null !== $this->loggerCallable) {
-                $this->mongo = new \Mandango\Logger\LoggableMongo($this->server);
+                if ( class_exists('MongoClient') ) {
+                    $this->mongo = new \Mandango\Logger\LoggableMongoClient($this->server);
+                } else {
+                    $this->mongo = new \Mandango\Logger\LoggableMongo($this->server);
+                }
+
                 $this->mongo->setLoggerCallable($this->loggerCallable);
                 if (null !== $this->logDefault) {
                     $this->mongo->setLogDefault($this->logDefault);
                 }
             } else {
-                $this->mongo = new \MongoClient($this->server, $this->options);
+                if ( class_exists('MongoClient') ) {
+                    $this->mongo = new \MongoClient($this->server, $this->options);
+                } else {
+                    $this->mongo = new \Mongo($this->server, $this->options);
+                }
             }
         }
 
