@@ -4,10 +4,16 @@ php:
   - 5.3
   - 5.4
 
+env:
+  - VERSION=1.3.6
+  - VERSION=1.2.10
+  - VERSION=1.0.11
+
 services: mongodb
 
 before_script:
-  - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - /bin/bash ./.travis.sh
+  - phpenv rehash
   - composer --dev install
 
 script: phpunit
