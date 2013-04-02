@@ -71,4 +71,23 @@ class EmbeddedGroupTest extends TestCase
         $group = new EmbeddedGroup('Model\Comment');
         $this->assertEquals(0, count($group->getAdd()));
     }
+
+    public function testDataAfterDocumentSave() {
+        $article = $this->mandango->create('Model\Article');
+        $group = $article->getComments();
+        $comments = [];
+        for ($i = 0; $i < 3; $i++) {
+            $comments[]  = $comment = $this->mandango->create('Model\Comment');
+            $comment->setName("Name $i");
+            $article->addComments($comment);
+        }
+
+        $article->save();
+        $this->assertEquals(3, count($article->getComments()->all()));
+        foreach ($article->getComments()->all() as $key => $comment) {
+            $this->assertSame($comments[$key]->getName(), $comment->getName());
+        }
+
+        $article->delete();
+    }
 }
