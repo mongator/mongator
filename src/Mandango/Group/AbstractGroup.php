@@ -134,6 +134,18 @@ abstract class AbstractGroup implements \Countable, \IteratorAggregate
     }
 
     /**
+     * Marks everything as saved, removes pending add and delete arrays
+     */
+
+    public function markAllSaved() {
+        $this->saved = $this->all();
+        foreach ($this->saved as $document) $document->clearModified();
+        $this->clearAdd();
+        $this->clearRemove();
+    }
+
+
+    /**
      * Returns the saved + add - removed elements.
      *
      * @api

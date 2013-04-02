@@ -98,6 +98,7 @@ return array(
             'text' => 'string',
             'note' => 'string',
             'line' => 'string',
+            'date' => 'date',
         ),
         'referencesOne' => array(
             'author' => array('class' => 'Model\Author', 'field' => 'authorId'),
