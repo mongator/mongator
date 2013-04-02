@@ -77,7 +77,7 @@ class EmbeddedGroupTest extends TestCase
         $group = $article->getComments();
         $comments = [];
         for ($i = 0; $i < 3; $i++) {
-            $comments[]  = $comment = $this->mandango->create('Model\Comment');
+            $comments[] = $comment = $this->mandango->create('Model\Comment');
             $comment->setName("Name $i");
             $article->addComments($comment);
         }
