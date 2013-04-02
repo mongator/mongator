@@ -79,6 +79,7 @@ class EmbeddedGroupTest extends TestCase
         for ($i = 0; $i < 3; $i++) {
             $comments[] = $comment = $this->mandango->create('Model\Comment');
             $comment->setName("Name $i");
+            $comment->setDate(new \Datetime());
             $article->addComments($comment);
         }
 
@@ -86,6 +87,10 @@ class EmbeddedGroupTest extends TestCase
         $this->assertEquals(3, count($article->getComments()->all()));
         foreach ($article->getComments()->all() as $key => $comment) {
             $this->assertSame($comments[$key]->getName(), $comment->getName());
+            $this->assertSame(
+                $comments[$key]->getDate()->getTimestamp(),
+                $comment->getDate()->getTimestamp()
+            );
         }
 
         $article->delete();

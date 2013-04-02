@@ -1462,7 +1462,7 @@ class CoreDocumentTest extends TestCase
         $comment = $this->mandango->create('Model\Comment')->setName('foo');
         $article->clearModified();
         $this->assertSame(array(), $comments->getAdd());
-        $this->assertFalse($comments->isSavedInitialized());
+        $this->assertTrue($comments->isSavedInitialized());
         $this->assertFalse($article->isModified());
 
         $article = $this->mandango->create('Model\Article')->setDocumentData(array(
@@ -1477,7 +1477,7 @@ class CoreDocumentTest extends TestCase
         $comments->add($this->mandango->create('Model\Comment')->setName('foobar'));
         $article->clearModified();
         $this->assertSame(array(), $comments->getAdd());
-        $this->assertFalse($comments->isSavedInitialized());
+        $this->assertTrue($comments->isSavedInitialized());
         $this->assertFalse($article->isModified());
 
         $article = $this->mandango->create('Model\Article')->setDocumentData(array(
@@ -1492,7 +1492,7 @@ class CoreDocumentTest extends TestCase
         $comments->remove($savedComments[0]);
         $article->clearModified();
         $this->assertSame(array(), $comments->getRemove());
-        $this->assertFalse($comments->isSavedInitialized());
+        $this->assertTrue($comments->isSavedInitialized());
         $this->assertFalse($article->isModified());
 
         $article = $this->mandango->create('Model\Article')->setDocumentData(array(
@@ -1506,7 +1506,7 @@ class CoreDocumentTest extends TestCase
         $savedComments = $comments->getSaved();
         $savedComments[1]->setName('foobar');
         $article->clearModified();
-        $this->assertFalse($comments->isSavedInitialized());
+        $this->assertTrue($comments->isSavedInitialized());
         $this->assertFalse($article->isModified());
     }
 
