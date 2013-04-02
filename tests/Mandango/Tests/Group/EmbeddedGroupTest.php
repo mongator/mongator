@@ -75,7 +75,7 @@ class EmbeddedGroupTest extends TestCase
     public function testDataAfterDocumentSave() {
         $article = $this->mandango->create('Model\Article');
         $group = $article->getComments();
-        $comments = [];
+        $comments = array();
         for ($i = 0; $i < 3; $i++) {
             $comments[] = $comment = $this->mandango->create('Model\Comment');
             $comment->setName("Name $i");
