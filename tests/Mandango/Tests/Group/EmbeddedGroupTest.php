@@ -91,6 +91,10 @@ class EmbeddedGroupTest extends TestCase
                 $comments[$key]->getDate()->getTimestamp(),
                 $comment->getDate()->getTimestamp()
             );
+
+            $rap = $comment->getRootAndPath();
+            $this->assertSame($article, $rap['root']);
+            $this->assertSame("comments.$key", $rap['path']);
         }
 
         $article->delete();

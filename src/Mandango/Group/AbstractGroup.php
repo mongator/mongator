@@ -139,7 +139,12 @@ abstract class AbstractGroup implements \Countable, \IteratorAggregate
 
     public function markAllSaved() {
         $this->saved = $this->all();
-        foreach ($this->saved as $document) $document->clearModified();
+        foreach ($this->saved as $document) {
+            $document->clearModified();
+            $rap = $document->getRootAndPath();
+            $rap['path'] = str_replace('._add', '.', $rap['path']);
+            $document->setRootAndPath($rap['root'], $rap['path']);
+        }
         $this->clearAdd();
         $this->clearRemove();
     }
