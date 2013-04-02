@@ -196,7 +196,7 @@ abstract class AbstractDocument
 
         if (isset($this->data['embeddedsMany'])) {
             foreach ($this->data['embeddedsMany'] as $name => $group) {
-                $data = [];
+                $data = array();
                 foreach ($group->all() as $key => $datum) $data[$key] = $datum->toArray();
 
                 $group->clearAdd();
