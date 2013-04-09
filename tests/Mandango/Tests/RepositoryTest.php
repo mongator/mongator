@@ -394,6 +394,50 @@ class RepositoryTest extends TestCase
         $this->assertSame($result, $repository->distinct($field, $query));
     }
 
+    public function testText()
+    {
+        $collectionName = 'myCollectionName';
+
+        $search = 'foo';
+        $filter = array();
+        $fields = array();
+        $limit = 10;
+        $language = 'bar';
+
+        $result = array(new \DateTime());
+
+        $mongoDB = $this->getMockBuilder('MongoDB')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $mongoDB
+            ->expects($this->once())
+            ->method('command')
+            ->with(array(
+                'text'     => $collectionName,
+                'search'   => $search,
+                'filter'   => $filter,
+                'project'  => $fields,
+                'limit'    => $limit,
+                'language' => $language
+            ))
+            ->will($this->returnValue($result))
+        ;
+
+        $connection = $this->getMock('Mandango\ConnectionInterface');
+        $connection
+            ->expects($this->any())
+            ->method('getMongoDB')
+            ->will($this->returnValue($mongoDB))
+        ;
+
+        $repository = new RepositoryMock($this->mandango);
+        $repository->setCollectionName($collectionName);
+        $repository->setConnection($connection);
+        $this->assertSame($result, $repository->text($search, $filter, $fields, $limit, $language));
+    }
+
     public function testMapReduce()
     {
         $collectionName = 'myCollectionName';

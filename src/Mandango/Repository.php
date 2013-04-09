@@ -335,6 +335,7 @@ abstract class Repository
      *
      * @param string $field The field.
      * @param array  $query The query (optional).
+     * @param array $options Extra options for the command (optional).
      *
      * @return array The results.
      *
@@ -347,6 +348,35 @@ abstract class Repository
                 'distinct' => $this->getCollectionName(),
                 'key'      => $field,
                 'query'    => $query,
+            ),
+            $options
+        );
+    }
+
+    /**
+     * Search text content stored in the text index.
+     *
+     * @param string $search A string of terms that MongoDB parses and uses to query the text index.
+     * @param array $filter (optional) A query array, you can use any valid MongoDB query
+     * @param array $fields (optional) Allows you to limit the fields returned by the query to only those specified.
+     * @param integer $limit (optional) Specify the maximum number of documents to include in the response.
+     * @param string $language (optional) Specify the language that determines for the search the list of stop words and the rules for the stemmer and tokenizer. 
+     * @param array $options Extra options for the command (optional).
+     *
+     * @return array The results.
+     *
+     * @api
+     */
+    public function text($search, array $filter = array(), $fields = array(), $limit = null, $language = null, $options = array())
+    {
+        return $this->getConnection()->getMongoDB()->command(
+            array(
+                'text'     => $this->getCollectionName(),
+                'search'   => $search,
+                'filter'   => $filter,
+                'project'  => $fields,
+                'limit'    => $limit,
+                'language' => $language
             ),
             $options
         );

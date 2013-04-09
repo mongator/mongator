@@ -57,6 +57,21 @@ return array(
             array(
                 'keys' => array('authorId' => 1, 'isActive' => 1),
             ),
+            array(
+                'keys'    => array(
+                    'title' => 'text',
+                    'content' => 'text',
+                    'text' => 'text',
+                ),
+                'options' => array(
+                    'name' => 'ExampleTextIndex',
+                    'weights' => array(
+                        'title' => 100,
+                        'content' => 30,
+                        'text' => 1
+                    )
+                ),
+            ),
         ),
     ),
     'Model\ArticleInformation' => array(
