@@ -343,13 +343,7 @@ abstract class Repository
      */
     public function distinct($field, array $query = array(), $options = array())
     {
-        $command = array(
-            'distinct' => $this->getCollectionName(),
-            'key'      => $field,
-            'query'    => $query,
-        );
-
-        return $this->command($command, $options);
+        return $this->getCollection()->distinct($field, $query);
     }
 
     /**

@@ -359,38 +359,24 @@ class RepositoryTest extends TestCase
 
     public function testDistinct()
     {
-        $collectionName = 'myCollectionName';
-
         $field = 'fieldName';
         $query = array();
 
-        $result = array('ok' => true);
+        $result = array(new \DateTime());
 
-        $mongoDB = $this->getMockBuilder('MongoDB')
+        $collection = $this->getMockBuilder('MongoCollection')
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $mongoDB
+        $collection
             ->expects($this->once())
-            ->method('command')
-            ->with(array(
-                'distinct' => $collectionName,
-                'key'      => $field,
-                'query'    => $query,
-            ))
+            ->method('distinct')
+            ->with($field, $query)
             ->will($this->returnValue($result))
         ;
 
-        $connection = $this->getMock('Mandango\ConnectionInterface');
-        $connection
-            ->expects($this->any())
-            ->method('getMongoDB')
-            ->will($this->returnValue($mongoDB))
-        ;
-
         $repository = new RepositoryMock($this->mandango);
-        $repository->setCollectionName($collectionName);
-        $repository->setConnection($connection);
+        $repository->setCollection($collection);
         $this->assertSame($result, $repository->distinct($field, $query));
     }
 
