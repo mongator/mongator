@@ -343,14 +343,13 @@ abstract class Repository
      */
     public function distinct($field, array $query = array(), $options = array())
     {
-        return $this->getConnection()->getMongoDB()->command(
-            array(
-                'distinct' => $this->getCollectionName(),
-                'key'      => $field,
-                'query'    => $query,
-            ),
-            $options
+        $command = array(
+            'distinct' => $this->getCollectionName(),
+            'key'      => $field,
+            'query'    => $query,
         );
+
+        return $this->command($command, $options);
     }
 
     /**
@@ -369,17 +368,16 @@ abstract class Repository
      */
     public function text($search, array $filter = array(), $fields = array(), $limit = null, $language = null, $options = array())
     {
-        return $this->getConnection()->getMongoDB()->command(
-            array(
-                'text'     => $this->getCollectionName(),
-                'search'   => $search,
-                'filter'   => $filter,
-                'project'  => $fields,
-                'limit'    => $limit,
-                'language' => $language
-            ),
-            $options
+        $command = array(
+            'text'     => $this->getCollectionName(),
+            'search'   => $search,
+            'filter'   => $filter,
+            'project'  => $fields,
+            'limit'    => $limit,
+            'language' => $language
         );
+
+        return $this->command($command, $options);
     }
 
     /**
@@ -407,16 +405,22 @@ abstract class Repository
             'query'     => $query,
         ));
 
-        $result = $this->getConnection()->getMongoDB()->command($command, $options);
-
-        if (!$result['ok']) {
-            throw new \RuntimeException($result['errmsg']);
-        }
+        $result = $this->command($command, $options);
 
         if (isset($out['inline']) && $out['inline']) {
             return $result['results'];
         }
 
         return $this->getConnection()->getMongoDB()->selectCollection($result['result'])->find();
+    }
+
+    private function command($command, $options) {
+        $result = $this->getConnection()->getMongoDB()->command($command, $options);
+
+        if (!isset($result['ok']) || !$result['ok']) {
+            throw new \RuntimeException($result['errmsg']);
+        }
+
+        return $result;
     }
 }

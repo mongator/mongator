@@ -56,22 +56,7 @@ return array(
             ),
             array(
                 'keys' => array('authorId' => 1, 'isActive' => 1),
-            ),
-            array(
-                'keys'    => array(
-                    'title' => 'text',
-                    'content' => 'text',
-                    'text' => 'text',
-                ),
-                'options' => array(
-                    'name' => 'ExampleTextIndex',
-                    'weights' => array(
-                        'title' => 100,
-                        'content' => 30,
-                        'text' => 1
-                    )
-                ),
-            ),
+            )
         ),
     ),
     'Model\ArticleInformation' => array(
@@ -195,9 +180,25 @@ return array(
     'Model\Message' => array(
         'fields' => array(
             'author' => 'string',
+            'text' => 'string'
         ),
         'referencesOne' => array(
             'replyTo' => array('class' => 'Model\Message', 'field' => 'replyToId'),
+        ),
+        'indexes' => array(
+            array(
+                'keys'    => array(
+                    'author' => 'text',
+                    'text' => 'text',
+                ),
+                'options' => array(
+                    'name' => 'ExampleTextIndex',
+                    'weights' => array(
+                        'author' => 100,
+                        'text' => 30,
+                    )
+                ),
+            ),
         ),
     ),
     // default values

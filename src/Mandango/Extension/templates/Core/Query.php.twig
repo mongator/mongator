@@ -22,7 +22,7 @@
 {% endif %}
 
         $documents = array();
-        foreach ($this->createCursor() as $data) {
+        foreach ($this->get() as $data) {
 {% if config_class.inheritable and 'single' == config_class.inheritable.type %}
             $documentClass = null;
             $identityMap = null;

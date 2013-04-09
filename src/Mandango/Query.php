@@ -36,6 +36,7 @@ abstract class Query implements \Countable, \IteratorAggregate
     private $slaveOkay;
     private $snapshot;
     private $timeout;
+    private $text;
 
     /**
      * Constructor.
@@ -512,6 +513,44 @@ abstract class Query implements \Countable, \IteratorAggregate
     }
 
     /**
+     * Set the text search criterias. The text methods requires a text index.
+     *
+     * @param string $search A string of terms
+     * @param int $requiredScore (optional) All the documents with less score will be omitted
+     * @param int $language (optional) Specify the language that determines for the search the list of stop words and the rules for the stemmer and tokenizer. If not specified, the search uses the default language of the index.
+     *
+     * @return \Mandango\Query The query instance (fluent interface).
+     *
+     * @api
+     */
+    public function text($search, $requiredScore = null, $language = null)
+    {
+        if ( $search === null ) {
+            $this->text = null;
+        } else {
+            $this->text = array(
+                'search' => $search,
+                'requiredScore' => $requiredScore,
+                'language' => $language
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the text search criterias.
+     *
+     * @return array|null The text search criterias.
+     *
+     * @api
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
      * Returns all the results.
      *
      * @return array An array with all the results.
@@ -557,7 +596,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      */
     public function count()
     {
-        return $this->createCursor()->count();
+        return $this->get()->count();
     }
 
     /**
@@ -602,6 +641,68 @@ abstract class Query implements \Countable, \IteratorAggregate
         }
 
         return $cursor;
+    }
+
+    /**
+     * Create an ArrayObject with a result's text command of the query. 
+     *
+     * @return \ArrayObject A iterable object with the data of the query.
+     */
+    public function createResult()
+    {
+        if ( !$this->text || !is_array($this->text) ) {
+            return false;  
+        } 
+
+        if ( $this->sort || $this->batchSize || $this->hint || $this->slaveOkay || $this->snapshot ) {
+            throw new \RuntimeException(
+                'Cannot use text method in combination with: sort, batchSize, hint, slaveOkay or snapshot'
+            );
+        }
+
+        list($search, $requiredScore, $language) = array_values($this->text);
+
+        $limit = $this->limit;
+        if ( $this->skip && $this->limit ) { 
+            $limit += $this->skip;
+        } 
+
+        $options = array();
+        if ( $this->timeout ) $options['timeout'] = $this->timeout;
+
+        $response = $this->repository->text(
+            $search,
+            $this->criteria,
+            $this->fields,
+            $limit,
+            $language,
+            $options
+        );
+
+        $result = new \ArrayObject;
+        foreach($response['results'] as $index => $document) {
+            if ( $requiredScore && $requiredScore > $document['score'] ) continue;
+            if ( $this->skip && $index < $this->skip ) continue;
+
+            $result[(string)$document['obj']['_id']] = $document['obj'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Execute the query to the server, if text method was used will return an ArrayObject
+     * if not will return a MongoCursor
+     *
+     * @return \ArrayObject|\MongoCursor A iterable object with the data of the query.
+     */
+    public function get()
+    {
+        if  ( $this->text ) {
+            return $this->createResult();
+        } else {
+            return $this->createCursor();
+        }
     }
 
     /**

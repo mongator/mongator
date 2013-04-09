@@ -364,7 +364,7 @@ class RepositoryTest extends TestCase
         $field = 'fieldName';
         $query = array();
 
-        $result = array(new \DateTime());
+        $result = array('ok' => true);
 
         $mongoDB = $this->getMockBuilder('MongoDB')
             ->disableOriginalConstructor()
@@ -404,7 +404,7 @@ class RepositoryTest extends TestCase
         $limit = 10;
         $language = 'bar';
 
-        $result = array(new \DateTime());
+        $result = array('ok' => true);
 
         $mongoDB = $this->getMockBuilder('MongoDB')
             ->disableOriginalConstructor()

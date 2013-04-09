@@ -133,11 +133,26 @@ class TestCase extends \PHPUnit_Framework_TestCase
             $articles[] = array(
                 'title'   => 'Article'.$i,
                 'content' => 'Content'.$i,
+                'slug' => 'Slug'.$i,
+                'slug' => 'Slug'.$i,
             );
         }
         $this->mandango->getRepository('Model\Article')->getCollection()->batchInsert($articles);
 
         return $articles;
+    }
+
+    protected function createMessageRaw($nb)
+    {
+        $messages = array();
+        for ($i=0; $i < $nb; $i++) {
+            $messages[] = array(
+                'author'   => 'Author '.$i,
+                'text' => 'Text '.$i
+            );
+        }
+        $result = $this->mandango->getRepository('Model\Message')->getCollection()->batchInsert($messages);
+        return $messages;
     }
 
     protected function removeFromCollection($document)

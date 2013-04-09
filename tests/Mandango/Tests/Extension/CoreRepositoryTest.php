@@ -340,35 +340,35 @@ class CoreRepositoryTest extends TestCase
         $this->assertSame(array('authorId' => 1, 'isActive' => 1), $indexInfo[2]['key']);
 
         // embeddeds one
-        $this->assertSame(array('source.name' => 1), $indexInfo[4]['key']);
-        $this->assertSame(true, $indexInfo[4]['unique']);
-        $this->assertSame(array('source.authorId' => 1, 'source.line' => 1), $indexInfo[5]['key']);
+        $this->assertSame(array('source.name' => 1), $indexInfo[3]['key']);
+        $this->assertSame(true, $indexInfo[3]['unique']);
+        $this->assertSame(array('source.authorId' => 1, 'source.line' => 1), $indexInfo[4]['key']);
 
         // embeddeds one deep
-        $this->assertSame(array('source.info.note' => 1), $indexInfo[6]['key']);
-        $this->assertSame(true, $indexInfo[6]['unique']);
-        $this->assertSame(array('source.info.name' => 1, 'source.info.line' => 1), $indexInfo[7]['key']);
+        $this->assertSame(array('source.info.note' => 1), $indexInfo[5]['key']);
+        $this->assertSame(true, $indexInfo[5]['unique']);
+        $this->assertSame(array('source.info.name' => 1, 'source.info.line' => 1), $indexInfo[6]['key']);
 
         // embeddeds many
-        $this->assertSame(array('comments.line' => 1), $indexInfo[8]['key']);
-        $this->assertSame(true, $indexInfo[8]['unique']);
-        $this->assertSame(array('comments.authorId' => 1, 'comments.note' => 1), $indexInfo[9]['key']);
+        $this->assertSame(array('comments.line' => 1), $indexInfo[7]['key']);
+        $this->assertSame(true, $indexInfo[7]['unique']);
+        $this->assertSame(array('comments.authorId' => 1, 'comments.note' => 1), $indexInfo[8]['key']);
 
         // embeddeds many deep
-        $this->assertSame(array('comments.infos.note' => 1), $indexInfo[10]['key']);
-        $this->assertSame(true, $indexInfo[10]['unique']);
-        $this->assertSame(array('comments.infos.name' => 1, 'comments.infos.line' => 1), $indexInfo[11]['key']);
+        $this->assertSame(array('comments.infos.note' => 1), $indexInfo[9]['key']);
+        $this->assertSame(true, $indexInfo[9]['unique']);
+        $this->assertSame(array('comments.infos.name' => 1, 'comments.infos.line' => 1), $indexInfo[10]['key']);
     }
 
     public function testEnsureIndexesMethodTextIndexes()
     {
-        $this->mandango->getRepository('Model\Article')->ensureIndexes();
+        $this->mandango->getRepository('Model\Message')->ensureIndexes();
 
-        $indexInfo = $this->mandango->getRepository('Model\Article')->getCollection()->getIndexInfo();
-        
-        $this->assertSame(array('_fts' => 'text', '_ftsx' => 1), $indexInfo[3]['key']);
-        $this->assertSame('ExampleTextIndex', $indexInfo[3]['name']);
-        $this->assertSame(array('content' => 30, 'text' => 1, 'title' => 100), $indexInfo[3]['weights']);
+        $indexInfo = $this->mandango->getRepository('Model\Message')->getCollection()->getIndexInfo();
+
+        $this->assertSame(array('_fts' => 'text', '_ftsx' => 1), $indexInfo[1]['key']);
+        $this->assertSame('ExampleTextIndex', $indexInfo[1]['name']);
+        $this->assertSame(array('author' => 100, 'text' => 30), $indexInfo[1]['weights']);
     }
 
     /*
