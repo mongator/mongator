@@ -596,7 +596,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      */
     public function count()
     {
-        return $this->get()->count();
+        return $this->execute()->count();
     }
 
     /**
@@ -650,7 +650,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      */
     public function createResult()
     {
-        if ( !$this->text || !is_array($this->text) ) {
+        if ( !$this->text ) {
             return false;  
         } 
 
@@ -696,7 +696,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @return \ArrayObject|\MongoCursor A iterable object with the data of the query.
      */
-    public function get()
+    public function execute()
     {
         if  ( $this->text ) {
             return $this->createResult();

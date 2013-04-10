@@ -703,6 +703,21 @@ class QueryTest extends TestCase
         $this->assertSame(1, count($result));
     }
 
+    public function testCreateResultNoText()
+    {
+        $messages = $this->createMessageRaw(10);
+        $this->mandango->getRepository('Model\Message')->ensureIndexes();
+
+        $query = new \Model\MessageQuery($this->mandango->getRepository('Model\Message'));
+        $query
+            ->limit(5)
+            ->hint(array('author' => 1))
+            ->fields(array('author' => 1));
+
+        $result = $query->createResult();
+        $this->assertFalse($result);
+    }
+
     /**
      * @expectedException \RuntimeException
      */
@@ -721,7 +736,7 @@ class QueryTest extends TestCase
         $result = $query->createResult();
     }
 
-    public function testGetWithCreateResult()
+    public function testExecuteWithCreateResult()
     {
         $messages = $this->createMessageRaw(10);
         $this->mandango->getRepository('Model\Message')->ensureIndexes();
@@ -732,7 +747,7 @@ class QueryTest extends TestCase
             ->limit(5)
             ->fields(array('author' => 1));
 
-        $this->assertInstanceOf('ArrayObject', $query->get());
+        $this->assertInstanceOf('ArrayObject', $query->execute());
         $this->assertSame(5, $query->count());
 
         foreach($query->all() as $key => $document) {
@@ -741,7 +756,7 @@ class QueryTest extends TestCase
         }
     }
 
-    public function testGetWithCreateCursor()
+    public function testExecuteWithCreateCursor()
     {
         $messages = $this->createMessageRaw(10);
         $this->mandango->getRepository('Model\Message')->ensureIndexes();
@@ -751,7 +766,7 @@ class QueryTest extends TestCase
             ->limit(5)
             ->fields(array('author' => 1));
 
-        $this->assertInstanceOf('MongoCursor', $query->get());
+        $this->assertInstanceOf('MongoCursor', $query->execute());
         $this->assertSame(10, $query->count());
 
         foreach($query->all() as $key => $document) {
