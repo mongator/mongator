@@ -191,9 +191,10 @@ class IndexManager
     private function generateIndexKey(array $keys, array $options)
     {
         if ( isset($options['weights']) ) {
-            $hash[] = 'text';
+            $hash[] = 'text_1';
             $keys = $options['weights'];
         }
+
 
        foreach($keys as $key => $value) {
             if ( is_null($value) ) $hash[] = sprintf('%s_1', $key);
@@ -209,6 +210,7 @@ class IndexManager
             $hash[] = sprintf('sparse_%d', $options['sparse']);
         } 
 
+        sort($hash);
         return implode('_', $hash);
     }
 }
