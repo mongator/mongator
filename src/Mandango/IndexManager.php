@@ -118,7 +118,7 @@ class IndexManager
 
         if ( $delete ) {
             foreach($diff['unknown'] as $index) {
-                $this->deleteIndex($index['key']);
+                $this->deleteIndex($index['name']);
             }
         }
 
@@ -129,9 +129,15 @@ class IndexManager
         return true;
     }
 
-    private function deleteIndex(array $keys)
+    private function deleteIndex($name)
     {
-        $result = $this->collection->deleteIndex($keys);
+        $command = array(
+            'deleteIndexes' => $this->collection->getName(), 
+            'index' => $name
+        );
+
+        $result = $this->repository->getConnection()->getMongoDB()->command($command);
+
         if ( !is_array($result) && !isset($result['ok']) ) {
             throw new \RuntimeException(sprintf(
                 'Unable to delete index "%s" at collection %s',
