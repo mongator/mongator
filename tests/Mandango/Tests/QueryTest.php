@@ -718,10 +718,7 @@ class QueryTest extends TestCase
         $this->assertFalse($result);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testCreateResultException()
+    public function testCreateResultNonAssocFields()
     {
         $messages = $this->createMessageRaw(10);
         $this->mandango->getRepository('Model\Message')->ensureIndexes();
@@ -730,10 +727,13 @@ class QueryTest extends TestCase
         $query
             ->text('author 1')
             ->limit(5)
-            ->hint(array('author' => 1))
-            ->fields(array('author' => 1));
+            ->fields(array('author'));
 
         $result = $query->createResult();
+
+        $first = reset($result);
+        $this->assertSame('Author 1', $first['author']);
+        $this->assertFalse(isset($first['text']));
     }
 
     public function testExecuteWithCreateResult()

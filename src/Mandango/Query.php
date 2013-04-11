@@ -654,12 +654,6 @@ abstract class Query implements \Countable, \IteratorAggregate
             return false;  
         } 
 
-        if ( $this->sort || $this->batchSize || $this->hint || $this->slaveOkay || $this->snapshot ) {
-             new \RuntimeException(
-                'Cannot use text method in combination with: sort, batchSize, hint, slaveOkay or snapshot'
-            );
-        }
-
         list($search, $requiredScore, $language) = array_values($this->text);
 
         $limit = $this->limit;
