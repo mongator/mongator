@@ -3,7 +3,7 @@
 /*
  * This file is part of Mandango.
  *
- * (c) Pablo Díez <pablodip@gmail.com>
+ * (c) Máximo Cuadros <maximo@yunait.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -33,7 +33,7 @@ class IndexManagerTest extends TestCase
     {
         $config = $this->repository->getMandango()->getMetadataFactory()->getClass('Model\Article');
 
-        $this->assertSame($config['indexes'], $this->indexManager->getConfig());
+        $this->assertSame($config['_indexes'], $this->indexManager->getConfig());
     }
 
     public function testDiff()
@@ -47,7 +47,7 @@ class IndexManagerTest extends TestCase
 
 
         $diff = $this->indexManager->getDiff(); 
-        $this->assertCount(1, $diff['missing']);
+        $this->assertCount(9, $diff['missing']);
         $this->assertCount(1, $diff['present']);
         $this->assertCount(1, $diff['unknown']);
 
@@ -65,6 +65,6 @@ class IndexManagerTest extends TestCase
         $this->repository->getCollection()->ensureIndex($unknown['keys']);
 
         $this->assertTrue($this->indexManager->commit());
-        $this->assertCount(3, $this->repository->getCollection()->getIndexInfo());
+        $this->assertCount(11, $this->repository->getCollection()->getIndexInfo());
     }
 }

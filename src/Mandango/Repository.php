@@ -312,6 +312,22 @@ abstract class Repository
     }
 
     /**
+     * Ensure the indexes to the database
+     *
+     * @param boolean $delete (optional) true by default drop unknown and old indexes
+     *
+     * @return boolean
+     *
+     * @api
+     */
+    public function ensureIndexes($delete = true)
+    {
+        $indexManager = new IndexManager($this);
+        return $indexManager->commit($delete);
+    }
+
+
+    /**
      * Shortcut to the collection group method.
      *
      * @param mixed $keys    The keys.

@@ -237,16 +237,6 @@
     }
 
     /**
-     * Ensure the indexes.
-     */
-    public function ensureIndexes()
-    {
-{% for index in config_class._indexes %}
-         $this->getCollection()->ensureIndex({{ index.keys|var_export }}, {{ index.options is defined ? index.options|var_export : 'array()' }});
-{% endfor %}
-    }
-
-    /**
      * Fixes the missing references.
      */
     public function fixMissingReferences($documentsPerBatch = 1000)

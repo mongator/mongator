@@ -42,7 +42,7 @@ class IndexManager
         $class = $repository->getDocumentClass();
 
         $classConfig = $repository->getMandango()->getMetadataFactory()->getClass($class);
-        if ( isset($classConfig['indexes']) ) $this->config = $classConfig['indexes'];
+        if ( isset($classConfig['_indexes']) ) $this->config = $classConfig['_indexes'];
     }
 
     /**
@@ -107,7 +107,7 @@ class IndexManager
     /**
      * Commit the indexes to the database
      *
-     * @param boolean $delete (optional) by default or the unknown indexes will be dropeed from collection
+     * @param boolean $delete (optional) true by default or the unknown indexes will be dropeed from collection
      *
      * @return boolean
      *
