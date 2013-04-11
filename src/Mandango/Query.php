@@ -655,7 +655,7 @@ abstract class Query implements \Countable, \IteratorAggregate
         } 
 
         if ( $this->sort || $this->batchSize || $this->hint || $this->slaveOkay || $this->snapshot ) {
-            throw new \RuntimeException(
+             new \RuntimeException(
                 'Cannot use text method in combination with: sort, batchSize, hint, slaveOkay or snapshot'
             );
         }
@@ -670,10 +670,16 @@ abstract class Query implements \Countable, \IteratorAggregate
         $options = array();
         if ( $this->timeout ) $options['timeout'] = $this->timeout;
 
+        $fields = array();
+        foreach($this->fields as $key => $value) {
+            if ( !is_numeric($value) ) $fields[$value] = 1;
+            else $fields[$key] = $value;
+        }
+
         $response = $this->repository->text(
             $search,
             $this->criteria,
-            $this->fields,
+            $fields,
             $limit,
             $language,
             $options
