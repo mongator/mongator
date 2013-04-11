@@ -210,6 +210,12 @@ class IndexManager
             $hash[] = sprintf('sparse_%d', $options['sparse']);
         } 
 
+        if ( isset($options['language']) ) {
+            $hash[] = sprintf('language_%d', $options['language']);
+        } else if ( isset($options['default_language']) ) {
+            $hash[] = sprintf('language_%d', $options['default_language']);
+        } 
+
         sort($hash);
         return implode('_', $hash);
     }
