@@ -223,7 +223,7 @@ class CoreDocumentTest extends TestCase
         $commentBaseIds = array(new \MongoId('21'), new \MongoId('22'), new \MongoId('23'));
 
         $identityMap = $this->mandango->getRepository('Model\Category')->getIdentityMap();
-        foreach ([$baseIds, $sourceBaseIds, $commentBaseIds] as $ids) {
+        foreach (array($baseIds, $sourceBaseIds, $commentBaseIds) as $ids) {
             foreach ($ids as $id) {
                 $category = $this->mandango->create('Model\Category');
                 $category->setId($id);
