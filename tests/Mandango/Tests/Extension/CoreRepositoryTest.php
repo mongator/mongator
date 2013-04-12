@@ -319,6 +319,17 @@ class CoreRepositoryTest extends TestCase
 
     public function testEnsureIndexesMethod()
     {
+
+        $admin = $this->mandango->getRepository('Model\Article')
+            ->getMandango()
+            ->getDefaultConnection()
+            ->getMongo()->admin;
+
+        $admin->command(array( 
+            'setParameter' => 1,
+            'textSearchEnabled' => 1 
+        )); 
+
         $this->mandango->getRepository('Model\Article')->ensureIndexes();
 
         $indexInfo = $this->mandango->getRepository('Model\Article')->getCollection()->getIndexInfo();
@@ -347,6 +358,17 @@ class CoreRepositoryTest extends TestCase
         $this->assertSame(array('comments.infos.note' => 1), $indexInfo[9]['key']);
         $this->assertSame(true, $indexInfo[9]['unique']);
         $this->assertSame(array('comments.infos.name' => 1, 'comments.infos.line' => 1), $indexInfo[10]['key']);
+    }
+
+    public function testEnsureIndexesMethodTextIndexes()
+    {
+        $this->mandango->getRepository('Model\Message')->ensureIndexes();
+
+        $indexInfo = $this->mandango->getRepository('Model\Message')->getCollection()->getIndexInfo();
+
+        $this->assertSame(array('_fts' => 'text', '_ftsx' => 1), $indexInfo[1]['key']);
+        $this->assertSame('ExampleTextIndex', $indexInfo[1]['name']);
+        $this->assertSame(array('author' => 100, 'text' => 30), $indexInfo[1]['weights']);
     }
 
     /*

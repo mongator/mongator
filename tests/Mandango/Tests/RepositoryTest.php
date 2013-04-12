@@ -359,24 +359,54 @@ class RepositoryTest extends TestCase
 
     public function testDistinct()
     {
-        $collectionName = 'myCollectionName';
-
         $field = 'fieldName';
         $query = array();
 
         $result = array(new \DateTime());
 
+        $collection = $this->getMockBuilder('MongoCollection')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $collection
+            ->expects($this->once())
+            ->method('distinct')
+            ->with($field, $query)
+            ->will($this->returnValue($result))
+        ;
+
+        $repository = new RepositoryMock($this->mandango);
+        $repository->setCollection($collection);
+        $this->assertSame($result, $repository->distinct($field, $query));
+    }
+
+    public function testText()
+    {
+        $collectionName = 'myCollectionName';
+
+        $search = 'foo';
+        $filter = array();
+        $fields = array();
+        $limit = 10;
+        $language = 'bar';
+
+        $result = array('ok' => true);
+
         $mongoDB = $this->getMockBuilder('MongoDB')
             ->disableOriginalConstructor()
             ->getMock()
         ;
+
         $mongoDB
             ->expects($this->once())
             ->method('command')
             ->with(array(
-                'distinct' => $collectionName,
-                'key'      => $field,
-                'query'    => $query,
+                'text'     => $collectionName,
+                'search'   => $search,
+                'filter'   => $filter,
+                'project'  => $fields,
+                'limit'    => $limit,
+                'language' => $language
             ))
             ->will($this->returnValue($result))
         ;
@@ -391,7 +421,7 @@ class RepositoryTest extends TestCase
         $repository = new RepositoryMock($this->mandango);
         $repository->setCollectionName($collectionName);
         $repository->setConnection($connection);
-        $this->assertSame($result, $repository->distinct($field, $query));
+        $this->assertSame($result, $repository->text($search, $filter, $fields, $limit, $language));
     }
 
     public function testMapReduce()

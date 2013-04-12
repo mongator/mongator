@@ -312,6 +312,22 @@ abstract class Repository
     }
 
     /**
+     * Ensure the indexes to the database
+     *
+     * @param boolean $delete (optional) true by default drop unknown and old indexes
+     *
+     * @return boolean
+     *
+     * @api
+     */
+    public function ensureIndexes($delete = true)
+    {
+        $indexManager = new IndexManager($this);
+        return $indexManager->commit($delete);
+    }
+
+
+    /**
      * Shortcut to the collection group method.
      *
      * @param mixed $keys    The keys.
@@ -335,6 +351,7 @@ abstract class Repository
      *
      * @param string $field The field.
      * @param array  $query The query (optional).
+     * @param array $options Extra options for the command (optional).
      *
      * @return array The results.
      *
@@ -342,14 +359,35 @@ abstract class Repository
      */
     public function distinct($field, array $query = array(), $options = array())
     {
-        return $this->getConnection()->getMongoDB()->command(
-            array(
-                'distinct' => $this->getCollectionName(),
-                'key'      => $field,
-                'query'    => $query,
-            ),
-            $options
+        return $this->getCollection()->distinct($field, $query);
+    }
+
+    /**
+     * Search text content stored in the text index.
+     *
+     * @param string $search A string of terms that MongoDB parses and uses to query the text index.
+     * @param array $filter (optional) A query array, you can use any valid MongoDB query
+     * @param array $fields (optional) Allows you to limit the fields returned by the query to only those specified.
+     * @param integer $limit (optional) Specify the maximum number of documents to include in the response.
+     * @param string $language (optional) Specify the language that determines for the search the list of stop words and the rules for the stemmer and tokenizer. 
+     * @param array $options Extra options for the command (optional).
+     *
+     * @return array The results.
+     *
+     * @api
+     */
+    public function text($search, array $filter = array(), $fields = array(), $limit = null, $language = null, $options = array())
+    {
+        $command = array(
+            'text'     => $this->getCollectionName(),
+            'search'   => $search,
+            'filter'   => $filter,
+            'project'  => $fields,
+            'limit'    => $limit,
+            'language' => $language
         );
+
+        return $this->command($command, $options);
     }
 
     /**
@@ -377,16 +415,22 @@ abstract class Repository
             'query'     => $query,
         ));
 
-        $result = $this->getConnection()->getMongoDB()->command($command, $options);
-
-        if (!$result['ok']) {
-            throw new \RuntimeException($result['errmsg']);
-        }
+        $result = $this->command($command, $options);
 
         if (isset($out['inline']) && $out['inline']) {
             return $result['results'];
         }
 
         return $this->getConnection()->getMongoDB()->selectCollection($result['result'])->find();
+    }
+
+    private function command($command, $options) {
+        $result = $this->getConnection()->getMongoDB()->command($command, $options);
+
+        if (!isset($result['ok']) || !$result['ok']) {
+            throw new \RuntimeException($result['errmsg']);
+        }
+
+        return $result;
     }
 }
