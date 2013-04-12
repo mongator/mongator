@@ -113,7 +113,7 @@ class EmbeddedGroup extends Group
         foreach ($data as $key => $datum) {
             if ( $datum === null ) continue;
             
-            $saved[] = $document = new $documentClass($mandango);
+            $saved[] = $document = $mandango->create($documentClass);
             $document->setDocumentData($datum);
             $document->setRootAndPath($rap['root'], $rap['path'].'.'.$key);
         }

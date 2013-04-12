@@ -320,6 +320,8 @@ class CoreQueryForSaveTest extends TestCase
 
     public function testDocumentEmbeddedsManyUpdate()
     {
+        $this->markTestSkipped('This test does not make sense: have conflicting mods in update');
+
         $article = $this->mandango->create('Model\Article')->setDocumentData(array(
             '_id' => new \MongoId('123'),
             'title' => 'foo',
@@ -350,6 +352,7 @@ class CoreQueryForSaveTest extends TestCase
                 ),
             ),
         ));
+
         $article->setTitle('foobar');
         $comments = $article->getComments()->getSaved();
         $comments[0]->setName(234)->setText(null)->setLine(345)->setNote(null);
@@ -381,7 +384,7 @@ class CoreQueryForSaveTest extends TestCase
                 'comments.2' => 1,
                 'comments.3' => 1,
             ),
-            '$pushAll' => array(
+            '$pushall' => array(
                 'comments.0.infos' => array(
                     array(
                         'name' => 'insertinfo1',
