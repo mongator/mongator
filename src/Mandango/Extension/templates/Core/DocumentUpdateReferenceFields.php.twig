@@ -47,14 +47,9 @@
             $add = $group->getAdd();
             $remove = $group->getRemove();
             if ($add || $remove) {
-                $ids = $this->get{{ reference.field|ucfirst }}();
-                foreach ($add as $document) {
+                $ids = array();
+                foreach ($group->all() as $document) {
                     $ids[] = $document->getId();
-                }
-                foreach ($remove as $document) {
-                    if (false !== $key = array_search($document->getId(), $ids)) {
-                        unset($ids[$key]);
-                    }
                 }
                 $this->set{{ reference.field|ucfirst }}($ids ? array_values($ids) : null);
             }

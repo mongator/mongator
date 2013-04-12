@@ -267,9 +267,12 @@ abstract class AbstractGroup implements \Countable, \IteratorAggregate
     public function replace(array $documents)
     {
         $this->clearAdd();
-        $this->clearRemove();
 
         $this->remove($this->getSaved());
+        $this->clearRemove();
+
+        $this->saved = array();
+
         $this->add($documents);
     }
 
