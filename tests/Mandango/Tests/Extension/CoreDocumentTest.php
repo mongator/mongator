@@ -218,18 +218,33 @@ class CoreDocumentTest extends TestCase
 
     public function testUpdateReferenceFieldsReferencesManyNotNew()
     {
+        $baseIds = array(new \MongoId('1'), new \MongoId('2'), new \MongoId('4'), new \MongoId('5'));
+        $sourceBaseIds = array(new \MongoId('11'), new \MongoId('12'), new \MongoId('13'));
+        $commentBaseIds = array(new \MongoId('21'), new \MongoId('22'), new \MongoId('23'));
+
+        $identityMap = $this->mandango->getRepository('Model\Category')->getIdentityMap();
+        foreach ([$baseIds, $sourceBaseIds, $commentBaseIds] as $ids) {
+            foreach ($ids as $id) {
+                $category = $this->mandango->create('Model\Category');
+                $category->setId($id);
+                $category->setIsNew(false);
+                $identityMap->set((string)$id, $category);
+            }
+        }
+
         $article = $this->mandango->create('Model\Article')->setDocumentData(array(
             '_id' => new \MongoId('123'),
-            'categories' => $baseIds = array(new \MongoId('1'), new \MongoId('2'), new \MongoId('4'), new \MongoId('5')),
+            'categories' => $baseIds,
             'source' => array(
-                'categories' => $sourceBaseIds = array(new \MongoId('11'), new \MongoId('12'), new \MongoId('13')),
+                'categories' => $sourceBaseIds,
             ),
             'comments' => array(
                 array(
-                    'categories' => $commentBaseIds = array(new \MongoId('21'), new \MongoId('22'), new \MongoId('23')),
+                    'categories' => $commentBaseIds,
                 ),
             ),
         ));
+        $article->save();
         $categories = $article->getCategories();
         $addIds = array();
         for ($i = 1; $i <= 3; $i++) {
@@ -1872,5 +1887,30 @@ class CoreDocumentTest extends TestCase
         $source = $this->mandango->create('Model\Source')->setInfo($info);
         $source->clearEmbeddedsOneChanged();
         $this->assertFalse($source->isEmbeddedOneChanged('info'));
+    }
+
+    public function testReplaceReferenceGroupAfterRead()
+    {
+        $article = $this->mandango->create('Model\Article');
+
+        $c1 = $this->mandango->create('Model\Category');
+        $c2 = $this->mandango->create('Model\Category');
+        $c3 = $this->mandango->create('Model\Category');
+
+        $article->addCategories(array($c1, $c2));
+        $article->save();
+
+        $id = $article->getId();
+        $repository = $this->mandango->getRepository('Model\Article');
+
+        $article = $repository->findOneById($id);
+        $article->getCategories()->replace(array($c3));
+        $article->save();
+
+        $article = $repository->findOneById($id);
+        $this->assertEquals(1, count($article->getCategories()->all()));
+
+        $c1->delete(); $c2->delete(); $c3->delete();
+        $article->delete();
     }
 }
