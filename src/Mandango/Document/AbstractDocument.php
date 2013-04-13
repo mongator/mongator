@@ -145,7 +145,8 @@ abstract class AbstractDocument
 
         if (isset($this->data['embeddedsMany'])) {
             foreach ($this->data['embeddedsMany'] as $name => $group) {
-                foreach ($group->getAdd() as $document) {
+                $add = $group->getAdd();
+                foreach ($add as $document) {
                     if ($document->isModified()) {
                         return true;
                     }
@@ -162,6 +163,7 @@ abstract class AbstractDocument
                     }
                 }
                 if ($group->isSavedInitialized()) {
+                    if ($add) return true;
                     foreach ($group->getSaved() as $document) {
                         if ($document->isModified()) {
                             return true;
