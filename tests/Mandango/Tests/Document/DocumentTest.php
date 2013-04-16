@@ -116,4 +116,36 @@ class DocumentTest extends TestCase
         $document->setIsNew(false);
         $this->assertFalse($document->isNew());
     }
+
+    public function testLoadFullOnDemand()
+    {
+        $articleRaw = array(
+            'content' => 'bar',
+            'source' => array(
+                'note' => 'fooups',
+                'info' => array(
+                    ''
+                ),
+            ),
+        );
+        $this->mandango->getRepository('Model\Article')->getCollection()->insert($articleRaw);
+
+        $article = $this->mandango->getRepository('Model\Article')
+            ->createQuery()
+            ->fields(array('title' => 1, 'source.note' => 1))
+            ->one();
+
+        $articleRaw['source']['name'] = 'foobar';
+        $articleRaw['content'] = 'baz';
+        $this->mandango->getRepository('Model\Article')->getCollection()->save($articleRaw);
+
+        $this->assertEquals('baz', $article->getContent()); // This will cause a query
+
+
+        $this->mandango->getRepository('Model\Article')->getCollection()->remove($article->getId());
+
+        // No more queries from now on
+        $this->assertEquals('fooups', $article->getSource()->getNote());
+        $this->assertEquals('foobar', $article->getSource()->getName());
+    }
 }

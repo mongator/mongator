@@ -57,6 +57,7 @@
                     $data['file'] = $file;
                 }
                 $data['_query_hash'] = $this->getHash();
+                $data['_query_fields'] = $this->getFields();
 
                 $document = new $documentClass($mandango);
                 $document->setDocumentData($data);

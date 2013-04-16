@@ -70,7 +70,15 @@
         $this->addFieldCache('{{ field.dbName }}');
 {% endif %}
 
-        if (!isset($this->data['fields']['{{ name }}'])) $this->data['fields']['{{ name }}'] = null;
+        if (!isset($this->data['fields']['{{ name }}']) &&
+            !$this->isFieldInQuery('{{ name }}'))
+        {
+            $this->loadFull();
+        }
+        // Still not set? It can only be null
+        if (!isset($this->data['fields']['{{ name }}'])) {
+            $this->data['fields']['{{ name }}'] = null;
+        }
 
         return $this->data['fields']['{{ name }}'];
     }
