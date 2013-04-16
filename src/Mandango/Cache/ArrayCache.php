@@ -33,15 +33,33 @@ class ArrayCache implements CacheInterface
      */
     public function get($key)
     {
-        return isset($this->data[$key]) ? $this->data[$key] : null;
+        if ( !isset($this->data[$key]) || !isset($this->data[$key]['value']) ) {
+            return null;  
+        }
+                
+        if ( isset($this->data[$key]['expire']) ) {
+            if ( time() > $this->data[$key]['expire'] ) {
+                unset($this->data[$key]);
+                return null;
+            }
+        }
+
+        return $this->data[$key]['value'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function set($key, $value)
+    public function set($key, $value, $ttl = null)
     {
-        $this->data[$key] = $value;
+        $data = array(
+            'key' => $key,
+            'value' => $value
+        );
+
+        if ((int)$ttl > 0) $data['expire'] = time() + $ttl;
+
+        $this->data[$key] = $data;
     }
 
     /**
