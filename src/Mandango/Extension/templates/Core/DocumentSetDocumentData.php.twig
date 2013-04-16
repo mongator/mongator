@@ -32,6 +32,9 @@
         if (isset($data['_query_hash'])) {
             $this->addQueryHash($data['_query_hash']);
         }
+        if (isset($data['_query_fields'])) {
+            $this->setQueryFields($data['_query_fields']);
+        }
 {% endif %}
 {# id #}
 {% if not config_class.isEmbedded %}
