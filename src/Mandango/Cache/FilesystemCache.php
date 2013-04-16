@@ -29,6 +29,10 @@ class FilesystemCache implements CacheInterface
     public function __construct($dir)
     {
         $this->dir = $dir;
+        if (!is_dir($dir) && false === @mkdir($dir, 0777, true)) {
+            throw new \RuntimeException(sprintf('Unable to create the "%s" directory.', $dir));
+        }
+
     }
 
     /**
@@ -45,11 +49,11 @@ class FilesystemCache implements CacheInterface
      */
     public function get($key)
     {
-        $file = $this->dir.'/'.$key.'.php';
-
         if ( isset($this->data[$key]) ) return $this->data[$key];
+
+        $file = $this->dir.'/'.$key.'.php';
         if ( !file_exists($file) ) return null;
-        
+
         return $this->data[$key] = require($file);
     }
 
@@ -58,10 +62,6 @@ class FilesystemCache implements CacheInterface
      */
     public function set($key, $value)
     {
-        if (!is_dir($this->dir) && false === @mkdir($this->dir, 0777, true)) {
-            throw new \RuntimeException(sprintf('Unable to create the "%s" directory.', $this->dir));
-        }
-
         $file = $this->dir.'/'.$key.'.php';
         $valueExport = var_export($value, true);
         $content = <<<EOF
