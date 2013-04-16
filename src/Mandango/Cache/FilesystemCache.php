@@ -16,7 +16,7 @@ namespace Mandango\Cache;
  *
  * @author Pablo Díez <pablodip@gmail.com>
  */
-class FilesystemCache implements CacheInterface
+class FilesystemCache extends AbstractCache
 {
     private $dir;
     private $data = array();
@@ -47,34 +47,20 @@ class FilesystemCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function get($key)
+    public function set($key, $value, $ttl = 0)
     {
-        if ( isset($this->data[$key]) ) return $this->data[$key];
-
+        $content = $this->pack($key, $value, $ttl);
         $file = $this->dir.'/'.$key.'.php';
-        if ( !file_exists($file) ) return null;
 
-        return $this->data[$key] = require($file);
-    }
+        $valueExport = var_export($content , true);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function set($key, $value)
-    {
-        $file = $this->dir.'/'.$key.'.php';
-        $valueExport = var_export($value, true);
-        $content = <<<EOF
-<?php
+        $php = sprintf("<?php\nreturn %s;\n", $valueExport);
 
-return $valueExport;
-EOF;
-
-        if (false === @file_put_contents($file, $content, LOCK_EX)) {
+        if (false === @file_put_contents($file, $php, LOCK_EX)) {
             throw new \RuntimeException(sprintf('Unable to write the "%s" file.', $file));
         }
 
-        $this->data[$key] = $value;
+        $this->data[$key] = $content;
     }
 
     /**
@@ -106,5 +92,17 @@ EOF;
                 }
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function info($key) {
+        if ( isset($this->data[$key]) ) return $this->data[$key];
+
+        $file = $this->dir.'/'.$key.'.php';
+        if ( !file_exists($file) ) return null;
+
+        return $this->data[$key] = require($file);
     }
 }

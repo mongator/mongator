@@ -11,7 +11,7 @@
 
 namespace Mandango;
 
-use Mandango\Cache\CacheInterface;
+use Mandango\Cache\AbstractCache;
 
 /**
  * Mandango.
@@ -36,12 +36,12 @@ class Mandango
      * Constructor.
      *
      * @param \Mandango\MetadataFactory      $metadataFactory The metadata factory.
-     * @param \Mandango\Cache\CacheInterface $cache           The cache.
+     * @param \Mandango\Cache\AbstractCache  $cache           The cache.
      * @param mixed                          $loggerCallable  The logger callable (optional, null by default).
      *
      * @api
      */
-    public function __construct(MetadataFactory $metadataFactory, CacheInterface $cache, $loggerCallable = null)
+    public function __construct(MetadataFactory $metadataFactory, AbstractCache $cache, $loggerCallable = null)
     {
         $this->metadataFactory = $metadataFactory;
         $this->cache = $cache;

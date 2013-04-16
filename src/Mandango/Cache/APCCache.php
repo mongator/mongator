@@ -16,7 +16,7 @@ namespace Mandango\Cache;
  *
  * @author Máximo Cuadros <maximo@yunait.com>
  */
-class ArrayCache extends AbstractCache
+class APCCache extends AbstractCache
 {
     private $data = array();
 
@@ -25,7 +25,7 @@ class ArrayCache extends AbstractCache
      */
     public function has($key)
     {
-        return isset($this->data[$key]);
+        return (boolean)apc_exists($key);
     }
 
     /**
@@ -34,8 +34,7 @@ class ArrayCache extends AbstractCache
     public function set($key, $value, $ttl = 0)
     {
         $content = $this->pack($key, $value, $ttl);
-
-        $this->data[$key] = $this->pack($key, $value, $ttl);
+        apc_store((string)$key, $content, $ttl);
     }
 
     /**
@@ -43,19 +42,7 @@ class ArrayCache extends AbstractCache
      */
     public function remove($key)
     {
-        unset($this->data[$key]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function info($key)
-    {
-        if ( !isset($this->data[$key]) ) {
-            return null;  
-        }
-
-        return $this->data[$key];
+        return apc_delete($key);
     }
 
     /**
@@ -63,6 +50,17 @@ class ArrayCache extends AbstractCache
      */
     public function clear()
     {
-        $this->data = array();
+        return apc_clear_cache('user');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function info($key) {
+        if ( !$content = apc_fetch($key) ) {
+            return false;
+        }
+
+        return $content;
     }
 }
