@@ -23,14 +23,6 @@ class APCCache extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    public function has($key)
-    {
-        return (boolean)apc_exists($key);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function set($key, $value, $ttl = 0)
     {
         $content = $this->pack($key, $value, $ttl);

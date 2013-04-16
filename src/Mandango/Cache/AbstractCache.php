@@ -25,7 +25,10 @@ abstract class AbstractCache
      *
      * @return bool Whether the cache has a key.
      */
-    abstract public function has($key);
+    public function has($key)
+    {
+        return (boolean)$this->get($key);
+    }
 
     /**
      * Returns the value for a key.
@@ -104,8 +107,8 @@ abstract class AbstractCache
     {
         if ( !is_array($content) ) return null;
 
-        if ( $content['ttl'] > 0 && time() > $content['time'] + $content['ttl'] ) {
-            $this->remove($key);
+        if ( $content['ttl'] > 0 && time() >= $content['time'] + $content['ttl'] ) {
+            $this->remove($content['key']);
             return null;
         }
 

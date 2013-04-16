@@ -38,15 +38,6 @@ class FilesystemCache extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    public function has($key)
-    {
-        if ( isset($this->data[$key]) ) return true;
-        return file_exists($this->dir.'/'.$key.'.php');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function set($key, $value, $ttl = 0)
     {
         $content = $this->pack($key, $value, $ttl);

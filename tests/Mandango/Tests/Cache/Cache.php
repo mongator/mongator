@@ -92,6 +92,20 @@ abstract class Cache extends TestCase
         $this->assertSame($value2, $this->cache->get($key2));
     }
 
+    public function testCacheSetTtl()
+    {
+        $key1 = 'foo';
+        $value1 = 'ups';
+        $ttl = 1;
+
+        $this->cache->set($key1, $value1, $ttl);
+        $this->assertTrue($this->cache->has($key1));
+        $this->assertSame($value1, $this->cache->get($key1));
+
+        usleep(1500000);
+        $this->assertFalse($this->cache->has($key1));
+    }
+
     public function testCacheRemove()
     {
         $key1 = 'foo';
@@ -134,10 +148,10 @@ abstract class Cache extends TestCase
 
         $expected = Array(
             'key' => 'foo',
-    		'time' => time(),
-    		'ttl' => 0,
-    		'value' => 's:3:"ups";'
-		);
+            'time' => time(),
+            'ttl' => 0,
+            'value' => 's:3:"ups";'
+        );
 
         $this->assertSame($expected, $this->cache->info($key1));
     }
