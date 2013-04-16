@@ -640,13 +640,18 @@ abstract class Query implements \Countable, \IteratorAggregate
             $cursor->timeout($this->timeout);
         }
 
-        return $cursor;
+        $result = new Result($cursor);
+        $result->setCount(function() use ($cursor) {
+            return $cursor->count();
+        });
+
+        return $result;
     }
 
     /**
      * Create an ArrayObject with a result's text command of the query. 
      *
-     * @return \ArrayObject A iterable object with the data of the query.
+     * @return Result A iterable object with the data of the query.
      */
     public function createResult()
     {
@@ -687,7 +692,7 @@ abstract class Query implements \Countable, \IteratorAggregate
             $result[(string)$document['obj']['_id']] = $document['obj'];
         }
 
-        return $result;
+        return new Result($result);
     }
 
     /**

@@ -24,39 +24,13 @@ abstract class CachedQuery extends Query
     public function getDataCache()
     {
         $key = $this->generateKey(); 
-
-        $cache = $this->getRepository()->getMandango()->getCache()->get($key);
-
-        if ( !$cache || !isset($cache['data']) ) return null;
-
-        $data = unserialize($cache['data']);
-        if ( is_array($data) ) return new \ArrayObject($data);
-        return $data;
+        return $this->getRepository()->getMandango()->getCache()->get($key);
     }
 
     public function setDataCache($data)
     {
         $key = $this->generateKey();
-
-        if ( is_array($data) || $data instanceof \Iterator ) {
-            $array = array();
-            foreach($data as $id => $document) {
-                $array[$id] = $document;
-            }
-        } else { $array = $data; }
-
-        $cache = array(
-            'key' => $key,
-            'time' => time(),
-            'data' => serialize($array)
-        );
-
-       
-
-        $this->getRepository()->getMandango()->getCache()->set($key, $cache);
-
-        if ( !is_array($array) || $data instanceof \Iterator ) return $array;
-        return new \ArrayObject($array);
+        return $this->getRepository()->getMandango()->getCache()->set($key, $data);
     }
 
     public function execute()
