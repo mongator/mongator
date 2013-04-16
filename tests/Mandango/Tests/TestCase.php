@@ -157,6 +157,24 @@ class TestCase extends \PHPUnit_Framework_TestCase
         return $messages;
     }
 
+
+    protected function createCachedRaw($nb)
+    {
+        $articles = array();
+        for ($i=0; $i < $nb; $i++) {
+            $articles[] = array(
+                'title'   => 'Article'.$i,
+                'content' => 'Content'.$i,
+                'slug' => 'Slug'.$i,
+                'slug' => 'Slug'.$i,
+            );
+        }
+        $this->mandango->getRepository('Model\Cached')->getCollection()->batchInsert($articles);
+
+        return $articles;
+    }
+
+
     protected function removeFromCollection($document)
     {
         $document

@@ -439,13 +439,6 @@ return array(
             'isActive' => 'boolean',
             'date'     => 'date',
             'database' => array('dbName' => 'basatos', 'type' => 'string'),
-        ),
-        'embeddedsOne' => array(
-            'source'          => array('class' => 'Model\Source'),
-            'simpleEmbedded' => array('class' => 'Model\SimpleEmbedded'),
-        ),
-        'embeddedsMany' => array(
-            'comments' => array('class' => 'Model\Comment'),
-        ),
+        )
     ),
 );
