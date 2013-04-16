@@ -222,6 +222,11 @@ abstract class Document extends AbstractDocument
         }
     }
 
+    /**
+     * Set the fields that were included in the query used to populate the object.
+     *
+     * @param array $fields an associative array($f1 => 1, $f2 => 1, ...)
+     */
     protected function setQueryFields(array $fields) {
         $this->queryFields = array();
         foreach ($fields as $field => $included) {
@@ -229,6 +234,9 @@ abstract class Document extends AbstractDocument
         }
     }
 
+    /**
+     * {@inheritdoc }
+     */
     public function isFieldInQuery($field) {
         if ($this->queryFields === array()) {
             return true;
@@ -237,6 +245,9 @@ abstract class Document extends AbstractDocument
         return isset($this->queryFields[$field]);
     }
 
+    /**
+     * {@inheritdoc }
+     */
     public function loadFull() {
         if ($this->queryFields === array()) return true;
 

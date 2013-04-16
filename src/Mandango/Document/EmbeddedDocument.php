@@ -118,12 +118,18 @@ abstract class EmbeddedDocument extends AbstractDocument
         }
     }
 
+    /**
+     * {@inheritdoc }
+     */
     public function isFieldInQuery($field) {
         $rap = $this->getRootAndPath();
         if (!$rap['root']) return false;
         return $rap['root']->isFieldInQuery($field);
     }
 
+    /**
+     * {@inheritdoc }
+     */
     public function loadFull() {
         $rap = $this->getRootAndPath();
         if (!$rap['root']) return false;

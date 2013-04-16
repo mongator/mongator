@@ -66,7 +66,21 @@ abstract class AbstractDocument
         return array_unique($names);
     }
 
+    /**
+     * Load the full document from the database, in case some fields were not loaded when
+     * it was first read. Previously modified fields are not overwritten.
+     *
+     * This method updates the "fields in query" information.
+     */
     public abstract function loadFull();
+
+    /**
+     * Check whether the field $field was recovered in the query that was used to get the data
+     * to populate the object.
+     *
+     * @param string $field the field name
+     * @return boolean whether the field was present
+     */
     public abstract function isFieldInQuery($field);
 
     /**
