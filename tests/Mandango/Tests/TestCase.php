@@ -11,7 +11,9 @@
 
 namespace Mandango\Tests;
 
-use Mandango\Cache\ArrayCache;
+use Mandango\Cache\APCCache;
+use Mandango\Cache\FilesystemCache;
+
 use Mandango\Connection;
 use Mandango\Mandango;
 use Mandango\Archive;
@@ -54,7 +56,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->globalConnection = static::$staticGlobalConnection;
 
         if (!static::$staticMandango) {
-            static::$staticMandango = new Mandango(new $this->metadataClass, new ArrayCache());
+            static::$staticMandango = new Mandango(new $this->metadataClass, new APCCache());
             static::$staticMandango->setConnection('default', $this->connection);
             static::$staticMandango->setConnection('global', $this->globalConnection);
             static::$staticMandango->setDefaultConnectionName('default');
@@ -154,6 +156,24 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $result = $this->mandango->getRepository('Model\Message')->getCollection()->batchInsert($messages);
         return $messages;
     }
+
+
+    protected function createCachedRaw($nb)
+    {
+        $articles = array();
+        for ($i=0; $i < $nb; $i++) {
+            $articles[] = array(
+                'title'   => 'Article'.$i,
+                'content' => 'Content'.$i,
+                'slug' => 'Slug'.$i,
+                'slug' => 'Slug'.$i,
+            );
+        }
+        $this->mandango->getRepository('Model\Cached')->getCollection()->batchInsert($articles);
+
+        return $articles;
+    }
+
 
     protected function removeFromCollection($document)
     {

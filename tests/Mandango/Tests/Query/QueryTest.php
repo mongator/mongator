@@ -11,7 +11,7 @@
 
 namespace Mandango\Tests;
 
-use Mandango\Query;
+use Mandango\Query\Query;
 
 class QueryTest extends TestCase
 {
@@ -589,7 +589,9 @@ class QueryTest extends TestCase
         }
 
         $articleOne = array_shift($articles);
-        $this->assertEquals($articleOne->getId(), $this->query->one()->getId());
+        $one = $this->query->one();
+        $this->assertInstanceOf('Model\Article', $one);
+        $this->assertEquals($articleOne->getId(), $one->getId());
 
         $this->assertTrue($this->identityMap->has($articleOne->getId()));
         foreach ($articles as $article) {
@@ -626,7 +628,7 @@ class QueryTest extends TestCase
         $query = $this->query;
 
         $cursor = $query->createCursor();
-        $this->assertInstanceOf('MongoCursor', $cursor);
+        $this->assertInstanceOf('Mandango\Query\Result', $cursor);
 
         $articles = $this->createArticlesRaw(10);
         $results = iterator_to_array($cursor);
@@ -652,7 +654,7 @@ class QueryTest extends TestCase
         ;
 
         $cursor = $query->createCursor();
-        $this->assertInstanceOf('MongoCursor', $cursor);
+        $this->assertInstanceOf('Mandango\Query\Result', $cursor);
     }
 
     public function testCreateResult()
@@ -664,10 +666,10 @@ class QueryTest extends TestCase
         $query->text('author 1');
 
         $result = $query->createResult();
-        $this->assertInstanceOf('ArrayObject', $result);
+        $this->assertInstanceOf('Mandango\Query\Result', $result);
         $this->assertSame(10, count($result));
 
-        $first = reset($result);
+        $first = $result->current();
         $this->assertSame('Author 1', $first['author']);
         $this->assertSame('Text 1', $first['text']);
     }
@@ -685,10 +687,10 @@ class QueryTest extends TestCase
             ->fields(array('author' => 1));
 
         $result = $query->createResult();
-        $this->assertInstanceOf('ArrayObject', $result);
+        $this->assertInstanceOf('Mandango\Query\Result', $result);
         $this->assertSame(5, count($result));
 
-        $first = reset($result);
+        $first = $result->current();
         $this->assertSame('Author 0', $first['author']);
         $this->assertFalse(isset($first['text']));
     }
@@ -702,7 +704,7 @@ class QueryTest extends TestCase
         $query->text('author 1', 100);
 
         $result = $query->createResult();
-        $this->assertInstanceOf('ArrayObject', $result);
+        $this->assertInstanceOf('Mandango\Query\Result', $result);
         $this->assertSame(1, count($result));
     }
 
@@ -734,7 +736,7 @@ class QueryTest extends TestCase
 
         $result = $query->createResult();
 
-        $first = reset($result);
+        $first = $result->current();
         $this->assertSame('Author 1', $first['author']);
         $this->assertFalse(isset($first['text']));
     }
@@ -750,7 +752,7 @@ class QueryTest extends TestCase
             ->limit(5)
             ->fields(array('author' => 1));
 
-        $this->assertInstanceOf('ArrayObject', $query->execute());
+        $this->assertInstanceOf('Mandango\Query\Result', $query->execute());
         $this->assertSame(5, $query->count());
 
         foreach($query->all() as $key => $document) {
@@ -769,7 +771,9 @@ class QueryTest extends TestCase
             ->limit(5)
             ->fields(array('author' => 1));
 
-        $this->assertInstanceOf('MongoCursor', $query->execute());
+        $result = $query->execute();
+        $this->assertInstanceOf('Mandango\Query\Result', $result);
+
         $this->assertSame(10, $query->count());
 
         foreach($query->all() as $key => $document) {
