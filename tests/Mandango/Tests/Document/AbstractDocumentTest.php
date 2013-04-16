@@ -20,6 +20,9 @@ class AbstractDocument extends BaseAbstractDocument
     {
         $this->data = $data;
     }
+
+    public function loadFull() {}
+    public function isFieldInQuery($field) { return false; }
 }
 
 class AbstractDocumentTest extends TestCase

@@ -24,6 +24,7 @@ abstract class Document extends AbstractDocument
 {
     protected $isNew = true;
     protected $id;
+    protected $queryFields = null;
 
     /**
      * Returns the repository.
@@ -219,5 +220,32 @@ abstract class Document extends AbstractDocument
                 $cache->set($hash, $value);
             }
         }
+    }
+
+    protected function setQueryFields(array $fields) {
+        $this->queryFields = array();
+        foreach ($fields as $field => $included) {
+            if ($included) $this->queryFields[$field] = 1;
+        }
+    }
+
+    public function isFieldInQuery($field) {
+        if ($this->queryFields === array()) {
+            return true;
+        }
+
+        return isset($this->queryFields[$field]);
+    }
+
+    public function loadFull() {
+        if ($this->queryFields === array()) return true;
+
+        $data = $this->getRepository()->getCollection()->findOne(array('_id' => $this->getId()));
+        foreach (array_keys($this->fieldsModified) as $name) {
+            unset($data[$name]);
+        }
+        $this->setDocumentData($data);
+        $this->queryFields = array();
+        return true;
     }
 }

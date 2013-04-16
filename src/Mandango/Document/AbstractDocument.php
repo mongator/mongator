@@ -66,6 +66,9 @@ abstract class AbstractDocument
         return array_unique($names);
     }
 
+    public abstract function loadFull();
+    public abstract function isFieldInQuery($field);
+
     /**
      * Set the mandango.
      *

@@ -49,34 +49,32 @@
 {% if not config_class.isEmbedded %}
             if ($this->isNew()) {
                 $this->data['embeddedsOne']['{{ name }}'] = null;
-            } elseif (!isset($this->data['embeddedsOne']) || !array_key_exists('{{ name }}', $this->data['embeddedsOne'])) {
-                $exists = $this->getRepository()->getCollection()->findOne(array('_id' => $this->getId(), '{{ name }}' => array('$exists' => 1)));
-                if ($exists) {
-                    $embedded = new \{{ embedded.class }}($this->getMandango());
-                    $embedded->setRootAndPath($this, '{{ name }}');
-                    $this->data['embeddedsOne']['{{ name }}'] = $embedded;
-                } else {
+            } elseif (
+                !isset($this->data['embeddedsOne']) ||
+                !array_key_exists('{{ name }}', $this->data['embeddedsOne']))
+            {
+                if (!$this->isFieldInQuery('{{ name }}')) {
+                    $this->loadFull();
+                }
+
+                if (!isset($this->data['embeddedsOne']['{{ name }}'])) {
                     $this->data['embeddedsOne']['{{ name }}'] = null;
                 }
             }
 {# embedded #}
 {% else %}
             if (
-                (!isset($this->data['embeddedsOne']) || !array_key_exists('{{ name }}', $this->data['embeddedsOne']))
+                (!isset($this->data['embeddedsOne']) ||
+                    !array_key_exists('{{ name }}', $this->data['embeddedsOne']))
                 &&
                 ($rap = $this->getRootAndPath())
                 &&
                 !$this->isEmbeddedOneChangedInParent()
                 &&
-                false === strpos($rap['path'], '._add')
-            ) {
-                $collection = $this->getMandango()->getRepository(get_class($rap['root']))->getCollection();
-                $field = $rap['path'].'.{{ name }}';
-                $result = $collection->findOne(array('_id' => $rap['root']->getId(), $field => array('$exists' => 1)));
-                if ($result) {
-                    $embedded = new \{{ embedded.class }}($this->getMandango());
-                    $embedded->setRootAndPath($rap['root'], $field);
-                    $this->data['embeddedsOne']['{{ name }}'] = $embedded;
+                false === strpos($rap['path'], '._add'))
+            {
+                if (!$this->isFieldInQuery('{{ name }}')) {
+                    $this->loadFull();
                 }
             }
             if (!isset($this->data['embeddedsOne']['{{ name }}'])) {

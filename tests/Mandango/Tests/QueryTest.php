@@ -401,6 +401,9 @@ class QueryTest extends TestCase
 
         $article = $this->mandango->getRepository('Model\Article')->createQuery()->fields(array('title' => 1, 'source.name' => 1))->one();
 
+        $this->assertNull($article->getTitle());
+        $this->assertNull($article->getSource()->getName());
+
         $articleRaw['title'] = 'foo';
         $articleRaw['source']['name'] = 'foobar';
         $this->mandango->getRepository('Model\Article')->getCollection()->save($articleRaw);

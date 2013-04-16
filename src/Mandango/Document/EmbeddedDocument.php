@@ -117,4 +117,16 @@ abstract class EmbeddedDocument extends AbstractDocument
             }
         }
     }
+
+    public function isFieldInQuery($field) {
+        $rap = $this->getRootAndPath();
+        if (!$rap['root']) return false;
+        return $rap['root']->isFieldInQuery($field);
+    }
+
+    public function loadFull() {
+        $rap = $this->getRootAndPath();
+        if (!$rap['root']) return false;
+        return $rap['root']->loadFull();
+    }
 }
