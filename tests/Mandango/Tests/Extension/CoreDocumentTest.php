@@ -567,7 +567,7 @@ class CoreDocumentTest extends TestCase
         }
 
         $query = $authors[3]->getArticles();
-        $this->assertInstanceOf('Mandango\Query', $query);
+        $this->assertInstanceOf('Mandango\Query\Query', $query);
         $this->assertSame(array('author' => $authors[3]->getId()), $query->getCriteria());
         $this->assertSame(0, $query->count());
         $this->assertSame(0, $authors[5]->getArticles()->count());
@@ -598,7 +598,7 @@ class CoreDocumentTest extends TestCase
         }
 
         $query = $categories[3]->getArticles();
-        $this->assertInstanceOf('Mandango\Query', $query);
+        $this->assertInstanceOf('Mandango\Query\Query', $query);
         $this->assertSame(array('categories' => $categories[3]->getId()), $query->getCriteria());
         $this->assertSame(0, $query->count());
         $this->assertSame(0, $categories[5]->getArticles()->count());

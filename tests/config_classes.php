@@ -423,4 +423,29 @@ return array(
             'name' => 'string',
         )
     ),
+
+    'Model\Cached' => array(
+        'useBatchInsert' => true,
+        'collection' => 'cached',
+        'cache' => array(
+            'ttl' => 1
+        ),
+        'fields' => array(
+            'title'    => 'string',
+            'content'  => 'string',
+            'note'     => 'string',
+            'line'     => 'string',
+            'text'     => 'string',
+            'isActive' => 'boolean',
+            'date'     => 'date',
+            'database' => array('dbName' => 'basatos', 'type' => 'string'),
+        ),
+        'embeddedsOne' => array(
+            'source'          => array('class' => 'Model\Source'),
+            'simpleEmbedded' => array('class' => 'Model\SimpleEmbedded'),
+        ),
+        'embeddedsMany' => array(
+            'comments' => array('class' => 'Model\Comment'),
+        ),
+    ),
 );

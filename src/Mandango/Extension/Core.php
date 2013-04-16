@@ -166,6 +166,7 @@ class Core extends Extension
         $this->globalOnDeleteProcess();
         $this->globalHasGroupsProcess();
         $this->globalIndexesProcess();
+        $this->globalDataCacheProcess();
     }
 
     /**
@@ -653,7 +654,13 @@ EOF
 
             $this->definitions['query_base'] = $definition = new Definition($classes['query_base'], $output);
             $definition->setAbstract(true);
-            $definition->setParentClass('\\Mandango\\Query\\CachedQuery');
+            
+            if ( (int)$this->configClass['cache'] > 0 ) {
+                $definition->setParentClass('\\Mandango\\Query\\CachedQuery');
+            } else {
+                $definition->setParentClass('\\Mandango\\Query\\Query');
+            }
+            
             $definition->setDocComment(<<<EOF
 /**
  * Base class of query of {$this->class} document.
@@ -983,6 +990,25 @@ EOF
         } while ($continue);
     }
 
+    private function globalDataCacheProcess()
+    {
+        do {
+            $continue = false;
+            foreach ($this->configClasses as $class => $configClass) {
+                if ( isset($configClass['cache']) ) {
+                    $cache = $configClass['cache'];
+                    if ( !is_array($cache) ) {
+                        $cache = array('ttl' => $cache);
+                    }
+
+                    $configClass['cache'] = $cache;
+                } else {
+                    $configClass['cache'] = array();
+                }
+            }
+        } while ($continue);
+    }
+
     /*
      * postGlobal
      */
@@ -1032,6 +1058,10 @@ EOF
             // indexes
             $info['indexes'] = $configClass['indexes'];
             $info['_indexes'] = $configClass['_indexes'];
+
+
+            // data cache
+            $info['cache'] = $configClass['cache'];
 
             // behaviors
             $info['behaviors'] = $configClass['behaviors'];

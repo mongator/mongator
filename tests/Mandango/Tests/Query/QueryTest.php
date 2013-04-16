@@ -11,7 +11,7 @@
 
 namespace Mandango\Tests;
 
-use Mandango\Query;
+use Mandango\Query\Query;
 
 class QueryTest extends TestCase
 {
@@ -587,7 +587,7 @@ class QueryTest extends TestCase
 
         $articleOne = array_shift($articles);
         $one = $this->query->one();
-        $this->assertInstanceOf('Models\\Article', $one);
+        $this->assertInstanceOf('Model\Article', $one);
         $this->assertEquals($articleOne->getId(), $one->getId());
 
         $this->assertTrue($this->identityMap->has($articleOne->getId()));
@@ -769,19 +769,9 @@ class QueryTest extends TestCase
             ->fields(array('author' => 1));
 
         $result = $query->execute();
-        $this->assertInstanceOf('ArrayObject', $result);
+        $this->assertInstanceOf('MongoCursor', $result);
 
-        $this->assertSame(5, $query->count());
-
-        var_dump($result->count());
-
-
-        $this->assertInstanceOf('\Mandango\\Query\\CachedQuery', $query);
-
-        $result = $query->execute();
-        $this->assertInstanceOf('ArrayObject', $result);
-
-        var_dump($result->count());
+        $this->assertSame(10, $query->count());
 
         foreach($query->all() as $key => $document) {
             $this->assertSame($key, (string)$document->getId());

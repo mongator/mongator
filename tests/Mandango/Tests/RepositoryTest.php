@@ -15,7 +15,7 @@ use Mandango\Repository as BaseRepository;
 use Mandango\Connection;
 use Mandango\ConnectionInterface;
 use Mandango\Mandango;
-use Mandango\Query;
+use Mandango\Query\Query;
 
 class Repository extends BaseRepository
 {

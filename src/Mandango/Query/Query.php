@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Mandango;
+namespace Mandango\Query;
 
 use Mandango\Repository;
 
@@ -139,7 +139,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param array $criteria The criteria.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @api
      */
@@ -155,7 +155,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param array $criteria The criteria.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @api
      */
@@ -183,7 +183,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param array $fields The fields.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @api
      */
@@ -211,7 +211,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param array $references The references.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @throws \InvalidArgumentException If the references are not an array or null.
      *
@@ -245,7 +245,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param array|null $sort The sort.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @throws \InvalidArgumentException If the sort is not an array or null.
      *
@@ -279,7 +279,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param int|null $limit The limit.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @throws \InvalidArgumentException If the limit is not a valid integer or null.
      *
@@ -316,7 +316,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param int|null $skip The skip.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @throws \InvalidArgumentException If the skip is not a valid integer, or null.
      *
@@ -353,7 +353,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param int|null $batchSize The batch size.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @api
      */
@@ -388,7 +388,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param array|null The hint.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @api
      */
@@ -420,7 +420,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param Boolean|null $okay If it is okay to query the slave (true by default).
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      */
     public function slaveOkay($okay = true)
     {
@@ -450,7 +450,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param bool $snapshot If the snapshot mode is used.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @api
      */
@@ -482,7 +482,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @param int|null $timeout The timeout of the cursor.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @api
      */
@@ -519,7 +519,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      * @param int $requiredScore (optional) All the documents with less score will be omitted
      * @param int $language (optional) Specify the language that determines for the search the list of stop words and the rules for the stemmer and tokenizer. If not specified, the search uses the default language of the index.
      *
-     * @return \Mandango\Query The query instance (fluent interface).
+     * @return \Mandango\Query\Query The query instance (fluent interface).
      *
      * @api
      */

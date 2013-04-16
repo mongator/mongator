@@ -10,11 +10,9 @@
  */
 
 namespace Mandango\Query;
-use Mandango\Query;
 
 abstract class CachedQuery extends Query
 {
-
     /**
      * Returns the data in cache.
      *
