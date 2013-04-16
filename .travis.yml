@@ -12,7 +12,8 @@ services: mongodb
 
 before_script:
   - printf "\n" | pecl install -f mongo-${MONGO_VERSION}
+  - /bin/bash ./.travis.sh
   - phpenv rehash
-  - composer --dev install
+  - composer --dev --prefer-source install
 
 script: phpunit
