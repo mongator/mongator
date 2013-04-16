@@ -12,6 +12,8 @@
 namespace Mandango\Tests;
 
 use Mandango\Cache\ArrayCache;
+use Mandango\Cache\FilesystemCache;
+
 use Mandango\Connection;
 use Mandango\Mandango;
 use Mandango\Archive;
@@ -54,7 +56,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->globalConnection = static::$staticGlobalConnection;
 
         if (!static::$staticMandango) {
-            static::$staticMandango = new Mandango(new $this->metadataClass, new ArrayCache());
+            static::$staticMandango = new Mandango(new $this->metadataClass, new FilesystemCache('/tmp/mandango/'));
             static::$staticMandango->setConnection('default', $this->connection);
             static::$staticMandango->setConnection('global', $this->globalConnection);
             static::$staticMandango->setDefaultConnectionName('default');

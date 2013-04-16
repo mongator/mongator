@@ -710,13 +710,16 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @return string md5
      */
-    public function generateKey() {
-        $keys = get_object_vars($this);
+    public function generateKey($includeHash = true) {
+        $keys = array();
+
+        $keys['vars'] = get_object_vars($this);
         $keys['class'] = get_class($this);
         $keys['metadata'] = $this->repository->getMetadata();
         $keys['dbname'] = $this->repository->getConnection()->getDbName();
         
-        unset($keys['repository']); 
+        unset($keys['vars']['repository']); 
+        if ( !$includeHash ) unset($keys['vars']['hash']);
 
         return md5(serialize($keys));
     }

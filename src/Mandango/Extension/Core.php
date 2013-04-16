@@ -653,7 +653,7 @@ EOF
 
             $this->definitions['query_base'] = $definition = new Definition($classes['query_base'], $output);
             $definition->setAbstract(true);
-            $definition->setParentClass('\\Mandango\\Query');
+            $definition->setParentClass('\\Mandango\\Query\\CachedQuery');
             $definition->setDocComment(<<<EOF
 /**
  * Base class of query of {$this->class} document.
