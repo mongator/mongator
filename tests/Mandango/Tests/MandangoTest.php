@@ -13,6 +13,7 @@ namespace Mandango\Tests;
 
 use Mandango\Mandango;
 use Mandango\Connection;
+use Mandango\Cache\ArrayCache;
 
 class MandangoTest extends TestCase
 {
@@ -37,7 +38,7 @@ class MandangoTest extends TestCase
     public function testGetLoggerCallable()
     {
         $loggerCallable = function() {};
-        $mandango = new Mandango($this->metadataFactory, $this->cache, $loggerCallable);
+        $mandango = new Mandango($this->metadataFactory, $loggerCallable);
         $this->assertSame($loggerCallable, $mandango->getLoggerCallable());
     }
 
@@ -50,7 +51,7 @@ class MandangoTest extends TestCase
         );
 
         // hasConnection, setConnection, getConnection
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $this->assertFalse($mandango->hasConnection('local'));
         $mandango->setConnection('local', $connections['local']);
         $this->assertTrue($mandango->hasConnection('local'));
@@ -59,7 +60,7 @@ class MandangoTest extends TestCase
         $this->assertSame($connections['extra'], $mandango->getConnection('extra'));
 
         // setConnections, getConnections
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $mandango->setConnection('extra', $connections['extra']);
         $mandango->setConnections($setConnections = array(
           'local'  => $connections['local'],
@@ -68,7 +69,7 @@ class MandangoTest extends TestCase
         $this->assertEquals($setConnections, $mandango->getConnections());
 
         // removeConnection
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $mandango->setConnections($connections);
         $mandango->removeConnection('local');
         $this->assertSame(array(
@@ -77,13 +78,13 @@ class MandangoTest extends TestCase
         ), $mandango->getConnections());
 
         // clearConnections
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $mandango->setConnections($connections);
         $mandango->clearConnections();
         $this->assertSame(array(), $mandango->getConnections());
 
         // defaultConnection
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $mandango->setConnections($connections);
         $mandango->setDefaultConnectionName('global');
         $this->assertSame($connections['global'], $mandango->getDefaultConnection());
@@ -94,7 +95,7 @@ class MandangoTest extends TestCase
      */
     public function testGetConnectionNotExists()
     {
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $mandango->getConnection('no');
     }
 
@@ -103,7 +104,7 @@ class MandangoTest extends TestCase
      */
     public function testRemoveConnectionNotExists()
     {
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $mandango->removeConnection('no');
     }
 
@@ -112,7 +113,7 @@ class MandangoTest extends TestCase
      */
     public function testGetDefaultConnectionNotDefaultConnectionName()
     {
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $mandango->getDefaultConnection();
     }
 
@@ -121,20 +122,20 @@ class MandangoTest extends TestCase
      */
     public function testGetDefaultConnectionNotExist()
     {
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $mandango->setConnection('default', $this->connection);
         $mandango->getDefaultConnection();
     }
 
     public function testSetConnectionLoggerCallable()
     {
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $connection = new Connection($this->server, $this->dbName);
         $mandango->setConnection('default', $connection);
         $this->assertNull($connection->getLoggerCallable());
         $this->assertNull($connection->getLogDefault());
 
-        $mandango = new Mandango($this->metadataFactory, $this->cache, $loggerCallable = function() {});
+        $mandango = new Mandango($this->metadataFactory, $loggerCallable = function() {});
         $connection = new Connection($this->server, $this->dbName);
         $mandango->setConnection('default', $connection);
         $this->assertSame($loggerCallable, $connection->getLoggerCallable());
@@ -143,7 +144,7 @@ class MandangoTest extends TestCase
 
     public function testDefaultConnectionName()
     {
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
         $this->assertNull($mandango->getDefaultConnectionName());
         $mandango->setDefaultConnectionName('mandango_connection');
         $this->assertSame('mandango_connection', $mandango->getDefaultConnectionName());
@@ -162,7 +163,7 @@ class MandangoTest extends TestCase
             ->with($this->equalTo($documentClass))
         ;
 
-        $mandango = new Mandango($metadataFactory, $this->cache);
+        $mandango = new Mandango($metadataFactory);
         $mandango->getMetadata($documentClass);
     }
 
@@ -197,7 +198,7 @@ class MandangoTest extends TestCase
 
     public function testGetRepository()
     {
-        $mandango = new Mandango($this->metadataFactory, $this->cache);
+        $mandango = new Mandango($this->metadataFactory);
 
         $articleRepository = $mandango->getRepository('Model\Article');
         $this->assertInstanceOf('Model\ArticleRepository', $articleRepository);
@@ -206,6 +207,24 @@ class MandangoTest extends TestCase
 
         $categoryRepository = $mandango->getRepository('Model\Category');
         $this->assertInstanceOf('Model\CategoryRepository', $categoryRepository);
+    }
+
+    public function testGetFieldCache()
+    {
+        $mandango = new Mandango($this->metadataFactory);
+
+        $cache = new ArrayCache();
+        $mandango->setFieldsCache($cache);
+        $this->assertSame($cache, $mandango->getFieldsCache());
+    }
+
+    public function testGetDataCache()
+    {
+        $mandango = new Mandango($this->metadataFactory);
+
+        $cache = new ArrayCache();
+        $mandango->setDataCache($cache);
+        $this->assertSame($cache, $mandango->getDataCache());
     }
 
     /**

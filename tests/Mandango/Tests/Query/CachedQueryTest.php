@@ -49,6 +49,7 @@ class CachedQueryTest extends TestCase
         $this->assertInstanceOf('Mandango\Query\Result', $result);
 
         $this->assertSame(10, $query->count());
+        $this->assertSame(10, $result->count());
 
         $messages = $this->createCachedRaw(10);
         $result = $query->execute();
@@ -72,6 +73,4 @@ class CachedQueryTest extends TestCase
         $this->assertSame(20, $result->count());
 
     }
-
-
 }

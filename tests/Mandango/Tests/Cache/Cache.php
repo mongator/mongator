@@ -150,7 +150,7 @@ abstract class Cache extends TestCase
             'key' => 'foo',
             'time' => time(),
             'ttl' => 0,
-            'value' => 's:3:"ups";'
+            'value' => 'ups'
         );
 
         $this->assertSame($expected, $this->cache->info($key1));

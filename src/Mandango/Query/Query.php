@@ -112,26 +112,6 @@ abstract class Query implements \Countable, \IteratorAggregate
         return $this->hash;
     }
 
-    /**
-     * Returns the fields in cache.
-     *
-     * @return array|null The fields in cache, or null if there is not.
-     */
-    public function getFieldsCache()
-    {
-        return $this->fields;
-    }
-
-    /**
-     * Returns the references in cache.
-     *
-     * @return array|null The references in cache, or null if there is not.
-     */
-    public function getReferencesCache()
-    {
-        return $this->references;
-    }
-
     public function getFullCache()
     {
         if ( !$cache = $this->repository->getMandango()->getFieldsCache() ) {

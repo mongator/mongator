@@ -61,18 +61,17 @@ class CoreFieldAliasTest extends TestCase
         $query = $this->mandango->getRepository('Model\Article')->createQuery();
         $article = $query->one();
 
-        $this->assertNull($query->getFieldsCache());
+        $cache = $query->getFullCache();
+        $this->assertFalse(isset($cache['fields']));
+
         $article->getDatabase();
-        $this->assertSame(array('basatos' => 1), $query->getFieldsCache());
+        $cache = $query->getFullCache();
+        $this->assertSame(array('basatos' => 1), $cache['fields']);
     }
 
     public function testDocumentGetterSaveFieldQueryCacheEmbedded()
     {
 
-        /*$this->markTestSkipped(
-              'Pending to review change on commit 00d38267e8eb61786c8543d20cfd1f33c9e65c15.'
-        );*/
-        
         $articleRaw = array(
             'source' => array(
                 'desde' => '123',
@@ -83,9 +82,12 @@ class CoreFieldAliasTest extends TestCase
         $query = $this->mandango->getRepository('Model\Article')->createQuery();
         $article = $query->one();
 
-        $this->assertNull($query->getFieldsCache());
+        $cache = $query->getFullCache();
+        $this->assertFalse(isset($cache['fields']));
+
         $article->getSource()->getFrom();
-        $this->assertSame(array('source.desde' => 1), $query->getFieldsCache());
+        $cache = $query->getFullCache();
+        $this->assertSame(array('source.desde' => 1), $cache['fields']);
     }
 
     public function testDocumentSetDocumentData()

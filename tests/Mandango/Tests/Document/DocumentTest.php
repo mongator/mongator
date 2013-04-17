@@ -55,16 +55,27 @@ class DocumentTest extends TestCase
         $article = $this->mandango->create('Model\Article');
         $article->addQueryHash($query1->getHash());
         $article->addFieldCache('title');
-        $this->assertSame(array('title' => 1), $query1->getFieldsCache());
+        $cache1= $query1->getFullCache();
+        $this->assertSame(array('title' => 1), $cache1['fields']);
+
         $article->addFieldCache('source.name');
-        $this->assertSame(array('title' => 1, 'source.name' => 1), $query1->getFieldsCache());
+        $cache1= $query1->getFullCache();
+        $this->assertSame(array('title' => 1, 'source.name' => 1), $cache1['fields']);
+
         $article->addQueryHash($query2->getHash());
         $article->addFieldCache('note');
-        $this->assertSame(array('title' => 1, 'source.name' => 1, 'note' => 1), $query1->getFieldsCache());
-        $this->assertSame(array('note' => 1), $query2->getFieldsCache());
+        $cache1= $query1->getFullCache();
+        $this->assertSame(array('title' => 1, 'source.name' => 1, 'note' => 1), $cache1['fields']);
+
+        $cache2= $query2->getFullCache();
+        $this->assertSame(array('note' => 1), $cache2['fields']);
+
         $article->addFieldCache('comments.infos');
-        $this->assertSame(array('title' => 1, 'source.name' => 1, 'note' => 1, 'comments.infos' => 1), $query1->getFieldsCache());
-        $this->assertSame(array('note' => 1, 'comments.infos' => 1), $query2->getFieldsCache());
+        $cache1= $query1->getFullCache();
+        $cache2= $query2->getFullCache();
+
+        $this->assertSame(array('title' => 1, 'source.name' => 1, 'note' => 1, 'comments.infos' => 1), $cache1['fields']);
+        $this->assertSame(array('note' => 1, 'comments.infos' => 1), $cache2['fields']);
 
     }
 
@@ -76,16 +87,27 @@ class DocumentTest extends TestCase
         $article = $this->mandango->create('Model\Article');
         $article->addQueryHash($query1->getHash());
         $article->addReferenceCache('author');
-        $this->assertSame(array('author'), $query1->getReferencesCache());
+        $cache1= $query1->getFullCache();
+        $this->assertSame(array('author'), $cache1['references']);
+
         $article->addReferenceCache('categories');
-        $this->assertSame(array('author', 'categories'), $query1->getReferencesCache());
+        $cache1= $query1->getFullCache();
+        $this->assertSame(array('author', 'categories'), $cache1['references']);
+
         $article->addQueryHash($query2->getHash());
         $article->addReferenceCache('note');
-        $this->assertSame(array('author', 'categories', 'note'), $query1->getReferencesCache());
-        $this->assertSame(array('note'), $query2->getReferencesCache());
+        $cache1= $query1->getFullCache();
+        $this->assertSame(array('author', 'categories', 'note'), $cache1['references']);
+
+        $cache2= $query2->getFullCache();
+        $this->assertSame(array('note'), $cache2['references']);
+
         $article->addReferenceCache('comments');
-        $this->assertSame(array('author', 'categories', 'note', 'comments'), $query1->getReferencesCache());
-        $this->assertSame(array('note', 'comments'), $query2->getReferencesCache());
+        $cache1= $query1->getFullCache();
+        $cache2= $query2->getFullCache();
+
+        $this->assertSame(array('author', 'categories', 'note', 'comments'), $cache1['references']);
+        $this->assertSame(array('note', 'comments'), $cache2['references']);
     }
 
     public function testAddReferenceCacheDouble()
@@ -96,16 +118,26 @@ class DocumentTest extends TestCase
         $article = $this->mandango->create('Model\Article');
         $article->addQueryHash($query1->getHash());
         $article->addReferenceCache('author');
-        $this->assertSame(array('author'), $query1->getReferencesCache());
+
+        $cache1= $query1->getFullCache();
+        $this->assertSame(array('author'), $cache1['references']);
+
         $article->addReferenceCache('author');
-        $this->assertSame(array('author'), $query1->getReferencesCache());
+        $cache1= $query1->getFullCache();
+        $this->assertSame(array('author'), $cache1['references']);
+
         $article->addQueryHash($query2->getHash());
         $article->addReferenceCache('author');
-        $this->assertSame(array('author'), $query1->getReferencesCache());
-        $this->assertSame(array('author'), $query2->getReferencesCache());
+        $cache1= $query1->getFullCache();
+        $cache2= $query2->getFullCache();
+        $this->assertSame(array('author'), $cache1['references']);
+        $this->assertSame(array('author'), $cache2['references']);
+
         $article->addReferenceCache('author');
-        $this->assertSame(array('author'), $query1->getReferencesCache());
-        $this->assertSame(array('author'), $query2->getReferencesCache());
+        $cache1= $query1->getFullCache();
+        $cache2= $query2->getFullCache();
+        $this->assertSame(array('author'), $cache1['references']);
+        $this->assertSame(array('author'), $cache2['references']);
     }
 
     public function testIsnew()

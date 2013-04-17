@@ -55,10 +55,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->globalConnection = static::$staticGlobalConnection;
 
         if (!static::$staticMandango) {
-            static::$staticMandango = new Mandango(new $this->metadataClass, new ArrayCache());
+            static::$staticMandango = new Mandango(new $this->metadataClass);
             static::$staticMandango->setConnection('default', $this->connection);
             static::$staticMandango->setConnection('global', $this->globalConnection);
             static::$staticMandango->setDefaultConnectionName('default');
+            static::$staticMandango->setFieldsCache(new ArrayCache());
+            static::$staticMandango->setDataCache(new ArrayCache());
         }
         $this->mandango = static::$staticMandango;
         $this->unitOfWork = $this->mandango->getUnitOfWork();

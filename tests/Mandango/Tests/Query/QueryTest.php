@@ -37,13 +37,17 @@ class QueryTest extends TestCase
 
     public function testFieldsCache()
     {
-        $this->assertNull($this->query->getFieldsCache());
+        $cache = $this->query->getFullCache();
+        $this->assertFalse(isset($cache['fields']));
 
         $this->cache->set($this->query->getHash(), array('fields' => $fields = array('title' => 1, 'content' => 1)));
-        $this->assertSame($fields, $this->query->getFieldsCache());
+        
+        $cache = $this->query->getFullCache();
+        $this->assertSame($fields, $cache['fields']);
 
         $this->cache->remove($this->query->getHash());
-        $this->assertNull($this->query->getFieldsCache());
+        $cache = $this->query->getFullCache();
+        $this->assertFalse(isset($cache['fields']));
     }
 
     public function testCriteria()
@@ -93,8 +97,10 @@ class QueryTest extends TestCase
 
     public function testReferences()
     {
+
         $query = $this->query;
         $this->assertSame(array(), $query->getReferences());
+
 
         $references = array('user', 'author');
         $this->assertSame($query, $query->references($references));

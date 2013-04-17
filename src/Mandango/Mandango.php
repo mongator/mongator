@@ -37,20 +37,13 @@ class Mandango
      * Constructor.
      *
      * @param \Mandango\MetadataFactory      $metadataFactory The metadata factory.
-     * @param \Mandango\Cache\AbstractCache  $cache           The cache.
      * @param mixed                          $loggerCallable  The logger callable (optional, null by default).
      *
      * @api
      */
-    public function __construct(
-        MetadataFactory $metadataFactory, 
-        AbstractCache $fieldsCache,
-        AbstractCache $dataCache, 
-        $loggerCallable = null)
+    public function __construct(MetadataFactory $metadataFactory, $loggerCallable = null)
     {
         $this->metadataFactory = $metadataFactory;
-        $this->fieldsCache = $fieldsCache;
-        $this->dataCache = $dataCache;
         $this->loggerCallable = $loggerCallable;
         $this->unitOfWork = new UnitOfWork($this);
         $this->connections = array();
@@ -91,6 +84,30 @@ class Mandango
     public function getDataCache()
     {
         return $this->dataCache;
+    }
+
+    /**
+     * Sets the fields cache.
+     *
+     * @return CacheInterface The cache.
+     *
+     * @api
+     */
+    public function setFieldsCache(AbstractCache $cache)
+    {
+        $this->fieldsCache = $cache;
+    }
+
+    /**
+     * Sets the data cache.
+     *
+     * @return CacheInterface The cache.
+     *
+     * @api
+     */
+    public function setDataCache(AbstractCache $cache)
+    {
+        $this->dataCache = $cache;
     }
 
     /**
