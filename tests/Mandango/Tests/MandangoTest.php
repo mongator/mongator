@@ -29,9 +29,9 @@ class MandangoTest extends TestCase
         $this->assertSame($this->metadataFactory, $this->mandango->getMetadataFactory());
     }
 
-    public function testGetQueryCache()
+    public function testGetQueryFieldsCache()
     {
-        $this->assertSame($this->cache, $this->mandango->getCache());
+        $this->assertSame($this->cache, $this->mandango->getFieldsCache());
     }
 
     public function testGetLoggerCallable()

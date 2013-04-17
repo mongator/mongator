@@ -24,7 +24,7 @@ abstract class CachedQuery extends Query
     public function getDataCache()
     {
         $key = $this->generateKey(); 
-        return $this->getRepository()->getMandango()->getCache()->get($key);
+        return $this->getRepository()->getMandango()->getDataCache()->get($key);
     }
 
     public function setDataCache($data)
@@ -33,7 +33,7 @@ abstract class CachedQuery extends Query
         $key = $this->generateKey();
         $metadata = $repository->getMetadata();
 
-        return $repository->getMandango()->getCache()->set($key, $data, (int)$metadata['cache']['ttl']);
+        return $repository->getMandango()->getDataCache()->set($key, $data, (int)$metadata['cache']['ttl']);
     }
 
     public function execute()

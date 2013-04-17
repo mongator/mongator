@@ -25,7 +25,8 @@ class Mandango
     const VERSION = '1.0.0-DEV';
 
     private $metadataFactory;
-    private $cache;
+    private $fieldsCache;
+    private $dataCache;
     private $loggerCallable;
     private $unitOfWork;
     private $connections;
@@ -41,10 +42,15 @@ class Mandango
      *
      * @api
      */
-    public function __construct(MetadataFactory $metadataFactory, AbstractCache $cache, $loggerCallable = null)
+    public function __construct(
+        MetadataFactory $metadataFactory, 
+        AbstractCache $fieldsCache,
+        AbstractCache $dataCache, 
+        $loggerCallable = null)
     {
         $this->metadataFactory = $metadataFactory;
-        $this->cache = $cache;
+        $this->fieldsCache = $fieldsCache;
+        $this->dataCache = $dataCache;
         $this->loggerCallable = $loggerCallable;
         $this->unitOfWork = new UnitOfWork($this);
         $this->connections = array();
@@ -64,15 +70,27 @@ class Mandango
     }
 
     /**
-     * Returns the cache.
+     * Returns the fields cache.
      *
      * @return CacheInterface The cache.
      *
      * @api
      */
-    public function getCache()
+    public function getFieldsCache()
     {
-        return $this->cache;
+        return $this->fieldsCache;
+    }
+
+    /**
+     * Returns the fields cache.
+     *
+     * @return CacheInterface The cache.
+     *
+     * @api
+     */
+    public function getDataCache()
+    {
+        return $this->dataCache;
     }
 
     /**

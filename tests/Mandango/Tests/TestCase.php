@@ -65,7 +65,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->unitOfWork->clear();
         $this->unitOfWork->clear();
         $this->metadataFactory = $this->mandango->getMetadataFactory();
-        $this->cache = $this->mandango->getCache();
+        $this->cache = $this->mandango->getFieldsCache();
 
         foreach ($this->mandango->getAllRepositories() as $repository) {
             $repository->getIdentityMap()->clear();

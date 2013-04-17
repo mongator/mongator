@@ -80,11 +80,13 @@ abstract class Query implements \Countable, \IteratorAggregate
         $this->references = array();
         $this->snapshot = false;
 
-        if ($fields = $this->getFieldsCache()) {
-            $this->fields = $fields;
+        $cache = $this->getFullCache();
+        if (isset($cache['fields'])) {
+            $this->fields = $cache['fields'];
         }
-        if ($references = $this->getReferencesCache()) {
-            $this->references = $references;
+
+        if (isset($cache['references'])) {
+            $this->references = $cache['references'];
         }
     }
 
@@ -117,9 +119,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      */
     public function getFieldsCache()
     {
-        $cache = $this->repository->getMandango()->getCache()->get($this->hash);
-
-        return ($cache && isset($cache['fields'])) ? $cache['fields'] : null;
+        return $this->fields;
     }
 
     /**
@@ -129,9 +129,16 @@ abstract class Query implements \Countable, \IteratorAggregate
      */
     public function getReferencesCache()
     {
-        $cache = $this->repository->getMandango()->getCache()->get($this->hash);
+        return $this->references;
+    }
 
-        return ($cache && isset($cache['references'])) ? $cache['references'] : null;
+    public function getFullCache()
+    {
+        if ( !$cache = $this->repository->getMandango()->getFieldsCache() ) {
+            return null;
+        }
+
+        return $cache->get($this->hash);
     }
 
     /**

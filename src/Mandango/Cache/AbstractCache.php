@@ -90,7 +90,7 @@ abstract class AbstractCache
             'key' => $key,
             'time' => time(),
             'ttl' => $ttl,          
-            'value' => serialize($value)
+            'value' => $value
         );
         
         return $content;
@@ -112,6 +112,6 @@ abstract class AbstractCache
             return null;
         }
 
-        return unserialize($content['value']);
+        return $content['value'];
     }
 }
