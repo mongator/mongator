@@ -102,7 +102,7 @@ abstract class Cache extends TestCase
         $this->assertTrue($this->cache->has($key1));
         $this->assertSame($value1, $this->cache->get($key1));
 
-        usleep(1200000);
+        usleep(1300000);
         $this->assertFalse($this->cache->has($key1));
     }
 
