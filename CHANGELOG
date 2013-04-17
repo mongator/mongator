@@ -1,171 +1,257 @@
-1.0.0 BETA2 - 18/5/2011
------------------------
+  - 2013/04/17: fix memcached test bug (Máximo Cuadros Ortiz)
+  - 2013/04/17: tests fixes and new Mandango::getDataCache() (Máximo Cuadros Ortiz)
+  - 2013/04/17: improvements in cache system (Máximo Cuadros Ortiz)
+  - 2013/04/17: travis fixes (Máximo Cuadros Ortiz)
+  - 2013/04/17: travis fixes (Máximo Cuadros Ortiz)
+  - 2013/04/17: travis fixes (Máximo Cuadros Ortiz)
+  - 2013/04/17: travis fixes (Máximo Cuadros Ortiz)
+  - 2013/04/17: travis and fixes (Máximo Cuadros Ortiz)
+  - 2013/04/17: reading the ttl from metadata (Máximo Cuadros Ortiz)
+  - 2013/04/17: ttl cache test (Máximo Cuadros Ortiz)
+  - 2013/04/17: memcache driver (Máximo Cuadros Ortiz)
+  - 2013/04/17: new cache drivers with ttl (Máximo Cuadros Ortiz)
+  - 2013/04/16: new arraycache (Máximo Cuadros Ortiz)
+  - 2013/04/16: new Result object (Máximo Cuadros Ortiz)
+  - 2013/04/16: documentation (Daniel Ripolles)
+  - 2013/04/16: new field cache policy (Daniel Ripolles)
+  - 2013/04/16: allowing config of data cache on collections (Máximo Cuadros Ortiz)
+  - 2013/04/16: ignore vim swp files (Daniel Ripolles)
+  - 2013/04/16: allowing config of data cache on collections (Máximo Cuadros Ortiz)
+  - 2013/04/16: small efficiency improvement (Daniel Ripolles)
+  - 2013/04/16: poc data cache (Máximo Cuadros Ortiz)
+  - 2013/04/16: poc data cache (Máximo Cuadros Ortiz)
+  - 2013/04/13: Consider groups with added elements as modified (Daniel Ripolles)
+  - 2013/04/12: fix for 5.3 (Daniel Ripolles)
+  - 2013/04/12: fixing issues with referencedMany (Daniel Ripolles)
+  - 2013/04/11: #16 Fixing diferent behaviour between projection and project (Máximo Cuadros Ortiz)
+  - 2013/04/11: #16 Fixing diferent behaviour between projection and project (Máximo Cuadros Ortiz)
+  - 2013/04/11: #23: Fixes bug generateIndexKey (Máximo Cuadros Ortiz)
+  - 2013/04/11: #23: Fixes bug generateIndexKey (Máximo Cuadros Ortiz)
+  - 2013/04/11: #23: Fixes bug related to dropIndex, now is a command (http://php.net/manual/en/mongocollection.deleteindex.php) (Máximo Cuadros Ortiz)
+  - 2013/04/11: Repository::ensureIndexes implementation and some fixes (Máximo Cuadros Ortiz)
+  - 2013/04/11: #23 Added new helper class IndexManager (Máximo Cuadros Ortiz)
+  - 2013/04/10: #16 Min changes and coverage improvement (Máximo Cuadros Ortiz)
+  - 2013/04/09: Min driver accepted no 1.2.11 (Máximo Cuadros Ortiz)
+  - 2013/04/09: #15 moderm times arrives (Máximo Cuadros Ortiz)
+  - 2013/04/09: #16 Implementation of text() in Query object (Máximo Cuadros Ortiz)
+  - 2013/04/09: #16 Added Repository::text and tests (Máximo Cuadros Ortiz)
 
-  * [ef33b4b] changed query cache by cache
-  * [37dab9d] added initializeArgs creating documents
-  * [ce6cdbf] calling initializeDefaults and initializ only creating
-  * [5e70c84] removed mandango and repository interfaces
-  * [2f703fb] added mapReduce function to repositories
-  * [e88462b] added group and distict function to repositories
-  * [439df8a] added tests to create
-  * [42922b2] refactored the metadata stuff
-  * [891c024] Merge branch 'di'
-  * [fbdda63] added initialize method to initialize the documents
-  * [b9ec137] improved the bin data type
-  * [f6e092d] changed createDocument by creaate
-  * [c3a86e2] added getMetadata and debug methods to documents
-  * [37c04f5] removing the container by injecting the mandango in the documents
-  * [16ee957] fixed hash generation in queries
-  * [7ee0a79] tweaked README
-  * [a887ccf] added link to documentation in README
-  * [dea83e9] improved the query hash generation
-  * [b8149a6] initialize fields in the toArray method
-  * [99c39ff] added to change the connection data before it is initialized
-  * [cb585c8] added references cache
-  * [6c88aba] updated Mondator
-  * [3786b2d] changed license to MIT and files header
-  * [07154a5] changed some methods and properties to private
-  * [32d65e3] removed old code
-  * [0a0f49e] removed Reference* types
-  * [4b5fdd6] added @api phpdoc tag
-  * [4f35b2f] added unit of work interface
-  * [abcad93] added some interfaces
-  * [2e9c3dd] added to be able to pass an array of documents to the persist and remove functions of the unit of work
-  * [620e930] changed some variables visibility to private
-  * [ecfef8f] changed ->saved() by ->getSaved() in groups
-  * [c3ad454] added createQuery to ReferenceGroup
-  * [a3a1c6f] changed "is_file" by "isFile"
-  * [8b64c90] reseting groups when save
-  * [8a2b77a] removed unused code
-  * [3508150] added all method to groups
-  * [d751725] fixed call twice to updateReferenceFields
-  * [360bba6] added add and remove methods to references and embeddeds many
-  * [8602d99] changed underscore by camelCase in configClasses
-  * [4c18f5c] changed alias by dbName
-  * [d16f6af] added inherited data to metadata
-  * [5397955] throw exception in multiple single inheritance
-  * [7f7250b] changed the ->find method to ->findById and ->findOneById
-  * [5ccb694] changed some methods
-  * [b942c99] removed inflector, used ucfirst for data names
-  * [d360c09] fixed saving references in embeddeds without references
-  * [d84bcae] fixed parent events in single inheritance
-  * [6c76192] fixed data loader in single inheritance with references
-  * [4d19e15] fixed the parent queryForSave in inheritance when the document is not new
-  * [7d785f8] added more information to metadata
-  * [7dc0030] support multiple single inheritance
-  * [3559eab] add mergeCriteria to queries and fix criteria and fields
-  * [56d0154] add Countable interface to groups
-  * [d0bea48] use reference name to save the referenced field
-  * [605bc99] add field alias
-  * [4f05391] added the reference fields automatically
-  * [bd92653] adding discriminator map to polymorphic references
-  * [0aa4bfb] adding polymorphic references
-  * [5e24e78] adding more support for the single inheritance
-  * [b37b7d4] adding single inheritance
-  * [e6eac93] added the IteratorAggregate interface to the groups
-  * [6151885] add selected fields to hydrate method to do not query twice
-  * [eba4705] add php extension to filesystem cache files
-  * [d403e52] fixed phpdoc and tests autoload
-  * [fd2b3f9] changed doctrine common cache by simpler mandango cache
-  * [33212c2] fixed date type
-  * [b129115] added behaviors process to core extension
-  * [4e35198] added relations
-  * [b4e2921] added DocumentPropertyOverloading extension
-  * [591b7ac] added DocumentArrayAccess extension
-  * [06c042b] moved symfony class loader submodule
-  * [43904f8] importing
+v1.1.0
+  - 2013/04/09: Fix #22 (Máximo Cuadros Ortiz)
+  - 2013/04/02: correct path for embedded docs after a save() (Daniel Ripolles)
+  - 2013/04/02: fix: non-scalar fields in embeddedsmany broken after save (Daniel Ripolles)
+  - 2013/04/02: 5.3 compatibility (Daniel Ripolles)
+  - 2013/04/02: remove extra space (Daniel Ripolles)
+  - 2013/04/02: ->save() on document sets proper saved data in embeddedsmany (Daniel Ripolles)
+  - 2013/04/01: Update README.md (Máximo Cuadros)
+  - 2013/03/28: Update README.md (Máximo Cuadros)
+  - 2013/03/28: removed 5.5 from travis (Máximo Cuadros Ortiz)
+  - 2013/03/28: Added LoggableMongoClient (Máximo Cuadros Ortiz)
+  - 2013/03/28: Added LoggableMongoClient (Máximo Cuadros Ortiz)
+  - 2013/03/28: Added LoggableMongoClient (Máximo Cuadros Ortiz)
+  - 2013/03/28: Adding support 1.2.x (Máximo Cuadros Ortiz)
+  - 2013/03/28: Adding support 1.2.x (Máximo Cuadros Ortiz)
+  - 2013/03/28: .travis changes (Máximo Cuadros Ortiz)
+  - 2013/03/28: checking diferent mongo versions (Máximo Cuadros Ortiz)
+  - 2013/03/27: Fixes in the tests about the new cache method (Máximo Cuadros Ortiz)
+  - 2013/03/27: removing _fields from documents, not needed now (Máximo Cuadros Ortiz)
+  - 2013/03/27: fixes about cache, removed request when null (Máximo Cuadros Ortiz)
+  - 2013/03/27: some fixes about cache (Máximo Cuadros Ortiz)
+  - 2013/03/27: Cache fix: when fieldsCache is empty, the query retrieves the whole document instead of just the _id (Máximo Cuadros Ortiz)
+  - 2013/03/27: Fixes on embedded cache (Máximo Cuadros Ortiz)
+  - 2013/03/27: #9 Fixed (Máximo Cuadros Ortiz)
+  - 2013/03/26: Enhancement #9: Added memory cache to FilesystemCache (Máximo Cuadros Ortiz)
+  - 2013/03/26: changing depretated \Mongo with \MongoClient (Daniel Ripolles)
+  - 2013/03/26: Force $set instead of $pushAll for embeddeds with no saved contents (Daniel Ripolles)
+  - 2013/03/25: Fixed #7 (Máximo Cuadros Ortiz)
+  - 2013/03/21: Better add logic for Groups (Daniel Ripolles)
+  - 2013/03/14: another travis try (Máximo Cuadros Ortiz)
+  - 2013/03/14: another travis try (Máximo Cuadros Ortiz)
+  - 2013/03/14: another travis try (Máximo Cuadros Ortiz)
+  - 2013/03/14: original .travis.yml (Máximo Cuadros Ortiz)
+  - 2013/03/13: Fix #4 Empty groups read more than once (Máximo Cuadros Ortiz)
+  - 2013/03/13: travis fix (Máximo Cuadros Ortiz)
+  - 2013/03/12: #4 Improved findByIds cache (Máximo Cuadros Ortiz)
+  - 2013/03/12: skipping tests, waiting for verify the changes on addFieldsCache (Máximo Cuadros Ortiz)
+  - 2013/03/06: #3 fix False positive on all setters (Máximo Cuadros Ortiz)
+  - 2013/02/28: refactored a bit config booleans (pablodip)
+  - 2013/02/28: added mapArrayKeyWithDefaults as Pablo suggested (Anton Stöckl)
+  - 2013/02/28: added mapArrayKeyWithDefaults as Pablo suggested (Anton Stöckl)
+  - 2013/02/28: simplified to much by moving to much logic into the mapToBoolean() method; isset check back to consumer functions (Anton Stöckl)
+  - 2013/02/28: reduce code duplication and simplify init of boolean values with new method mapToBoolean() (Anton Stöckl)
+  - 2013/02/27: for every boolean config value now values true, 1 and '1' are accepted as true, everything else (or missing) is false (Anton Stöckl)
+  - 2013/02/27: missing starting \ in doc blocks (Anton Stöckl)
+  - 2013/02/27: fixed and simplified some tests (pablodip)
+  - 2013/02/26: added tests for the change in generated repository that wraps _id in idToMongo() for save() and delete() (Anton Stöckl)
+  - 2013/02/26: wrap _id with idToMongo() method in the save() and delete() method so it works with string representations of the _id (Anton Stöckl)
+  - 2013/02/25: added missing 'time'    => $time to log (Anton Stöckl)
+  - 2013/02/25: changed 'data' => $data with $data being undefined to 'options' => $options with $options not used in log (Anton Stöckl)
+  - 2013/02/23: misc fixes in doc blocks (Anton Stöckl)
+  - 2013/02/23: misc fixes in doc blocks (Anton Stöckl)
+  - 2013/02/23: misc fixes in doc blocks and little formatting (Anton Stöckl)
+  - 2013/02/22: removed debug (pablodip)
+  - 2013/02/22: fixed removing not existing documents in groups (fixes #28, 34) (pablodip)
+  - 2013/02/21: oops! forgot this files (Daniel Ripolles)
+  - 2013/02/21: tests para idGenerator multikey (Daniel Ripolles)
+  - 2013/02/21: renombrando fromMongo a toPHP (Daniel Ripolles)
+  - 2013/02/21: hook to instantiate the id from the mongo data when reading (Daniel Ripolles)
+  - 2013/02/19: fixed phpdoc (pablodip)
+  - 2013/02/19: Disambiguate class names in generated code (Sam Partington)
+  - 2013/02/19: posibilidad de pasar opciones al command  mapreduce y distinct (Daniel Ripolles)
+  - 2013/02/18: merge from pablo (Máximo Cuadros Ortiz)
+  - 2013/02/07: changed to create embeddeds through mandango instead of new (fixes #24) (pablodip)
+  - 2013/02/07: fixed toArray and FromArray in embeddeds to ignore id (fixes #30) (pablodip)
+  - 2013/02/06: updated travis status image (pablodip)
+  - 2013/02/06: commented logger batch insert functions as it differts in different driver versions (pablodip)
+  - 2013/02/06: fixed some tets in php 5.4 (pablodip)
+  - 2013/02/05: added the mongodb service to travis (pablodip)
+  - 2013/02/05: added mongo to travis (pablodip)
+  - 2013/02/05: fixed tests autoload (pablodip)
+  - 2013/01/25: Ignoring null in embedded groups, this is produced when a element is removed from the group and saved, check mongodb issue: (Máximo Cuadros Ortiz)
+  - 2013/01/23: composer (Máximo Cuadros Ortiz)
+  - 2013/01/21: undo toCamelCase (Máximo Cuadros Ortiz)
+  - 2013/01/17: prevent to cache fields from embeddeddocuments, from now the entire array is read it (Máximo Cuadros Ortiz)
+  - 2013/01/16: used preinstalled composer in travis (pablodip)
+  - 2013/01/16: updated to 1.3.2 php mongo driver (pablodip)
+  - 2013/01/09: added __clone method in EmbeddedDocument, now is possible to copy EmbeddedDocument between documents (Máximo Cuadros Ortiz)
+  - 2013/01/08: enablig set prority to events calls (Máximo Cuadros Ortiz)
+  - 2013/01/06: preventing infinty loop in references (Máximo Cuadros Ortiz)
+  - 2013/01/05: allowing pre/post events in embedded documents (Máximo Cuadros Ortiz)
+  - 2013/01/05: minor updated, allowing multi-level model namespace (Máximo Cuadros Ortiz)
+  - 2012/12/10: Opsss little bug with twig and referenceOne (Máximo Cuadros Ortiz)
+  - 2012/12/10: Update README.md (mcuadros)
+  - 2012/12/10: autoload fix for test (Máximo Cuadros Ortiz)
+  - 2012/12/10: Fixes ucfirst to MandangoTwig::toCamelCase (Máximo Cuadros Ortiz)
+  - 2012/12/09: Remove 5.4 in travis (Máximo Cuadros Ortiz)
+  - 2012/12/09: Relocated __sleep function (Máximo Cuadros Ortiz)
+  - 2012/12/09: Added generateKey function to query class (Máximo Cuadros Ortiz)
+  - 2012/12/09: Update of the readme (Máximo Cuadros Ortiz)
+  - 2012/12/09: Improves for document serialization (Máximo Cuadros Ortiz)
+  - 2012/12/07: Including one() method to groups (Máximo Cuadros Ortiz)
+  - 2012/12/07: Quick and dirty fix to change all generated methods from underscores into camel case (Máximo Cuadros Ortiz)
+  - 2012/12/07: Added relations to the 'get' function (Máximo Cuadros Ortiz)
+  - 2012/12/07: Added replace to composer.json (Máximo Cuadros Ortiz)
+  - 2012/12/07: Composer change to the new fork (Máximo Cuadros Ortiz)
+  - 2012/10/26: remove calls to setId() and getId() if the document is embedded in fromArray() and toArray() methods (Ivannis Suárez Jérez)
+  - 2012/06/08: fixed null connection (pablodip)
+  - 2012/05/11: added to import referencs with ->fromArray() (pablodip)
+  - 2012/05/03: commented the batchInsert loggable (waiting for #17) (pablodip)
+  - 2012/05/02: added to fix missing references (pablodip)
+  - 2012/05/01: fixed typo (pablodip)
+  - 2012/04/21: added "onDelete" to references (removed "onMissing") (pablodip)
+  - 2012/04/17: updated travis configuration to composer (pablodip)
+  - 2012/04/17: added composer (pablodip)
+  - 2012/04/17: simplified phpunit.xml.dist and enabled colors (pablodip)
+  - 2012/03/06: added onMissing configuration to references one to allow return null (pablodip)
+  - 2012/02/13: added methods to get parent repositories in models with inheritance (pablodip)
+  - 2012/02/09: added to test with batch insert (pablodip)
+  - 2012/02/09: added to choose whether to use batch insert (pablodip)
+  - 2012/01/15: skipped more tests (pablodip)
+  - 2012/01/15: skiping tests without Mongo (pablodip)
+  - 2012/01/12: added id to fromArray and toArray (pablodip)
+  - 2012/01/12: added update method to repositories (pablodip)
+  - 2011/12/17: added the vendor before script to travis (pablodip)
+  - 2011/12/17: added travis build status image (pablodip)
+  - 2011/12/17: removed submodules and added travis config file (pablodip)
+  - 2011/12/15: fixed sequence id generator for all mongo versions (pablodip)
+  - 2011/12/13: fixed SequenceIdGenerator for Mongo 2.0+ (pablodip)
+  - 2011/11/28: fixed idGenerator with inheritance (pablodip)
+  - 2011/11/28: fixed typo (pablodip)
+  - 2011/11/28: fixed grand parent events (pablodip)
+  - 2011/11/20: added ->idsToMongo() method to repositories (pablodip)
+  - 2011/11/20: added ->idToMongo() method to repositories (pablodip)
+  - 2011/11/04: refers to https://github.com/mandango/mandango/issues/13 (Brikou CARRE)
+  - 2011/10/28: moved template.php to template.php.twig (Brikou CARRE)
+  - 2011/10/26: added id generators (pablodip)
+  - 2011/10/17: using twig templates (pablodip)
+  - 2011/07/27: fixed multi_inheritance events (John Wards)
+  - 2011/07/04: fixed updating documents in the preUpdate event (pablodip)
+  - 2011/06/24: added to allow options in the insert, update and remove operations (pablodip)
+  - 2011/06/22: spl_object_hash hashes can be reused when an object is destroyed, archive needs to be cleared (jfb)
+  - 2011/06/20: Making sure Grandparent events are copied to child (John Wards)
+  - 2011/06/16: refactored repository inheritable methods (pablodip)
+  - 2011/06/15: Tests for new ineritance feature (John Wards)
+  - 2011/06/15: Add the ability to have inheritable set on objects with inheritance already set (John Wards)
+  - 2011/05/26: added slaveOkay to queries (pablodip)
+  - 2011/05/24: fixed to do not duplicate references in the references cache (pablodip)
+  - 2011/05/23: fixed added to fields cache fields of new embeddeds many (pablodip)
+  - 2011/05/23: changed queryCache by cache (pablodip)
+  - 2011/05/23: added to ignore args in debug backtrace from 5.3.6 version (pablodip)
+  - 2011/05/19: moved mandango in the documents to the abstract document (pablodip)
+  - 2011/05/18: restore the dev version (pablodip)
 
-1.0.0 BETA1 - 7/10/2010
------------------------
-
-This is Mondongo, the previous Mandango.
-
- * [b3210d3] changed ->findOneByMongoId() by ->findOneById()
- * [2cfa0b4] changed reference_one and reference_many types: now its only accept \MongoIds
- * [4f5dff6] fixed bug with query references many when there is not its
- * [e8e8a5c] improved DocumentDataMap extension
- * [43f20e2] improved the export of the indexes arrays
- * [cfa2e7c] fixed typo
- * [70df7f6] changed to specify full class in Mondator
- * [0dc9e01] adding missing paremeter in a sprintf() function
- * [9927328] fixed mondator newConfigClasses logic
- * [765d9e8] fixed typo
- * [34fd531] Merge remote branch 'Keeguon/master'
- * [3638bb6] added default_extensions options to core extension
- * [c473c81] simplified the core extension
- * [ff7a470] renamed some extensions
- * [796af06] updated loggable cursors return values
- * [981d7eb] adding missing parenthesis (again)
- * [134c59d] fixed type code indent
- * [8a1d95f] improved the array export on Mondator
- * [5ae7347] fixed typo
- * [c95828a] changed DocumentMap extension by DocumentDataMap
- * [df22490] fixed typo
- * [e799832] added DocumentMap extension
- * [e0546c9] added DocumentDataCamelCaseMap extension
- * [519879b] added checks to core extension
- * [14da29a] fixeds warnings with relations in embeddeds
- * [d1203a8] fixed gitignore file for tests/model/Base (by Keeguon)
- * [08dae67] changing embeds by embeddeds
- * [721f138] logged the connection name
- * [a8eed21] removed the logger callable from mondongo constructor
- * [8f5992c] added PropertyOverloading extension
- * [2e56d39] fixed extensions order in test bootstrap
- * [a57b1b4] changed embeds by embeddeds
- * [61f6cd2] changed $map by $dataMap in documents
- * [5506731] changed embed by embedded
- * [83c66cb] made safe the inserts with GridFS and fixed typo
- * [b78dae4] added log to storeBytes and storeFile with GridFS
- * [6b031bd] added test to LoggableMongoGridFSCursor
- * [398eb54] added GridFS support
- * [608daaa] added to can add new config classes in extensions
- * [9bf4aa0] move to coreEnd the process of extensions of configClasses
- * [2960117] added new configuration system to mondongo's extensions
- * [c1ceb93] changed ->findOneById() by ->findOneByMongoId()
- * [fc711c4] completed the log
- * [1ca3edf] adding to log actions
- * [3ed9aaa] added tests to relations many_many
- * [bc038c3] fixed outputs overriden in base objects
- * [90051a8] revert some tests
- * [61cfd4d] changed classData by configClass in extensions
- * [64e3531] changed output logic on mondator
- * [a6cff5a] improved test TestCase
- * [e7a5cbf] added ensureIndexes method to repository
- * [fa9c9ac] added access to some repository methods in the mondongo
- * [1bd2e0a] deleted old code
- * [8b542a3] added methods to container of definitions
- * [ae54ad7] changed PHPDoc by docComment
- * [f73ba16] added methods to work with properties and methods in definitions of mondator
- * [6eab8bd] added final keywork to classes and methods in mondator
- * [3e5b853] added the class name to the constructor of definitions in mondator
- * [667ba3f] the value of the properties of mondator is required now
- * [6341eb2] removed isStatic and isAbstraft options from the constructor of Method and Property of Mondator
- * [4945e72] added options to CoreStart extension to set default document and repository namespaces
- * [9e6647f] changed method names
- * [477c243] removed repositories to embed documents
- * [e6e9a00] changed removed method of test documents
- * [b9a6598] fixed method name
- * [7f290f6] changed classDefinicions by configClasses in Mondator to be more explicit (again)
- * [7bc5dc0] changed classes by classDefinitions in Mondator to be more explicit
- * [58ade9e] added phpdoc
- * [a768d18] fixed typo
- * [d73ee41] renamed repository method ->get to ->findOneById and not it only accept \MongoId object
- * [01e2f85] updated generated model of tests
- * [e65e5e4] added phpdoc to mondongo generated classes
- * [a83105e] added phpdoc to mondator generator
- * [77728ee] added events to extensions
- * [75c093d] added the posibility to add extensions to classes
- * [4eb98d0] separated the generation and dump of containers in Mondator
- * [1c8109e] adding to repository the model of tests (base classes continue ignored)
- * [dd61eb5] adding events to documents
- * [bb12a43] added ArrayAccess extension
- * [df3c167] completed FromToArray extension
- * [c4f98e1] added the ->fromArray() method to documents
- * [13de9b5] added some methods to do things in the groups by key
- * [164e0d4] added reference_one and reference_many types
- * [8506734] added relations to article document of tests
- * [23a92a2] ignored the generated model of the tests
- * [2204466] added the map property to documents
- * [d5924f2] removed id type
- * [ca5d48f] added relations to documents
- * [bcef4be] updated master branch to 1.0
+v1.0.0BETA2
+  - 2011/05/18: update version to 1.0.0BETA2 (pablodip)
+  - 2011/05/18: added changelog (pablodip)
+  - 2011/05/18: changed query cache by cache (pablodip)
+  - 2011/05/17: added initializeArgs creating documents (pablodip)
+  - 2011/05/17: calling initializeDefaults and initializ only creating (pablodip)
+  - 2011/05/17: removed mandango and repository interfaces (pablodip)
+  - 2011/05/17: added mapReduce function to repositories (pablodip)
+  - 2011/05/17: added group and distict function to repositories (pablodip)
+  - 2011/05/17: added tests to create (pablodip)
+  - 2011/05/17: refactored the metadata stuff (pablodip)
+  - 2011/05/16: added initialize method to initialize the documents (pablodip)
+  - 2011/05/16: improved the bin data type (pablodip)
+  - 2011/05/14: changed createDocument by creaate (pablodip)
+  - 2011/05/14: added getMetadata and debug methods to documents (pablodip)
+  - 2011/05/09: removing the container by injecting the mandango in the documents (pablodip)
+  - 2011/05/09: fixed hash generation in queries (pablodip)
+  - 2011/05/06: tweaked README (pablodip)
+  - 2011/05/06: added link to documentation in README (pablodip)
+  - 2011/05/05: improved the query hash generation (pablodip)
+  - 2011/05/05: initialize fields in the toArray method (pablodip)
+  - 2011/05/03: added to change the connection data before it is initialized (pablodip)
+  - 2011/04/28: added references cache (pablodip)
+  - 2011/04/25: updated Mondator (pablodip)
+  - 2011/04/24: changed license to MIT and files header (pablodip)
+  - 2011/04/24: changed some methods and properties to private (pablodip)
+  - 2011/04/24: removed old code (pablodip)
+  - 2011/04/24: removed Reference* types (pablodip)
+  - 2011/04/24: added @api phpdoc tag (pablodip)
+  - 2011/04/24: added unit of work interface (pablodip)
+  - 2011/04/24: added some interfaces (pablodip)
+  - 2011/04/24: added to be able to pass an array of documents to the persist and remove functions of the unit of work (pablodip)
+  - 2011/04/24: changed some variables visibility to private (pablodip)
+  - 2011/04/24: changed ->saved() by ->getSaved() in groups (pablodip)
+  - 2011/04/24: added createQuery to ReferenceGroup (pablodip)
+  - 2011/04/24: changed "is_file" by "isFile" (pablodip)
+  - 2011/04/23: reseting groups when save (pablodip)
+  - 2011/04/23: removed unused code (pablodip)
+  - 2011/04/23: added all method to groups (pablodip)
+  - 2011/04/23: fixed call twice to updateReferenceFields (pablodip)
+  - 2011/04/23: added add and remove methods to references and embeddeds many (pablodip)
+  - 2011/04/23: changed underscore by camelCase in configClasses (pablodip)
+  - 2011/04/23: changed alias by dbName (pablodip)
+  - 2011/04/23: added inherited data to metadata (pablodip)
+  - 2011/04/22: throw exception in multiple single inheritance (pablodip)
+  - 2011/04/22: changed the ->find method to ->findById and ->findOneById (pablodip)
+  - 2011/04/22: changed some methods (pablodip)
+  - 2011/04/22: removed inflector, used ucfirst for data names (pablodip)
+  - 2011/04/21: fixed saving references in embeddeds without references (pablodip)
+  - 2011/04/11: fixed parent events in single inheritance (pablodip)
+  - 2011/04/11: fixed data loader in single inheritance with references (pablodip)
+  - 2011/04/08: fixed the parent queryForSave in inheritance when the document is not new (pablodip)
+  - 2011/04/06: added more information to metadata (pablodip)
+  - 2011/04/06: support multiple single inheritance (pablodip)
+  - 2011/04/03: add mergeCriteria to queries and fix criteria and fields (pablodip)
+  - 2011/04/03: add Countable interface to groups (pablodip)
+  - 2011/04/03: use reference name to save the referenced field (pablodip)
+  - 2011/04/03: add field alias (pablodip)
+  - 2011/04/02: added the reference fields automatically (pablodip)
+  - 2011/03/31: adding discriminator map to polymorphic references (pablodip)
+  - 2011/03/31: adding polymorphic references (pablodip)
+  - 2011/03/31: adding more support for the single inheritance (pablodip)
+  - 2011/03/30: adding single inheritance (pablodip)
+  - 2011/03/29: added the IteratorAggregate interface to the groups (pablodip)
+  - 2011/03/21: add selected fields to hydrate method to do not query twice (pablodip)
+  - 2011/03/20: add php extension to filesystem cache files (pablodip)
+  - 2011/03/20: fixed phpdoc and tests autoload (pablodip)
+  - 2011/03/20: changed doctrine common cache by simpler mandango cache (pablodip)
+  - 2011/03/19: fixed date type (pablodip)
+  - 2011/03/19: added behaviors process to core extension (pablodip)
+  - 2011/03/18: added relations (pablodip)
+  - 2011/03/18: added DocumentPropertyOverloading extension (pablodip)
+  - 2011/03/18: added DocumentArrayAccess extension (pablodip)
+  - 2011/03/17: moved symfony class loader submodule (pablodip)
+  - 2011/03/13: importing (pablodip)
