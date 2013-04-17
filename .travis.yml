@@ -13,6 +13,8 @@ services: mongodb
 before_script:
   - printf "\n" | pecl install -f mongo-${MONGO_VERSION}
   - /bin/bash ./.travis.sh
+  - phpenv config-add ./.travis.ini
+
   - phpenv rehash
   - composer --dev --prefer-source install
 
