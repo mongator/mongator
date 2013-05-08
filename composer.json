@@ -1,9 +1,9 @@
 {
-    "name": "yunait/mandango",
+    "name": "mongator/mongator",
     "type": "library",
-    "description": "Simple, poweful and ultrafast Object Document Mapper (ODM) for PHP and MongoDB",
+    "description": "Mongator is a easy, powerful and ultrafast ODM for PHP and MongoDB. (forked from Mandango project)",
     "keywords": ["odm", "mongodb"],
-    "homepage": "http://mandango.org",
+    "homepage": "http://mongator.com",
     "license": "MIT",
     "authors": [
         {
@@ -23,15 +23,13 @@
         "php": ">=5.3.0",
         "yunait/mondator": "dev-master"
     },
-    "replace": {
-        "mandango/mandango": "dev-master"
-    },
+
     "suggest": {
         "ext-apc": "Allow caching on APC",
         "ext-redis": "Allow caching on Redis",
         "ext-memcached": "Allow caching on Memcached"
     },
     "autoload": {
-        "psr-0": { "Mandango\\": "src/" }
+        "psr-0": { "Mongator\\": "src/" }
     }
 }

@@ -6,7 +6,7 @@
          processIsolation="false"
 >
     <testsuites>
-        <testsuite name="Mandango Test Suite">
+        <testsuite name="Mongator Test Suite">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>

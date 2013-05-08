@@ -1,0 +1,89 @@
+<?php
+
+{% for name, embedded in config_class.embeddedsOne %}
+{# not inherited #}
+{% if embedded.inherited is not defined or not embedded.inherited %}
+    /**
+     * Set the "{{ name }}" embedded one.
+     *
+     * @param \{{ embedded.class }}|null $value The "{{ name }}" embedded one.
+     *
+     * @return \{{ class }} The document (fluent interface).
+     *
+     * @throws \InvalidArgumentException If the value is not an instance of {{ embedded.class }} or null.
+     */
+    public function set{{ name|ucfirst }}($value)
+    {
+        if (null !== $value && !$value instanceof \{{ embedded.class }}) {
+            throw new \InvalidArgumentException('The "{{ name }}" embedded one is not an instance of {{ embedded.class }}.');
+        }
+        if (null !== $value) {
+            if ($this instanceof \Mongator\Document\Document) {
+                $value->setRootAndPath($this, '{{ name }}');
+            } elseif ($rap = $this->getRootAndPath()) {
+                $value->setRootAndPath($rap['root'], $rap['path'].'.{{ name }}');
+            }
+        }
+
+        if (!\Mongator\Archive::has($this, 'embedded_one.{{ name }}')) {
+            $originalValue = isset($this->data['embeddedsOne']['{{ name }}']) ? $this->data['embeddedsOne']['{{ name }}'] : null;
+            \Mongator\Archive::set($this, 'embedded_one.{{ name }}', $originalValue);
+        } elseif (\Mongator\Archive::get($this, 'embedded_one.{{ name }}') === $value) {
+            \Mongator\Archive::remove($this, 'embedded_one.{{ name }}');
+        }
+
+        $this->data['embeddedsOne']['{{ name }}'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns the "{{ name }}" embedded one.
+     *
+     * @return \{{ embedded.class }}|null The "{{ name }}" embedded one.
+     */
+    public function get{{ name|ucfirst }}()
+    {
+        if (!isset($this->data['embeddedsOne']['{{ name }}'])) {
+{# not embedded #}
+{% if not config_class.isEmbedded %}
+            if ($this->isNew()) {
+                $this->data['embeddedsOne']['{{ name }}'] = null;
+            } elseif (
+                !isset($this->data['embeddedsOne']) ||
+                !array_key_exists('{{ name }}', $this->data['embeddedsOne']))
+            {
+                if (!$this->isFieldInQuery('{{ name }}')) {
+                    $this->loadFull();
+                }
+
+                if (!isset($this->data['embeddedsOne']['{{ name }}'])) {
+                    $this->data['embeddedsOne']['{{ name }}'] = null;
+                }
+            }
+{# embedded #}
+{% else %}
+            if (
+                (!isset($this->data['embeddedsOne']) ||
+                    !array_key_exists('{{ name }}', $this->data['embeddedsOne']))
+                &&
+                ($rap = $this->getRootAndPath())
+                &&
+                !$this->isEmbeddedOneChangedInParent()
+                &&
+                false === strpos($rap['path'], '._add'))
+            {
+                if (!$this->isFieldInQuery('{{ name }}')) {
+                    $this->loadFull();
+                }
+            }
+            if (!isset($this->data['embeddedsOne']['{{ name }}'])) {
+                $this->data['embeddedsOne']['{{ name }}'] = null;
+            }
+{% endif %}
+        }
+
+        return $this->data['embeddedsOne']['{{ name }}'];
+    }
+{% endif %}
+{% endfor %}
