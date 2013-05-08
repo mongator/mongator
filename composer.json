@@ -21,7 +21,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "yunait/mondator": "dev-master"
+        "mongator/mondator": "dev-master"
     },
 
     "suggest": {
