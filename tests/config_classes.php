@@ -441,4 +441,17 @@ return array(
             'database' => array('dbName' => 'basatos', 'type' => 'string'),
         )
     ),
+
+    'Model\FieldTypeExamples' => array(
+        'fields' => array(
+            'name' => 'string',
+            'position' => array('dbName' => 'pos', 'type' => 'integer'),
+            'avg' => 'float',
+            'date' => 'date',
+            'isActive' => 'boolean',
+        ),
+        'referencesOne' => array(
+            'author'      => array('class' => 'Model\Author'),
+        ),
+    ),
 );
