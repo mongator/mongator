@@ -9,7 +9,7 @@
      *
      * @return {{ class }}Query The query with added criteria (fluent interface).
      */
-    private function findBy{{ field.dbName|ucfirst }}Reference($value)
+    private function findBy{{ name|ucfirst }}($value)
     {
     {% for k, v in field %}
     // {{k}}: {{v}}
@@ -22,6 +22,7 @@
         return $this->mergeCriteria(array('{{field.dbName}}' => $id));
     }
 {% else %}
+    {% if field.type != 'serialized' %}
     /**
      * Find by "{{ name }}" field.
      *
@@ -55,12 +56,15 @@
         return $this->mergeCriteria(array('{{field.dbName}}' => $castValue ));
     }
 
+    {% endif %}
+
 {% endif %}
 {% endfor %}
 
 {% for name, referenceOne in config_class.referencesOne %}
-    public function findBy{{ name|ucfirst }}($value) {
-        return $this->findBy{{referenceOne.field}}Reference($value);
+    public function findBy{{ name|ucfirst }}($value)
+    {
+        return $this->findBy{{referenceOne.field|ucfirst}}($value);
     }
 {% endfor %}
 

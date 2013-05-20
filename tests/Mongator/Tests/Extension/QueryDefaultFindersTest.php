@@ -68,6 +68,20 @@ class QueryDefaultFindersTest extends TestCase
     }
 
     public function testFindByReference() {
+        $id = new \MongoId();
+        $expected = ['author' => $id];
+
+        $query = $this->createQuery()->findByAuthor($id);
+        $this->assertEquals($expected, $query->getCriteria());
+
+        $author = $this->mongator->create('Model\Author')->setId($id);
+        $query = $this->createQuery()->findByAuthor($id);
+        $this->assertEquals($expected, $query->getCriteria());
+    }
+
+    public function testFindByReferenceTypecheck() {
+        $this->setExpectedException('\Exception');
+        $this->createQuery()->findByAuthor((string)(new \MongoId()));
     }
 
     private function createQuery() {
