@@ -54,6 +54,6 @@ class APCCache extends AbstractCache
             return false;
         }
 
-        return $content;
+        return unserialize($content);
     }
 }
