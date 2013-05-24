@@ -77,7 +77,7 @@ abstract class Cache extends TestCase
         $key1 = 'foo';
         $key2 = 'bar';
         $value1 = 'ups';
-        $value2 = 'ngo';
+        $value2 = array('ngo');
 
         $this->cache->set($key1, $value1);
         $this->assertTrue($this->cache->has($key1));
