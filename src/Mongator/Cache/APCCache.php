@@ -26,7 +26,8 @@ class APCCache extends AbstractCache
     public function set($key, $value, $ttl = 0)
     {
         $content = $this->pack($key, $value, $ttl);
-        apc_store((string)$key, $content, $ttl);
+        $string = serialize($content);
+        apc_store((string)$key, $string, $ttl);
     }
 
     /**
@@ -53,6 +54,6 @@ class APCCache extends AbstractCache
             return false;
         }
 
-        return $content;
+        return unserialize($content);
     }
 }
