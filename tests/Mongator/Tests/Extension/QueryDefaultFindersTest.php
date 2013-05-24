@@ -69,7 +69,7 @@ class QueryDefaultFindersTest extends TestCase
 
     public function testFindByReference() {
         $id = new \MongoId();
-        $expected = ['author' => $id];
+        $expected = array('author' => $id);
 
         $query = $this->createQuery()->findByAuthor($id);
         $this->assertEquals($expected, $query->getCriteria());
