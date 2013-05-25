@@ -1,0 +1,74 @@
+<?php
+{% for name, field in config_class.fields %}
+
+{% if field.referenceField is defined %}
+    /**
+     * Find by "{{ name }}" reference.
+     *
+     * @param MongoId|Document $value
+     *
+     * @return {{ class }}Query The query with added criteria (fluent interface).
+     */
+    private function findBy{{ name|ucfirst }}($value)
+    {
+    {% for k, v in field %}
+    // {{k}}: {{v}}
+    {%endfor%}
+        if (!is_object($value)) $this->throwBadReferenceException();
+        if ($value instanceOf \MongoId) $id = $value;
+        elseif ($value instanceOf \Mandango\Document\Document) $id = $value->getId();
+        else $this->throwBadReferenceException();
+
+        return $this->mergeCriteria(array('{{field.dbName}}' => $id));
+    }
+{% else %}
+    {% if field.type != 'serialized' %}
+    /**
+     * Find by "{{ name }}" field.
+     *
+     * @param mixed $value The value.
+     *
+     * @return {{ class }}Query The query with added criteria (fluent interface).
+     */
+    public function findBy{{ name|ucfirst }}($value)
+    {
+    {% for k, v in field %}
+    // {{k}}: {{v}}
+    {%endfor%}
+        {% if field.type == 'date' %}
+        $castValue = null;
+        if (($value instanceOf \DateTime)) {
+            $castValue = new \MongoDate($value->getTimestamp());
+        } else if ($value instanceof \MongoDate) {
+            $castValue = $value;
+        } else if (is_int($value)) {
+            $castValue = new \MongoDate($value);
+        }
+
+        if (!$castValue) throw new \Exception('Bad value');
+        {% elseif field.type == 'raw' %}
+        $castValue = $value;
+        {% else %}
+        $castValue = ({{field.type}}) $value;
+        if ($castValue !== $value) throw new \Exception('Bad value');
+        {% endif %}
+
+        return $this->mergeCriteria(array('{{field.dbName}}' => $castValue ));
+    }
+
+    {% endif %}
+
+{% endif %}
+{% endfor %}
+
+{% for name, referenceOne in config_class.referencesOne %}
+    public function findBy{{ name|ucfirst }}($value)
+    {
+        return $this->findBy{{referenceOne.field|ucfirst}}($value);
+    }
+{% endfor %}
+
+    protected function throwBadReferenceException()
+    {
+        throw new \Exception('Document or MongoId needed for reference query');
+    }

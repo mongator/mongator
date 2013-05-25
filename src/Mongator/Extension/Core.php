@@ -151,7 +151,14 @@ class Core extends Extension
             $this->processTemplate($this->definitions['repository_base'], file_get_contents(__DIR__.'/templates/Core/Repository.php.twig'));
 
             // query
-            $this->processTemplate($this->definitions['query_base'], file_get_contents(__DIR__.'/templates/Core/Query.php.twig'));
+            $this->processTemplate(
+                $this->definitions['query_base'],
+                file_get_contents(__DIR__.'/templates/Core/Query.php.twig')
+            );
+            $this->processTemplate(
+                $this->definitions['query_base'],
+                file_get_contents(__DIR__.'/templates/Core/QueryDefaultFinders.php.twig')
+            );
         }
     }
 
