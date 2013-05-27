@@ -11,9 +11,6 @@
      */
     private function findBy{{ name|ucfirst }}($value)
     {
-    {% for k, v in field %}
-    // {{k}}: {{v}}
-    {%endfor%}
         if (!is_object($value)) $this->throwBadReferenceException();
         if ($value instanceOf \MongoId) $id = $value;
         elseif ($value instanceOf \Mandango\Document\Document) $id = $value->getId();
@@ -32,9 +29,6 @@
      */
     public function findBy{{ name|ucfirst }}($value)
     {
-    {% for k, v in field %}
-    // {{k}}: {{v}}
-    {%endfor%}
         {% if field.type == 'date' %}
         $castValue = null;
         if (($value instanceOf \DateTime)) {
