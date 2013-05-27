@@ -39,12 +39,12 @@
             $castValue = new \MongoDate($value);
         }
 
-        if (!$castValue) throw new \Exception('Bad value');
+        if (!$castValue) throw new \Exception('Bad value: could not convert to MongoDate');
         {% elseif field.type == 'raw' %}
         $castValue = $value;
         {% else %}
         $castValue = ({{field.type}}) $value;
-        if ($castValue !== $value) throw new \Exception('Bad value');
+        if ($castValue !== $value) throw new \Exception('Bad value: type {{field.type}} expected');
         {% endif %}
 
         return $this->mergeCriteria(array('{{field.dbName}}' => $castValue ));
