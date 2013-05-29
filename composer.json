@@ -21,7 +21,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "mongator/mondator": "dev-master"
+        "mongator/mondator": ">=1.0.0"
     },
 
     "suggest": {
