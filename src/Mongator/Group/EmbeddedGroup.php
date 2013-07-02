@@ -93,7 +93,7 @@ class EmbeddedGroup extends Group
         $rap['root']->addFieldCache($rap['path']);
 
         $data = $this->getSavedData();
-        if ( $data !== null ) {
+        if ($data !== null) {
             return $data;
         }
 
@@ -112,7 +112,7 @@ class EmbeddedGroup extends Group
         $saved = array();
         foreach ($data as $key => $datum) {
             if ( $datum === null ) continue;
-            
+
             $saved[] = $document = $mongator->create($documentClass);
             $document->setDocumentData($datum);
             $document->setRootAndPath($rap['root'], $rap['path'].'.'.$key);

@@ -323,9 +323,9 @@ abstract class Repository
     public function ensureIndexes($delete = true)
     {
         $indexManager = new IndexManager($this);
+
         return $indexManager->commit($delete);
     }
-
 
     /**
      * Shortcut to the collection group method.
@@ -349,9 +349,9 @@ abstract class Repository
     /**
      * Shortcut to make a distinct command.
      *
-     * @param string $field The field.
-     * @param array  $query The query (optional).
-     * @param array $options Extra options for the command (optional).
+     * @param string $field   The field.
+     * @param array  $query   The query (optional).
+     * @param array  $options Extra options for the command (optional).
      *
      * @return array The results.
      *
@@ -365,12 +365,12 @@ abstract class Repository
     /**
      * Search text content stored in the text index.
      *
-     * @param string $search A string of terms that MongoDB parses and uses to query the text index.
-     * @param array $filter (optional) A query array, you can use any valid MongoDB query
-     * @param array $fields (optional) Allows you to limit the fields returned by the query to only those specified.
-     * @param integer $limit (optional) Specify the maximum number of documents to include in the response.
-     * @param string $language (optional) Specify the language that determines for the search the list of stop words and the rules for the stemmer and tokenizer. 
-     * @param array $options Extra options for the command (optional).
+     * @param string  $search   A string of terms that MongoDB parses and uses to query the text index.
+     * @param array   $filter   (optional) A query array, you can use any valid MongoDB query
+     * @param array   $fields   (optional) Allows you to limit the fields returned by the query to only those specified.
+     * @param integer $limit    (optional) Specify the maximum number of documents to include in the response.
+     * @param string  $language (optional) Specify the language that determines for the search the list of stop words and the rules for the stemmer and tokenizer.
+     * @param array   $options  Extra options for the command (optional).
      *
      * @return array The results.
      *
@@ -424,7 +424,8 @@ abstract class Repository
         return $this->getConnection()->getMongoDB()->selectCollection($result['result'])->find();
     }
 
-    private function command($command, $options) {
+    private function command($command, $options)
+    {
         $result = $this->getConnection()->getMongoDB()->command($command, $options);
 
         if (!isset($result['ok']) || !$result['ok']) {

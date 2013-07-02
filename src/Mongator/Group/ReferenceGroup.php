@@ -26,8 +26,8 @@ class ReferenceGroup extends Group
      * Constructor.
      *
      * @param string                              $documentClass The document class.
-     * @param \Mongator\Document\AbstractDocument $parent The parent document.
-     * @param string                              $field  The reference field.
+     * @param \Mongator\Document\AbstractDocument $parent        The parent document.
+     * @param string                              $field         The reference field.
      *
      * @api
      */

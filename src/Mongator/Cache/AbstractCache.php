@@ -27,7 +27,7 @@ abstract class AbstractCache
      */
     public function has($key)
     {
-        return (boolean)$this->get($key);
+        return (boolean) $this->get($key);
     }
 
     /**
@@ -52,35 +52,35 @@ abstract class AbstractCache
      * @param string $key   A unique key.
      * @param mixed  $value The value.
      */
-    abstract function set($key, $value, $ttl = 0);
+    abstract public function set($key, $value, $ttl = 0);
 
     /**
      * Removes a value from the cache.
      *
      * @param string $key A unique key.
      */
-    abstract function remove($key);
+    abstract public function remove($key);
 
     /**
      * Clears the cache.
      */
-    abstract function clear();
+    abstract public function clear();
 
     /**
      * Returns metadata info about given key
-     * 
-     * @param string $key   A unique key.
-     * 
+     *
+     * @param string $key A unique key.
+     *
      * @return array
      */
-    abstract function info($key);
+    abstract public function info($key);
 
     /**
      * Pack the value in array with metadata
      *
-     * @param string $key A unique key.
-     * @param mixed $value The value to be cached.
-     * @param integer $ttl (optional) time to life in seconds.
+     * @param string  $key   A unique key.
+     * @param mixed   $value The value to be cached.
+     * @param integer $ttl   (optional) time to life in seconds.
      *
      * @return bool Whether the cache has a key.
      */
@@ -89,10 +89,10 @@ abstract class AbstractCache
         $content = array(
             'key' => $key,
             'time' => time(),
-            'ttl' => $ttl,          
+            'ttl' => $ttl,
             'value' => $value
         );
-        
+
         return $content;
     }
 
@@ -109,6 +109,7 @@ abstract class AbstractCache
 
         if ( $content['ttl'] > 0 && time() >= $content['time'] + $content['ttl'] ) {
             $this->remove($content['key']);
+
             return null;
         }
 

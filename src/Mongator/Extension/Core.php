@@ -649,18 +649,18 @@ EOF
 EOF
             );
 
-            // query 
+            // query
             $output = new Output($this->definitions['query']->getOutput()->getDir(), true);
 
             $this->definitions['query_base'] = $definition = new Definition($classes['query_base'], $output);
             $definition->setAbstract(true);
-            
-            if ( (int)$this->configClass['cache'] > 0 ) {
+
+            if ( (int) $this->configClass['cache'] > 0 ) {
                 $definition->setParentClass('\\Mongator\\Query\\CachedQuery');
             } else {
                 $definition->setParentClass('\\Mongator\\Query\\Query');
             }
-            
+
             $definition->setDocComment(<<<EOF
 /**
  * Base class of query of {$this->class} document.
@@ -806,7 +806,7 @@ EOF
                     }
                     $continue = false;
                 }
-            } while($continue);
+            } while ($continue);
 
             // parent events
             $parentEvents = array(
@@ -863,7 +863,7 @@ EOF
         do {
              $continue = false;
              if ( ++$loop >= 10000 ) throw new \RuntimeException('preventing infinty loop in references, maybe typo or not defined class name.');
-           
+
              foreach ($this->configClasses as $class => $configClass) {
                  if (isset($configClass['_has_references'])) {
                      continue;
@@ -956,7 +956,7 @@ EOF
                 }
                 $configClass['_has_groups'] = $hasGroups;
             }
-        } while($continue);
+        } while ($continue);
     }
 
     private function globalIndexesProcess()
@@ -1070,6 +1070,7 @@ EOF
             $info = \Mandango\Mondator\Dumper::exportArray($info, 12);
 
             $method = new Method('public', 'get'.str_replace('\\', '', $class).'Class', '', <<<EOF
+
         return $info;
 EOF
             );

@@ -44,7 +44,7 @@ class ArrayCache extends AbstractCache
     public function info($key)
     {
         if ( !isset($this->data[$key]) ) {
-            return null;  
+            return null;
         }
 
         return $this->data[$key];

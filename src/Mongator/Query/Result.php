@@ -11,11 +11,13 @@
 
 namespace Mongator\Query;
 
-class Result implements \Iterator, \Countable, \Serializable {
+class Result implements \Iterator, \Countable, \Serializable
+{
     private $count;
     private $iterator;
 
-    public function __construct($input) {
+    public function __construct($input)
+    {
         if ( $input instanceOf \Iterator ) return $this->iterator = $input;
         if ( $input instanceOf \ArrayObject ) return $this->iterator = $input->getIterator();
 
@@ -57,12 +59,12 @@ class Result implements \Iterator, \Countable, \Serializable {
      * @api
      */
     public function count()
-    { 
+    {
         if ( !$this->count ) return $this->iterator->count();
 
-        if ( $this->count instanceOf \Closure ) {
+        if ($this->count instanceOf \Closure) {
             $this->count = $this->count->__invoke();
-        } 
+        }
 
         return $this->count;
     }

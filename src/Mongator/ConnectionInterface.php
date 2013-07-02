@@ -29,7 +29,7 @@ interface ConnectionInterface
      *
      * @api
      */
-    function setLoggerCallable($loggerCallable = null);
+    public function setLoggerCallable($loggerCallable = null);
 
     /**
      * Returns the logger callable.
@@ -38,7 +38,7 @@ interface ConnectionInterface
      *
      * @api
      */
-    function getLoggerCallable();
+    public function getLoggerCallable();
 
     /**
      * Set the log default.
@@ -49,7 +49,7 @@ interface ConnectionInterface
      *
      * @api
      */
-    function setLogDefault(array $logDefault);
+    public function setLogDefault(array $logDefault);
 
     /**
      * Returns the log default.
@@ -58,7 +58,7 @@ interface ConnectionInterface
      *
      * @api
      */
-    function getLogDefault();
+    public function getLogDefault();
 
     /**
      * Returns the mongo connection object.
@@ -67,7 +67,7 @@ interface ConnectionInterface
      *
      * @api
      */
-    function getMongo();
+    public function getMongo();
 
     /**
      * Returns the database object.
@@ -76,5 +76,5 @@ interface ConnectionInterface
      *
      * @api
      */
-    function getMongoDB();
+    public function getMongoDB();
 }

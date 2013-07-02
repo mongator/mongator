@@ -11,8 +11,6 @@
 
 namespace Mongator\Tests;
 
-use Mongator\Query\CacheQuery;
-
 class CachedQueryTest extends TestCase
 {
     protected $identityMap;
@@ -59,8 +57,8 @@ class CachedQueryTest extends TestCase
         $this->assertSame(10, $query->count());
         $this->assertSame(10, $result->count());
 
-        foreach($query->all() as $key => $document) {
-            $this->assertSame($key, (string)$document->getId());
+        foreach ($query->all() as $key => $document) {
+            $this->assertSame($key, (string) $document->getId());
             $this->assertInstanceOf('Model\Cached', $document);
         }
 

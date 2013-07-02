@@ -17,7 +17,7 @@
             if (!$this->isNew()) {
 {% endif %}
                 $this->get{{ name | ucfirst }}();
-                if ( 
+                if (
                     ( is_object($value) && $value == $this->data['fields']['{{ name }}'] ) ||
                     ( !is_object($value) && $value === $this->data['fields']['{{ name }}'] )
                 ) {

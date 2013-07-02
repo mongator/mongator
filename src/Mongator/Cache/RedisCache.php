@@ -24,7 +24,7 @@ class RedisCache extends AbstractCache
     /**
      * Constructor.
      *
-     * @param Redis $redis the redis instance
+     * @param Redis  $redis      the redis instance
      * @param string $keyPattern (optional) redis format key, printf format
      */
     public function __construct(\Redis $redis, $keyPattern = '{Mongator}{%s}')
@@ -44,7 +44,8 @@ class RedisCache extends AbstractCache
     public function has($key)
     {
         $key = $this->getRedisKey($key);
-        return (boolean)$this->redis->exists($key);
+
+        return (boolean) $this->redis->exists($key);
     }
 
     /**
@@ -56,7 +57,7 @@ class RedisCache extends AbstractCache
         $key = $this->getRedisKey($key);
 
         $string = serialize($content);
-        if ( (int)$ttl == 0 ) $this->redis->set($key, $string);
+        if ( (int) $ttl == 0 ) $this->redis->set($key, $string);
         else $this->redis->setex($key, $ttl, $string);
     }
 
@@ -66,12 +67,13 @@ class RedisCache extends AbstractCache
     public function remove($key)
     {
         $key = $this->getRedisKey($key);
-        return (boolean)$this->redis->delete($key);
+
+        return (boolean) $this->redis->delete($key);
     }
 
     /**
      * {@inheritdoc}
-     */ 
+     */
     public function clear()
     {
         $pattern = $this->getRedisKey('*');
@@ -83,7 +85,8 @@ class RedisCache extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    public function info($key) {
+    public function info($key)
+    {
         $key = $this->getRedisKey($key);
         if ( !$content = $this->redis->get($key) ) {
             return false;

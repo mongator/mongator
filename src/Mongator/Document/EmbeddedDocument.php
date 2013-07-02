@@ -110,7 +110,8 @@ abstract class EmbeddedDocument extends AbstractDocument
     /**
      * When a object is clonated whe mark all fields as modified.
      */
-    public function __clone() {
+    public function __clone()
+    {
         if (isset($this->data['fields'])) {
             foreach ($this->data['fields'] as $name => $value) {
                 $this->fieldsModified[$name] = $value;
@@ -121,7 +122,8 @@ abstract class EmbeddedDocument extends AbstractDocument
     /**
      * {@inheritdoc }
      */
-    public function isFieldInQuery($field) {
+    public function isFieldInQuery($field)
+    {
         $rap = $this->getRootAndPath();
         if (!$rap['root']) return false;
         return $rap['root']->isFieldInQuery($field);
@@ -130,7 +132,8 @@ abstract class EmbeddedDocument extends AbstractDocument
     /**
      * {@inheritdoc }
      */
-    public function loadFull() {
+    public function loadFull()
+    {
         $rap = $this->getRootAndPath();
         if (!$rap['root']) return false;
         return $rap['root']->loadFull();

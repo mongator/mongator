@@ -49,9 +49,10 @@ abstract class AbstractDocument
     /**
      * Sleep - prepare the object for serialization
      */
-    public function __sleep() {
+    public function __sleep()
+    {
         $rc = new \ReflectionObject($this);
-        
+
         $names = array();
         $filter = array('Mongator');
 
@@ -72,16 +73,16 @@ abstract class AbstractDocument
      *
      * This method updates the "fields in query" information.
      */
-    public abstract function loadFull();
+    abstract public function loadFull();
 
     /**
      * Check whether the field $field was recovered in the query that was used to get the data
      * to populate the object.
      *
-     * @param string $field the field name
+     * @param  string  $field the field name
      * @return boolean whether the field was present
      */
-    public abstract function isFieldInQuery($field);
+    abstract public function isFieldInQuery($field);
 
     /**
      * Set the Mongator.
@@ -102,7 +103,6 @@ abstract class AbstractDocument
     {
         return $this->mongator;
     }
-
 
     /**
      * Returns the document metadata.

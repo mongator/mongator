@@ -18,7 +18,7 @@ namespace Mongator;
  */
 class Archive
 {
-    static private $archive = array();
+    private static $archive = array();
 
     /**
      * Returns if an object has a key in the archive.
@@ -28,7 +28,7 @@ class Archive
      *
      * @return bool If an object has a key in the archive.
      */
-    static public function has($object, $key)
+    public static function has($object, $key)
     {
         $oid = spl_object_hash($object);
 
@@ -45,7 +45,7 @@ class Archive
      *
      * @return mixed The value of the object key.
      */
-    static public function get($object, $key)
+    public static function get($object, $key)
     {
         return static::$archive[spl_object_hash($object)][$key];
     }
@@ -57,7 +57,7 @@ class Archive
      * @param string $key    The key.
      * @param mixed  $value  The value.
      */
-    static public function set($object, $key, $value)
+    public static function set($object, $key, $value)
     {
         static::$archive[spl_object_hash($object)][$key] = $value;
     }
@@ -68,7 +68,7 @@ class Archive
      * @param object $object The object.
      * @param string $key    The key.
      */
-    static public function remove($object, $key)
+    public static function remove($object, $key)
     {
         unset(static::$archive[spl_object_hash($object)][$key]);
     }
@@ -102,7 +102,7 @@ class Archive
      *
      * @return mixed The object key value or the default value.
      */
-    static public function getOrDefault($object, $key, $default)
+    public static function getOrDefault($object, $key, $default)
     {
         $oid = spl_object_hash($object);
 
@@ -118,7 +118,7 @@ class Archive
      *
      * @return array All objects data.
      */
-    static public function all()
+    public static function all()
     {
         return static::$archive;
     }
@@ -126,7 +126,7 @@ class Archive
     /**
      * Clear all objects data.
      */
-    static public function clear()
+    public static function clear()
     {
         static::$archive = array();
     }
@@ -138,7 +138,7 @@ class Archive
      *
      * @return bool If the object exists in the archive.
      */
-    static public function hasObject($object)
+    public static function hasObject($object)
     {
         return isset(static::$archive[spl_object_hash($object)]);
     }
@@ -150,7 +150,7 @@ class Archive
      *
      * @return array The object data in the archive.
      */
-    static public function getObject($object)
+    public static function getObject($object)
     {
         return static::$archive[spl_object_hash($object)];
     }
@@ -160,7 +160,7 @@ class Archive
      *
      * @param object $object The object.
      */
-    static public function removeObject($object)
+    public static function removeObject($object)
     {
         unset(static::$archive[spl_object_hash($object)]);
     }

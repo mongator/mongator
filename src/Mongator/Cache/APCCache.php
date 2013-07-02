@@ -27,7 +27,7 @@ class APCCache extends AbstractCache
     {
         $content = $this->pack($key, $value, $ttl);
         $string = serialize($content);
-        apc_store((string)$key, $string, $ttl);
+        apc_store((string) $key, $string, $ttl);
     }
 
     /**
@@ -49,7 +49,8 @@ class APCCache extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    public function info($key) {
+    public function info($key)
+    {
         if ( !$content = apc_fetch($key) ) {
             return false;
         }

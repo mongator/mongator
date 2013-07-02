@@ -36,8 +36,8 @@ class Mongator
     /**
      * Constructor.
      *
-     * @param \Mongator\MetadataFactory      $metadataFactory The metadata factory.
-     * @param mixed                          $loggerCallable  The logger callable (optional, null by default).
+     * @param \Mongator\MetadataFactory $metadataFactory The metadata factory.
+     * @param mixed                     $loggerCallable  The logger callable (optional, null by default).
      *
      * @api
      */

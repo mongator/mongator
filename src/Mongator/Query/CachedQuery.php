@@ -15,7 +15,6 @@ abstract class CachedQuery extends Query
 {
     protected $count;
 
-
     /**
      * Returns the data in cache.
      *
@@ -23,7 +22,8 @@ abstract class CachedQuery extends Query
      */
     public function getDataCache()
     {
-        $key = $this->generateKey(); 
+        $key = $this->generateKey();
+
         return $this->getRepository()->getMongator()->getDataCache()->get($key);
     }
 
@@ -33,7 +33,7 @@ abstract class CachedQuery extends Query
         $key = $this->generateKey();
         $metadata = $repository->getMetadata();
 
-        return $repository->getMongator()->getDataCache()->set($key, $data, (int)$metadata['cache']['ttl']);
+        return $repository->getMongator()->getDataCache()->set($key, $data, (int) $metadata['cache']['ttl']);
     }
 
     public function execute()
@@ -46,7 +46,7 @@ abstract class CachedQuery extends Query
 
         $result = parent::execute();
         $this->setDataCache($result);
-    
+
         return $result;
     }
 
@@ -60,7 +60,7 @@ abstract class CachedQuery extends Query
 
         $count = parent::execute()->count();
         $this->setDataCache($count);
-    
+
         return $count;
     }
 

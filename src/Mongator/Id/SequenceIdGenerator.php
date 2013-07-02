@@ -11,8 +11,6 @@
 
 namespace Mongator\Id;
 
-use Mongator\Document\Document;
-
 /**
  * Generates a sequence.
  *

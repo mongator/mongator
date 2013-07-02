@@ -66,19 +66,23 @@ class RepositoryMock extends Repository
         return $this->connection;
     }
 }
-    
-class FindByIdQueryMock extends Query {
+
+class FindByIdQueryMock extends Query
+{
     private $query;
-    public function __construct($query) {
+    public function __construct($query)
+    {
         $this->query = $query;
     }
 
-    public function all() {
+    public function all()
+    {
         return array('query' => $this->query);
     }
 }
 
-class FindByIdRepositoryMock extends RepositoryMock {
+class FindByIdRepositoryMock extends RepositoryMock
+{
     public function createQuery(array $criteria = array())
     {
         return new FindByIdQueryMock($criteria);
@@ -226,9 +230,9 @@ class RepositoryTest extends TestCase
         $this->assertSame($articles1, $repository->findById($ids));
 
         $ids = array(
-            (string)$articles[6]->getId(),
-            (string)$articles[7]->getId(),
-            (string)$articles[8]->getId(),
+            (string) $articles[6]->getId(),
+            (string) $articles[7]->getId(),
+            (string) $articles[8]->getId(),
         );
 
         $i = 6; $articles2 = array();
@@ -239,7 +243,6 @@ class RepositoryTest extends TestCase
 
         $this->assertSame($articles2, $repository->findById($ids));
     }
-
 
     public function testFindByIdCache()
     {
@@ -254,19 +257,19 @@ class RepositoryTest extends TestCase
 
         $identityMap->set($articles[0]->getId(), $articles[0]);
         $result = $repository->findById(array(
-            (string)$articles[0]->getId(),
-            (string)$articles[1]->getId()
+            (string) $articles[0]->getId(),
+            (string) $articles[1]->getId()
         ));
 
-        $this->assertFalse(in_array((string)$articles[0]->getId(), $result['query']['_id']['$in']));
-        $this->assertTrue(in_array((string)$articles[1]->getId(), $result['query']['_id']['$in']));
+        $this->assertFalse(in_array((string) $articles[0]->getId(), $result['query']['_id']['$in']));
+        $this->assertTrue(in_array((string) $articles[1]->getId(), $result['query']['_id']['$in']));
 
         $identityMap->set($articles[0]->getId(), $articles[0]);
         $identityMap->set($articles[1]->getId(), $articles[1]);
 
         $result = $repository->findById(array(
-            (string)$articles[0]->getId(),
-            (string)$articles[1]->getId()
+            (string) $articles[0]->getId(),
+            (string) $articles[1]->getId()
         ));
 
         $this->assertFalse(isset($result['query']));

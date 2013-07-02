@@ -24,8 +24,8 @@ abstract class Cache extends TestCase
 
     protected function tearDown()
     {
-    	if ( $this->cache ) $this->cache->clear();
-    	parent::tearDown();
+        if ( $this->cache ) $this->cache->clear();
+        parent::tearDown();
     }
 
     public function testCache()
@@ -71,7 +71,7 @@ abstract class Cache extends TestCase
         $this->assertFalse($this->cache->has($key1));
         $this->assertFalse($this->cache->has($key2));
     }
-    
+
     public function testCacheSet()
     {
         $key1 = 'foo';

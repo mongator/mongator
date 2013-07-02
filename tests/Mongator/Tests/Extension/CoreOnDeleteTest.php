@@ -12,7 +12,6 @@
 namespace Mongator\Tests\Extension;
 
 use Mongator\Tests\TestCase;
-use Mongator\Group\EmbeddedGroup;
 
 class CoreOnDeleteTest extends TestCase
 {

@@ -41,7 +41,7 @@ class QueryTest extends TestCase
         $this->assertFalse(isset($cache['fields']));
 
         $this->cache->set($this->query->getHash(), array('fields' => $fields = array('title' => 1, 'content' => 1)));
-        
+
         $cache = $this->query->getFullCache();
         $this->assertSame($fields, $cache['fields']);
 
@@ -100,7 +100,6 @@ class QueryTest extends TestCase
 
         $query = $this->query;
         $this->assertSame(array(), $query->getReferences());
-
 
         $references = array('user', 'author');
         $this->assertSame($query, $query->references($references));
@@ -313,7 +312,6 @@ class QueryTest extends TestCase
         $this->query->timeout($value);
     }
 
-
     public function testText()
     {
         $query = $this->query;
@@ -350,7 +348,6 @@ class QueryTest extends TestCase
         $this->assertNull($query->getText());
     }
 
-
     public function testAllCache()
     {
         $baseArticles = $this->createArticles(10);
@@ -370,7 +367,7 @@ class QueryTest extends TestCase
     public function testAll()
     {
         $baseArticles = $this->createArticles(10);
-        
+
         foreach ($baseArticles as $baseArticle) {
             $this->assertFalse($this->identityMap->has($baseArticle->getId()));
         }
@@ -576,7 +573,7 @@ class QueryTest extends TestCase
             $this->assertFalse($this->identityMap->has($article->getId()));
         }
 
-        $array = iterator_to_array($this->query); 
+        $array = iterator_to_array($this->query);
         $this->assertEquals(count($articles), count($array));
 
         $i = 0; $keys = array_keys($array);
@@ -761,8 +758,8 @@ class QueryTest extends TestCase
         $this->assertInstanceOf('Mongator\Query\Result', $query->execute());
         $this->assertSame(5, $query->count());
 
-        foreach($query->all() as $key => $document) {
-            $this->assertSame($key, (string)$document->getId());
+        foreach ($query->all() as $key => $document) {
+            $this->assertSame($key, (string) $document->getId());
             $this->assertInstanceOf('Model\Message', $document);
         }
     }
@@ -782,8 +779,8 @@ class QueryTest extends TestCase
 
         $this->assertSame(10, $query->count());
 
-        foreach($query->all() as $key => $document) {
-            $this->assertSame($key, (string)$document->getId());
+        foreach ($query->all() as $key => $document) {
+            $this->assertSame($key, (string) $document->getId());
             $this->assertInstanceOf('Model\Message', $document);
         }
     }

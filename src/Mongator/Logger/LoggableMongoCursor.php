@@ -133,7 +133,7 @@ class LoggableMongoCursor extends \MongoCursor
         if (!$info['started_iterating']) {
             if (!is_array($info['query'])) {
                 $info['query'] = array();
-            } else if (!isset($info['query']['$query'])) {
+            } elseif (!isset($info['query']['$query'])) {
                 $info['query'] = array('$query' => $info['query']);
             }
 
