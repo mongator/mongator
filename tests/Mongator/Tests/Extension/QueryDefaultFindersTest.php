@@ -92,6 +92,15 @@ class QueryDefaultFindersTest extends TestCase
         $this->assertFalse(method_exists($query, 'findBySerializeddata'));
     }
 
+    public function testFindByReferenceIds() {
+        $query = $this->createQuery();
+
+        $ids = array(new \MongoId(), new \MongoId(), new \MongoId());
+        $query->findByAuthorIds($ids);
+        $expected = array('author' => array('$in' => $ids));
+        $this->assertEquals($expected, $query->getCriteria());
+    }
+
     private function createQuery() {
         return $this->repository->createQuery();
     }

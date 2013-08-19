@@ -18,6 +18,13 @@
 
         return $this->mergeCriteria(array('{{field.dbName}}' => $id));
     }
+
+    private function findBy{{ name|ucfirst }}Ids(array $ids)
+    {
+        $ids = $this->getRepository()->idsToMongo($ids);
+        return $this->mergeCriteria(array('{{field.dbName}}' => array('$in' => $ids)));
+    }
+
 {% else %}
     {% if field.type not in ['serialized', 'bin_data', 'raw'] %}
     /**
@@ -59,6 +66,11 @@
     public function findBy{{ name|ucfirst }}($value)
     {
         return $this->findBy{{referenceOne.field|ucfirst}}($value);
+    }
+
+    public function findBy{{ name|ucfirst }}Ids(array $ids)
+    {
+        return $this->findBy{{referenceOne.field|ucfirst}}Ids($ids);
     }
 {% endfor %}
 
