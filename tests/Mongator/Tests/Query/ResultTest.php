@@ -15,7 +15,8 @@ use Mongator\Query\Result;
 
 class ResultTest extends TestCase
 {
-    public function testConstructFromArrayObject() {
+    public function testConstructFromArrayObject()
+    {
         $ao = new \ArrayObject(range(0,19));
         $result = new Result($ao);
 
@@ -32,7 +33,8 @@ class ResultTest extends TestCase
         $this->assertSame(20, $result->count());
     }
 
-    public function testConstructFromMongoCursor() {
+    public function testConstructFromMongoCursor()
+    {
         $articles = $this->createArticlesRaw(10);
 
         $query = new \Model\ArticleQuery($this->mongator->getRepository('Model\Article'));
@@ -43,13 +45,14 @@ class ResultTest extends TestCase
         $i = 0;
         foreach ($result as $key => $value) {
             $this->assertSame('Article' . $i++, $value['title']);
-            $this->assertSame($key, (string)$value['_id']);
+            $this->assertSame($key, (string) $value['_id']);
         }
 
         $this->assertSame(10, $result->count());
     }
 
-    public function testSetCountInteger() {
+    public function testSetCountInteger()
+    {
         $ao = new \ArrayObject(range(0,19));
         $result = new Result($ao);
 
@@ -57,7 +60,8 @@ class ResultTest extends TestCase
         $this->assertSame(50, $result->count());
     }
 
-    public function testSetCountClosure() {
+    public function testSetCountClosure()
+    {
         $ao = new \ArrayObject(range(0,19));
         $result = new Result($ao);
 
@@ -65,7 +69,8 @@ class ResultTest extends TestCase
         $this->assertSame(100, $result->count());
     }
 
-    public function testSerialize() {
+    public function testSerialize()
+    {
         $ao = new \ArrayObject(range(0,2));
         $result = new Result($ao);
 
@@ -75,7 +80,8 @@ class ResultTest extends TestCase
         $this->assertSame($expected, serialize($result));
     }
 
-    public function testUnSerialize() {
+    public function testUnSerialize()
+    {
         $ao = new \ArrayObject(range(0,2));
         $expected = new Result($ao);
 

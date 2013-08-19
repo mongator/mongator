@@ -27,7 +27,7 @@ class MemcachedCacheTest extends Cache
         if ( !$memcached->addServer('127.0.0.1', 11211) ) {
             $this->markTestSkipped(
               'unable to connect to localhost memcached server'
-            );        
+            );
         }
 
         return new MemcachedCache($memcached);

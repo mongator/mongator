@@ -325,10 +325,10 @@ class CoreRepositoryTest extends TestCase
             ->getDefaultConnection()
             ->getMongo()->admin;
 
-        $admin->command(array( 
+        $admin->command(array(
             'setParameter' => 1,
-            'textSearchEnabled' => 1 
-        )); 
+            'textSearchEnabled' => 1
+        ));
 
         $this->mongator->getRepository('Model\Article')->ensureIndexes();
 

@@ -36,7 +36,7 @@ class MemcachedCache extends AbstractCache
      */
     public function has($key)
     {
-        return (boolean)$this->memcached->get($key);
+        return (boolean) $this->memcached->get($key);
     }
 
     /**
@@ -49,8 +49,8 @@ class MemcachedCache extends AbstractCache
 
         $string = serialize($content);
 
-        if ( (int)$ttl != 0 ) $ttl = time() + $ttl;
-        $this->memcached->set($key, $string, (int)$ttl);
+        if ( (int) $ttl != 0 ) $ttl = time() + $ttl;
+        $this->memcached->set($key, $string, (int) $ttl);
     }
 
     /**
@@ -58,12 +58,12 @@ class MemcachedCache extends AbstractCache
      */
     public function remove($key)
     {
-        return (boolean)$this->memcached->delete($key);
+        return (boolean) $this->memcached->delete($key);
     }
 
     /**
      * {@inheritdoc}
-     */ 
+     */
     public function clear()
     {
         foreach ($this->keys as $key) {

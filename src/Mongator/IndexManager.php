@@ -82,15 +82,15 @@ class IndexManager
         $set = $this->getIndexInfo();
         unset($set['_id_1']);
 
-        $present = array(); 
+        $present = array();
         $missing = array();
 
-        foreach( $this->config as $index ) {
+        foreach ($this->config as $index) {
             if ( !isset($index['options']) ) $index['options'] = array();
 
             $name = $this->generateIndexKeyFromConfig($index);
             if ( isset($set[$name]) ) {
-                $present[$name] = $index; 
+                $present[$name] = $index;
                 unset($set[$name]);
             } else {
                 $missing[$name] = $index;
@@ -113,16 +113,17 @@ class IndexManager
      *
      * @api
      */
-    public function commit($delete = true) {
+    public function commit($delete = true)
+    {
         $diff = $this->getDiff();
 
-        if ( $delete ) {
-            foreach($diff['unknown'] as $index) {
+        if ($delete) {
+            foreach ($diff['unknown'] as $index) {
                 $this->deleteIndex($index['name']);
             }
         }
 
-        foreach($diff['missing'] as $name => $index) {
+        foreach ($diff['missing'] as $name => $index) {
             $this->ensureIndex($index['keys'], $index['options']);
         }
 
@@ -132,7 +133,7 @@ class IndexManager
     private function deleteIndex($name)
     {
         $command = array(
-            'deleteIndexes' => $this->collection->getName(), 
+            'deleteIndexes' => $this->collection->getName(),
             'index' => $name
         );
 
@@ -145,7 +146,7 @@ class IndexManager
             ));
         }
 
-        if ( (int)$result['ok'] != 1 ) {
+        if ( (int) $result['ok'] != 1 ) {
             throw new \RuntimeException(sprintf(
                 'Unable to delete index "%s" at collection %s, message "%s"',
                 $name, $this->collection->getName(), $result['errmsg']
@@ -170,7 +171,7 @@ class IndexManager
     private function getIndexInfo()
     {
         $indexes = array();
-        foreach( $this->collection->getIndexInfo() as $index ) {
+        foreach ( $this->collection->getIndexInfo() as $index ) {
             $name = $this->generateIndexKeyFromDB($index);
             $indexes[$name] = $index;
         }
@@ -195,8 +196,7 @@ class IndexManager
             $keys = $options['weights'];
         }
 
-
-       foreach($keys as $key => $value) {
+       foreach ($keys as $key => $value) {
             if ( is_null($value) ) $hash[] = sprintf('%s_1', $key);
             else if ( is_numeric($value) ) $hash[] = sprintf('%s_%d', $key, $value);
             else $hash[] = sprintf('%s_%s', $key, $value);
@@ -204,19 +204,20 @@ class IndexManager
 
         if ( isset($options['unique']) ) {
             $hash[] = sprintf('unique_%d', $options['unique']);
-        } 
+        }
 
         if ( isset($options['sparse']) ) {
             $hash[] = sprintf('sparse_%d', $options['sparse']);
-        } 
+        }
 
         if ( isset($options['language']) ) {
             $hash[] = sprintf('language_%d', $options['language']);
-        } else if ( isset($options['default_language']) ) {
+        } elseif ( isset($options['default_language']) ) {
             $hash[] = sprintf('language_%d', $options['default_language']);
-        } 
+        }
 
         sort($hash);
+
         return implode('_', $hash);
     }
 }

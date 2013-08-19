@@ -45,7 +45,6 @@ class Mongator extends \Twig_Extension
         );
     }
 
-
     public function MongatorIdGenerator($configClass, $id, $indent = 8)
     {
         $idGenerator = IdGeneratorContainer::get($configClass['idGenerator']['name']);
@@ -97,9 +96,9 @@ class Mongator extends \Twig_Extension
         return 'Mongator';
     }
 
-    static private function indentCode($code, $indent)
+    private static function indentCode($code, $indent)
     {
         return str_replace("\n", "\n".str_repeat(' ', $indent), $code);
     }
-    
+
 }

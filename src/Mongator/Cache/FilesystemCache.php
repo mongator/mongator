@@ -88,12 +88,12 @@ class FilesystemCache extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    public function info($key) {
+    public function info($key)
+    {
         if ( isset($this->data[$key]) ) return $this->data[$key];
 
         $file = $this->dir.'/'.$key.'.php';
         if ( !file_exists($file) ) return null;
-
         return $this->data[$key] = require($file);
     }
 }

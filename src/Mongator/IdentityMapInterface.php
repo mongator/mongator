@@ -30,7 +30,7 @@ interface IdentityMapInterface
      *
      * @api
      */
-    function set($id, Document $document);
+    public function set($id, Document $document);
 
     /**
      * Returns if exists a document.
@@ -41,7 +41,7 @@ interface IdentityMapInterface
      *
      * @api
      */
-    function has($id);
+    public function has($id);
 
     /**
      * Returns a document.
@@ -52,7 +52,7 @@ interface IdentityMapInterface
      *
      * @api
      */
-    function get($id);
+    public function get($id);
 
     /**
      * Returns all documents.
@@ -61,7 +61,7 @@ interface IdentityMapInterface
      *
      * @api
      */
-    function all();
+    public function all();
 
     /**
      * Returns all the documents by reference.
@@ -79,12 +79,12 @@ interface IdentityMapInterface
      *
      * @api
      */
-    function remove($id);
+    public function remove($id);
 
     /**
      * Clear the documents.
      *
      * @api
      */
-    function clear();
+    public function clear();
 }

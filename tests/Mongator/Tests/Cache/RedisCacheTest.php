@@ -27,7 +27,7 @@ class RedisCacheTest extends Cache
         if ( !$connection = $redis->pconnect('127.0.0.1') ) {
             $this->markTestSkipped(
               'unable to connect to localhost redis server'
-            );        
+            );
         }
 
         return new RedisCache($redis);

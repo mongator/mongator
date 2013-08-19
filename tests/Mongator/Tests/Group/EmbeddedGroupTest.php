@@ -59,7 +59,7 @@ class EmbeddedGroupTest extends TestCase
         $group->setSavedData($data = array(array('foo' => 'bar'), array('bar' => 'foo')));
         $this->assertSame($data, $group->getSavedData());
     }
-    
+
     public function testDuplicateSplObjectHash()
     {
         $group = new EmbeddedGroup('Model\Comment');
@@ -72,7 +72,8 @@ class EmbeddedGroupTest extends TestCase
         $this->assertEquals(0, count($group->getAdd()));
     }
 
-    public function testDataAfterDocumentSave() {
+    public function testDataAfterDocumentSave()
+    {
         $article = $this->mongator->create('Model\Article');
         $group = $article->getComments();
         $comments = array();

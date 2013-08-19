@@ -21,9 +21,9 @@ use Mongator\Type\Container as TypeContainer;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
-    static protected $staticConnection;
-    static protected $staticGlobalConnection;
-    static protected $staticMongator;
+    protected static $staticConnection;
+    protected static $staticGlobalConnection;
+    protected static $staticMongator;
 
     protected $metadataClass = 'Model\Mapping\Metadata';
     protected $server = 'mongodb://localhost:27017';
@@ -155,9 +155,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
             );
         }
         $result = $this->mongator->getRepository('Model\Message')->getCollection()->batchInsert($messages);
+
         return $messages;
     }
-
 
     protected function createCachedRaw($nb)
     {
@@ -174,7 +174,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         return $articles;
     }
-
 
     protected function removeFromCollection($document)
     {

@@ -129,4 +129,3 @@ class CoreIdGeneratorTest extends TestCase
         $this->assertTrue($identityMap->has($id));
     }
 }
-

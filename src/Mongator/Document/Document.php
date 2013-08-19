@@ -234,7 +234,8 @@ abstract class Document extends AbstractDocument
      *
      * @param array $fields an associative array($f1 => 1, $f2 => 1, ...)
      */
-    protected function setQueryFields(array $fields) {
+    protected function setQueryFields(array $fields)
+    {
         $this->queryFields = array();
         foreach ($fields as $field => $included) {
             if ($included) $this->queryFields[$field] = 1;
@@ -244,7 +245,8 @@ abstract class Document extends AbstractDocument
     /**
      * {@inheritdoc }
      */
-    public function isFieldInQuery($field) {
+    public function isFieldInQuery($field)
+    {
         if ($this->queryFields === array()) {
             return true;
         }
@@ -255,7 +257,8 @@ abstract class Document extends AbstractDocument
     /**
      * {@inheritdoc }
      */
-    public function loadFull() {
+    public function loadFull()
+    {
         if ($this->queryFields === array()) return true;
 
         $data = $this->getRepository()->getCollection()->findOne(array('_id' => $this->getId()));
@@ -264,6 +267,7 @@ abstract class Document extends AbstractDocument
         }
         $this->setDocumentData($data);
         $this->queryFields = array();
+
         return true;
     }
 }

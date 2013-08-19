@@ -27,7 +27,7 @@ interface UnitOfWorkInterface
      *
      * @api
      */
-    function persist($documents);
+    public function persist($documents);
 
     /**
      * Remove a document.
@@ -36,19 +36,19 @@ interface UnitOfWorkInterface
      *
      * @api
      */
-    function remove($documents);
+    public function remove($documents);
 
     /**
      * Commit pending persist and remove operations.
      *
      * @api
      */
-    function commit();
+    public function commit();
 
     /**
      * Clear the pending operations
      *
      * @api
      */
-    function clear();
+    public function clear();
 }

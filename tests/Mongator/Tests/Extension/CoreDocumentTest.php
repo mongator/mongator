@@ -241,7 +241,7 @@ class CoreDocumentTest extends TestCase
                 $category = $this->mongator->create('Model\Category');
                 $category->setId($id);
                 $category->setIsNew(false);
-                $identityMap->set((string)$id, $category);
+                $identityMap->set((string) $id, $category);
             }
         }
 
@@ -508,7 +508,7 @@ class CoreDocumentTest extends TestCase
         $info = $source->getInfo();
         $cache = $query->getFullCache();
         $this->assertSame(array('source.name' => 1, 'source.text' => 1, 'source.note' => 1), $cache['fields']);
-        
+
         $info->getName();
         $cache = $query->getFullCache();
         $this->assertSame(array(
@@ -989,7 +989,7 @@ class CoreDocumentTest extends TestCase
             ),
         );
         $this->mongator->getRepository('Model\Article')->getCollection()->insert($articleRaw);
- 
+
         $this->mongator->getRepository('Model\Article')->getIdentityMap()->clear();
         $article = $this->mongator->getRepository('Model\Article')->findOneById($articleRaw['_id']);
 

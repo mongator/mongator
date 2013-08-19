@@ -19,10 +19,12 @@ class FilesystemCacheTest extends Cache
     protected function getCacheDriver()
     {
         $this->folder = sys_get_temp_dir().'/Mongator_filesystem_cache_tests'.mt_rand(111111, 999999);
+
         return new FilesystemCache($this->folder);
     }
 
-    public function testGetWithFileCache() {
+    public function testGetWithFileCache()
+    {
         $this->cache->set('read', 'foo');
         $this->assertSame('foo', $this->cache->get('read'));
 

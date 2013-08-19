@@ -11,7 +11,6 @@
 
 namespace Mongator\Extension;
 
-use Mandango\Mondator\Definition\Method;
 use Mandango\Mondator\Extension;
 
 /**

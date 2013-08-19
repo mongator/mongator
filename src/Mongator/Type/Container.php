@@ -20,7 +20,7 @@ namespace Mongator\Type;
  */
 class Container
 {
-    static private $map = array(
+    private static $map = array(
         'bin_data'       => 'Mongator\Type\BinDataType',
         'boolean'        => 'Mongator\Type\BooleanType',
         'date'           => 'Mongator\Type\DateType',
@@ -33,7 +33,7 @@ class Container
         'string'         => 'Mongator\Type\StringType',
     );
 
-    static private $types = array();
+    private static $types = array();
 
     /**
      * Returns if exists a type by name.
@@ -44,7 +44,7 @@ class Container
      *
      * @api
      */
-    static public function has($name)
+    public static function has($name)
     {
         return isset(static::$map[$name]);
     }
@@ -60,7 +60,7 @@ class Container
      *
      * @api
      */
-    static public function add($name, $class)
+    public static function add($name, $class)
     {
         if (static::has($name)) {
             throw new \InvalidArgumentException(sprintf('The type "%s" already exists.', $name));
@@ -85,7 +85,7 @@ class Container
      *
      * @api
      */
-    static public function get($name)
+    public static function get($name)
     {
         if (!isset(static::$types[$name])) {
             if (!static::has($name)) {
@@ -107,7 +107,7 @@ class Container
      *
      * @api
      */
-    static public function remove($name)
+    public static function remove($name)
     {
         if (!static::has($name)) {
             throw new \InvalidArgumentException(sprintf('The type "%s" does not exists.', $name));
@@ -121,7 +121,7 @@ class Container
      *
      * @api
      */
-    static public function reset()
+    public static function reset()
     {
         static::$map = array(
             'bin_data'       => 'Mongator\Type\BinDataType',

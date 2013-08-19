@@ -173,7 +173,6 @@ class DocumentTest extends TestCase
 
         $this->assertEquals('baz', $article->getContent()); // This will cause a query
 
-
         $this->mongator->getRepository('Model\Article')->getCollection()->remove($article->getId());
 
         // No more queries from now on

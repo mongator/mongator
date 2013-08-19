@@ -502,9 +502,9 @@ abstract class Query implements \Countable, \IteratorAggregate
     /**
      * Set the text search criterias. The text methods requires a text index.
      *
-     * @param string $search A string of terms
-     * @param int $requiredScore (optional) All the documents with less score will be omitted
-     * @param int $language (optional) Specify the language that determines for the search the list of stop words and the rules for the stemmer and tokenizer. If not specified, the search uses the default language of the index.
+     * @param string $search        A string of terms
+     * @param int    $requiredScore (optional) All the documents with less score will be omitted
+     * @param int    $language      (optional) Specify the language that determines for the search the list of stop words and the rules for the stemmer and tokenizer. If not specified, the search uses the default language of the index.
      *
      * @return \Mongator\Query\Query The query instance (fluent interface).
      *
@@ -512,7 +512,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      */
     public function text($search, $requiredScore = null, $language = null)
     {
-        if ( $search === null ) {
+        if ($search === null) {
             $this->text = null;
         } else {
             $this->text = array(
@@ -636,28 +636,28 @@ abstract class Query implements \Countable, \IteratorAggregate
     }
 
     /**
-     * Create an ArrayObject with a result's text command of the query. 
+     * Create an ArrayObject with a result's text command of the query.
      *
      * @return Result A iterable object with the data of the query.
      */
     public function createResult()
     {
-        if ( !$this->text ) {
-            return false;  
-        } 
+        if (!$this->text) {
+            return false;
+        }
 
         list($search, $requiredScore, $language) = array_values($this->text);
 
         $limit = $this->limit;
-        if ( $this->skip && $this->limit ) { 
+        if ($this->skip && $this->limit) {
             $limit += $this->skip;
-        } 
+        }
 
         $options = array();
         if ( $this->timeout ) $options['timeout'] = $this->timeout;
 
         $fields = array();
-        foreach($this->fields as $key => $value) {
+        foreach ($this->fields as $key => $value) {
             if ( !is_numeric($value) ) $fields[$value] = 1;
             else $fields[$key] = $value;
         }
@@ -672,11 +672,11 @@ abstract class Query implements \Countable, \IteratorAggregate
         );
 
         $result = new \ArrayObject;
-        foreach($response['results'] as $index => $document) {
+        foreach ($response['results'] as $index => $document) {
             if ( $requiredScore && $requiredScore > $document['score'] ) continue;
             if ( $this->skip && $index < $this->skip ) continue;
 
-            $result[(string)$document['obj']['_id']] = $document['obj'];
+            $result[(string) $document['obj']['_id']] = $document['obj'];
         }
 
         return new Result($result);
@@ -690,7 +690,7 @@ abstract class Query implements \Countable, \IteratorAggregate
      */
     public function execute()
     {
-        if  ( $this->text ) {
+        if ($this->text) {
             return $this->createResult();
         } else {
             return $this->createCursor();
@@ -702,17 +702,17 @@ abstract class Query implements \Countable, \IteratorAggregate
      *
      * @return string md5
      */
-    public function generateKey($includeHash = true) {
+    public function generateKey($includeHash = true)
+    {
         $keys = array();
 
         $keys['vars'] = get_object_vars($this);
         $keys['class'] = get_class($this);
         $keys['metadata'] = $this->repository->getMetadata();
         $keys['dbname'] = $this->repository->getConnection()->getDbName();
-        
-        unset($keys['vars']['repository']); 
-        if ( !$includeHash ) unset($keys['vars']['hash']);
 
+        unset($keys['vars']['repository']);
+        if ( !$includeHash ) unset($keys['vars']['hash']);
         return md5(serialize($keys));
     }
 }

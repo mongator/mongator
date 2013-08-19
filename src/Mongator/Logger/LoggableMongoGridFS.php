@@ -35,7 +35,6 @@ class LoggableMongoGridFS extends \MongoGridFS
         parent::__construct($db, $prefix);
     }
 
-
     /**
      * Returns the LoggableMongoDB.
      *
@@ -304,7 +303,6 @@ class LoggableMongoGridFS extends \MongoGridFS
 
         return $cursor->getNext();
     }
-
 
     /**
      * getDBRef.

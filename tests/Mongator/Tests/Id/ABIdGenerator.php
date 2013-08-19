@@ -5,11 +5,13 @@ use Mongator\Id\BaseIdGenerator;
 
 class ABIdGenerator extends BaseIdGenerator
 {
-    public function getCode(array $options) {
+    public function getCode(array $options)
+    {
         return '%id% = new \Mongator\Tests\Id\ABId();';
     }
 
-    public function getToMongoCode() {
+    public function getToMongoCode()
+    {
         return <<<EOF
         if (!(%id% instanceof Mongator\Id\ABId)) {
             %id% = new Mongator\Tests\Id\ABId(%id%);
@@ -17,7 +19,8 @@ class ABIdGenerator extends BaseIdGenerator
 EOF;
     }
 
-    public function getToPHPCode() {
+    public function getToPHPCode()
+    {
         return '%id% = new Mongator\Tests\Id\ABId(%id%);';
     }
 }

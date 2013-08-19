@@ -18,13 +18,13 @@ namespace Mongator\Id;
  */
 class IdGeneratorContainer
 {
-    static private $map = array(
+    private static $map = array(
         'none'     => 'Mongator\Id\NoneIdGenerator',
         'native'   => 'Mongator\Id\NativeIdGenerator',
         'sequence' => 'Mongator\Id\SequenceIdGenerator',
     );
 
-    static private $idGenerators = array();
+    private static $idGenerators = array();
 
     /**
      * Returns whether or not an id generator exists.
@@ -33,7 +33,7 @@ class IdGeneratorContainer
      *
      * @return Boolean Whether or not the id generator exists.
      */
-    static public function has($name)
+    public static function has($name)
     {
         return isset(static::$map[$name]);
     }
@@ -47,7 +47,7 @@ class IdGeneratorContainer
      * @throws \InvalidArgumentException If the id generator already exists.
      * @throws \InvalidArgumentException If the class is not a subclass of Mongator\Id\IdGenerator.
      */
-    static public function add($name, $class)
+    public static function add($name, $class)
     {
         if (static::has($name)) {
             throw new \InvalidArgumentException(sprintf('The id generator "%s" already exists.', $name));
@@ -70,7 +70,7 @@ class IdGeneratorContainer
      *
      * @throws \InvalidArgumentException If the id generator does not exists.
      */
-    static public function get($name)
+    public static function get($name)
     {
         if (!isset(static::$idGenerators[$name])) {
             if (!static::has($name)) {
@@ -90,7 +90,7 @@ class IdGeneratorContainer
      *
      * @throws \InvalidArgumentException If the id generator does not exists.
      */
-    static public function remove($name)
+    public static function remove($name)
     {
         if (!static::has($name)) {
             throw new \InvalidArgumentException(sprintf('The id generator "%s" does not exists.', $name));
@@ -102,7 +102,7 @@ class IdGeneratorContainer
     /**
      * Reset the id generators.
      */
-    static public function reset()
+    public static function reset()
     {
         static::$map = array(
             'none'     => 'Mongator\Id\NoneIdGenerator',

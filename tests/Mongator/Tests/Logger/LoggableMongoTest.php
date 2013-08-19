@@ -42,7 +42,6 @@ class LoggableMongoTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($logDefault, $mongo->getLogDefault());
     }
 
-
     public function testLog()
     {
         $mongo = new LoggableMongo();

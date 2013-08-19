@@ -45,8 +45,7 @@ class IndexManagerTest extends TestCase
         $this->repository->getCollection()->ensureIndex($present['keys'], $present['options']);
         $this->repository->getCollection()->ensureIndex($unknown['keys']);
 
-
-        $diff = $this->indexManager->getDiff(); 
+        $diff = $this->indexManager->getDiff();
         $this->assertCount(9, $diff['missing']);
         $this->assertCount(1, $diff['present']);
         $this->assertCount(1, $diff['unknown']);

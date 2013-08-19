@@ -23,13 +23,13 @@ class APCCacheTest extends Cache
             );
         }
 
-        if ( (boolean)ini_get('apc.enabled') == false ) {
+        if ( (boolean) ini_get('apc.enabled') == false ) {
             $this->markTestSkipped(
               'apc.enable must be true'
             );
         }
 
-        if ( (boolean)ini_get('apc.enable_cli') == false ) {
+        if ( (boolean) ini_get('apc.enable_cli') == false ) {
             $this->markTestSkipped(
               'apc.enable_cli must be true'
             );

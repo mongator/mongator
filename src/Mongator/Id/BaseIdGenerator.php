@@ -11,8 +11,6 @@
 
 namespace Mongator\Id;
 
-use Mongator\Document\Document;
-
 /**
  * BaseIdGenerator.
  *
@@ -38,7 +36,8 @@ abstract class BaseIdGenerator
      * Returns the code to convert a mongo id to the id used in Mongator. Nothing done by default
      *
      */
-    public function getToPHPCode() {
+    public function getToPHPCode()
+    {
         return '';
     }
 }
