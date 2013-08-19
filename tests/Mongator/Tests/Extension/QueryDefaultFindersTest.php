@@ -84,6 +84,14 @@ class QueryDefaultFindersTest extends TestCase
         $this->createQuery()->findByAuthor((string)(new \MongoId()));
     }
 
+    public function testIgnoreUnsearchableTypes() {
+        $query = $this->createQuery();
+
+        $this->assertFalse(method_exists($query, 'findByBindata'));
+        $this->assertFalse(method_exists($query, 'findByRawdata'));
+        $this->assertFalse(method_exists($query, 'findBySerializeddata'));
+    }
+
     private function createQuery() {
         return $this->repository->createQuery();
     }

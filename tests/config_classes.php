@@ -449,6 +449,9 @@ return array(
             'avg' => 'float',
             'date' => 'date',
             'isActive' => 'boolean',
+            'bindata' => 'bin_data',
+            'rawdata' => 'raw',
+            'serializeddata' => 'serialized',
         ),
         'referencesOne' => array(
             'author'      => array('class' => 'Model\Author'),

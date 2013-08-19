@@ -19,7 +19,7 @@
         return $this->mergeCriteria(array('{{field.dbName}}' => $id));
     }
 {% else %}
-    {% if field.type != 'serialized' %}
+    {% if field.type not in ['serialized', 'bin_data', 'raw'] %}
     /**
      * Find by "{{ name }}" field.
      *
