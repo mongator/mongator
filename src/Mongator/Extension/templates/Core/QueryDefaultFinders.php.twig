@@ -62,16 +62,30 @@
 {% endif %}
 {% endfor %}
 
-{% for name, referenceOne in config_class.referencesOne %}
+{% for name, reference in config_class.referencesOne %}
     public function findBy{{ name|ucfirst }}($value)
     {
-        return $this->findBy{{referenceOne.field|ucfirst}}($value);
+        return $this->findBy{{reference.field|ucfirst}}($value);
     }
 
     public function findBy{{ name|ucfirst }}Ids(array $ids)
     {
-        return $this->findBy{{referenceOne.field|ucfirst}}Ids($ids);
+        return $this->findBy{{reference.field|ucfirst}}Ids($ids);
     }
+
+{% endfor %}
+
+{% for name, reference in config_class.referencesMany %}
+    public function findBy{{ name|ucfirst }}($value)
+    {
+        return $this->findBy{{reference.field|ucfirst}}($value);
+    }
+
+    public function findBy{{ name|ucfirst }}Ids(array $ids)
+    {
+        return $this->findBy{{reference.field|ucfirst}}Ids($ids);
+    }
+
 {% endfor %}
 
     protected function throwBadReferenceException()

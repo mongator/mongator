@@ -73,16 +73,26 @@ class QueryDefaultFindersTest extends TestCase
         $this->createQuery()->findByDate('2013-05-17');
     }
 
-    public function testFindByReference()
+    public function testFindByReferencesOne()
+    {
+        $this->doTestFindByReference('findByAuthor', 'Model\Author', 'author');
+    }
+
+    public function testFindByReferencesMany()
+    {
+        $this->doTestFindByReference('findByCategories', 'Model\Category', 'categories');
+    }
+
+    private function doTestFindByReference($method, $class, $field)
     {
         $id = new \MongoId();
-        $expected = array('author' => $id);
+        $expected = array($field => $id);
 
-        $query = $this->createQuery()->findByAuthor($id);
+        $query = $this->createQuery()->{$method}($id);
         $this->assertEquals($expected, $query->getCriteria());
 
-        $author = $this->mongator->create('Model\Author')->setId($id);
-        $query = $this->createQuery()->findByAuthor($id);
+        $object = $this->mongator->create($class)->setId($id);
+        $query = $this->createQuery()->{$method}($id);
         $this->assertEquals($expected, $query->getCriteria());
     }
 
@@ -101,13 +111,23 @@ class QueryDefaultFindersTest extends TestCase
         $this->assertFalse(method_exists($query, 'findBySerializeddata'));
     }
 
-    public function testFindByReferenceIds()
+    public function testFindByReferencesOneIds()
+    {
+        $this->doTestFindByReferenceIds('findByAuthorIds', 'author');
+    }
+
+    public function testFindByReferencesManyIds()
+    {
+        $this->doTestFindByReferenceIds('findByCategoriesIds', 'categories');
+    }
+
+    private function doTestFindByReferenceIds($method, $field)
     {
         $query = $this->createQuery();
 
         $ids = array(new \MongoId(), new \MongoId(), new \MongoId());
-        $query->findByAuthorIds($ids);
-        $expected = array('author' => array('$in' => $ids));
+        $query->{$method}($ids);
+        $expected = array($field => array('$in' => $ids));
         $this->assertEquals($expected, $query->getCriteria());
     }
 
