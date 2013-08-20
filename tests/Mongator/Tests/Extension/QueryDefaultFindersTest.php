@@ -15,6 +15,27 @@ class QueryDefaultFindersTest extends TestCase
         $this->repository = $this->mongator->getRepository('Model\FieldTypeExamples');
     }
 
+    public function testFindById()
+    {
+        $id = new \MongoId();
+        $query = $this->createQuery()->findById($id);
+        $this->assertEquals(array('_id' => $id), $query->getCriteria());
+    }
+
+    public function testFindByIdUsesIdToMongo()
+    {
+        $id = new \MongoId();
+        $query = $this->createQuery()->findById((string) $id);
+        $this->assertEquals(array('_id' => $id), $query->getCriteria());
+    }
+
+    public function testFindByIds()
+    {
+        $ids = array(new \MongoId(), new \MongoId(), new \MongoId());
+        $query = $this->createQuery()->findByIds($ids);
+        $this->assertEquals(array('_id' => array('$in' => $ids)), $query->getCriteria());
+    }
+
     public function testFindByFields()
     {
         $query = $this->createQuery()

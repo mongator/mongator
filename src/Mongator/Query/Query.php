@@ -91,6 +91,30 @@ abstract class Query implements \Countable, \IteratorAggregate
     }
 
     /**
+     * Adds criteria to find by id
+     *
+     * @param mixed $id the id to find
+     *
+     */
+    public function findById($id)
+    {
+        $id = $this->getRepository()->idToMongo($id);
+        return $this->mergeCriteria(array('_id' => $id));
+    }
+
+    /**
+     * Adds criteria to find by id
+     *
+     * @param array $ids the array of ids to find
+     *
+     */
+    public function findByIds(array $ids)
+    {
+        $ids = $this->getRepository()->idsToMongo($ids);
+        return $this->mergeCriteria(array('_id' => array('$in' => $ids)));
+    }
+
+    /**
      * Returns the repository.
      *
      * @return \Mongator\Repository The repository.
