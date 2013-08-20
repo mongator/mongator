@@ -3,19 +3,20 @@
 namespace Mongator\Tests\Extension;
 
 use Mongator\Tests\TestCase;
-use Mongator\Group\EmbeddedGroup;
 use Mongator\Query\Query;
 
 class QueryDefaultFindersTest extends TestCase
 {
     private $repository;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->repository = $this->mongator->getRepository('Model\FieldTypeExamples');
     }
 
-    public function testFindByFields() {
+    public function testFindByFields()
+    {
         $query = $this->createQuery()
             ->findByName('myname')
             ->findByPosition(3)
@@ -32,7 +33,8 @@ class QueryDefaultFindersTest extends TestCase
         );
     }
 
-    public function testDateCasting() {
+    public function testDateCasting()
+    {
         $date = new \DateTime();
         $mongoDate = new \MongoDate($date->getTimestamp());
         $expected = array('date' => $mongoDate);
@@ -47,27 +49,32 @@ class QueryDefaultFindersTest extends TestCase
         $this->assertEquals($expected, $query->getCriteria());
     }
 
-    public function testIntTypecheck() {
+    public function testIntTypecheck()
+    {
         $this->setExpectedException('\Exception');
         $this->createQuery()->findByPosition('1');
     }
 
-    public function testFloatTypecheck() {
+    public function testFloatTypecheck()
+    {
         $this->setExpectedException('\Exception');
         $this->createQuery()->findByAvg('1');
     }
 
-    public function testStringTypecheck() {
+    public function testStringTypecheck()
+    {
         $this->setExpectedException('\Exception');
         $this->createQuery()->findByName(33);
     }
 
-    public function testDateTypecheck() {
+    public function testDateTypecheck()
+    {
         $this->setExpectedException('\Exception');
         $this->createQuery()->findByDate('2013-05-17');
     }
 
-    public function testFindByReference() {
+    public function testFindByReference()
+    {
         $id = new \MongoId();
         $expected = array('author' => $id);
 
@@ -79,12 +86,14 @@ class QueryDefaultFindersTest extends TestCase
         $this->assertEquals($expected, $query->getCriteria());
     }
 
-    public function testFindByReferenceTypecheck() {
+    public function testFindByReferenceTypecheck()
+    {
         $this->setExpectedException('\Exception');
-        $this->createQuery()->findByAuthor((string)(new \MongoId()));
+        $this->createQuery()->findByAuthor((string) (new \MongoId()));
     }
 
-    public function testIgnoreUnsearchableTypes() {
+    public function testIgnoreUnsearchableTypes()
+    {
         $query = $this->createQuery();
 
         $this->assertFalse(method_exists($query, 'findByBindata'));
@@ -92,7 +101,8 @@ class QueryDefaultFindersTest extends TestCase
         $this->assertFalse(method_exists($query, 'findBySerializeddata'));
     }
 
-    public function testFindByReferenceIds() {
+    public function testFindByReferenceIds()
+    {
         $query = $this->createQuery();
 
         $ids = array(new \MongoId(), new \MongoId(), new \MongoId());
@@ -101,8 +111,8 @@ class QueryDefaultFindersTest extends TestCase
         $this->assertEquals($expected, $query->getCriteria());
     }
 
-    private function createQuery() {
+    private function createQuery()
+    {
         return $this->repository->createQuery();
     }
 }
-
