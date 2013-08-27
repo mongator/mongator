@@ -456,5 +456,8 @@ return array(
         'referencesOne' => array(
             'author'      => array('class' => 'Model\Author'),
         ),
+        'referencesMany' => array(
+            'categories' => array('class' => 'Model\Category'),
+        ),
     ),
 );
