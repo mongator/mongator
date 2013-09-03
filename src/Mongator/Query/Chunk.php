@@ -29,7 +29,7 @@ class Chunk implements ChunkInterface
     {
         $this->applyTo($query);
 
-        $result = new ChunkResult($query->all());
+        $result = $this->createChunkResult($query->all());
         $result->setTotal(function() use ($query) {
             return $query->count();
         });
@@ -48,6 +48,11 @@ class Chunk implements ChunkInterface
                 ->limit($this->pageSize);
 
         return $query;
+    }
+
+    protected function createChunkResult($data)
+    {
+        return new ChunkResult($data);
     }
 
     private function applySort($query)

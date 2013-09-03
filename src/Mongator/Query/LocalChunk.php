@@ -76,7 +76,7 @@ abstract class LocalChunk implements ChunkInterface
         list($total, $selectedIds) = $this->getSelectedIds($query);
         $data = $this->findByIds($query, $selectedIds);
 
-        $result = new ChunkResult($data);
+        $result = $this->createChunkResult($data);
         $result->setTotal($total);
 
         return $result;
@@ -201,5 +201,10 @@ abstract class LocalChunk implements ChunkInterface
         foreach ($ids as $id) $data[] = $selected[(string) $id];
 
         return $data;
+    }
+
+    protected function createChunkResult($data)
+    {
+        return new ChunkResult($data);
     }
 }
