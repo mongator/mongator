@@ -11,11 +11,8 @@
      */
     private function findBy{{ name|ucfirst }}($value)
     {
-        if (!is_object($value)) $this->throwBadReferenceException();
-        if ($value instanceOf \MongoId) $id = $value;
-        elseif ($value instanceOf \Mandango\Document\Document) $id = $value->getId();
-        else $this->throwBadReferenceException();
 
+        $id = $this->valueToMongoId($value);
         return $this->mergeCriteria(array('{{field.dbName}}' => $id));
     }
 

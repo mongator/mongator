@@ -739,4 +739,16 @@ abstract class Query implements \Countable, \IteratorAggregate
         if ( !$includeHash ) unset($keys['vars']['hash']);
         return md5(serialize($keys));
     }
+
+    protected function valueToMongoId($value)
+    {
+        if (is_string($value)) return new \MongoId($value);
+
+        if (!is_object($value)) $this->throwBadReferenceException();
+
+        if ($value instanceOf \MongoId) return $value;
+        if ($value instanceOf \Mongator\Document\Document) return $value->getId();
+
+        $this->throwBadReferenceException();
+    }
 }

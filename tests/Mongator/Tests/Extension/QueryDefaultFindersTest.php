@@ -120,7 +120,14 @@ class QueryDefaultFindersTest extends TestCase
     public function testFindByReferenceTypecheck()
     {
         $this->setExpectedException('\Exception');
-        $this->createQuery()->findByAuthor((string) (new \MongoId()));
+        $this->createQuery()->findByAuthor(1234);
+    }
+
+    public function testFindByReferenceAcceptsString()
+    {
+        $id = new \MongoId();
+        $query = $this->createQuery()->findByAuthor((string) $id);
+        $this->assertEquals(array('author' => $id), $query->getCriteria());
     }
 
     public function testIgnoreUnsearchableTypes()
