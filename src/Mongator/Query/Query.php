@@ -751,4 +751,9 @@ abstract class Query implements \Countable, \IteratorAggregate
 
         $this->throwBadReferenceException();
     }
+
+    protected function throwBadReferenceException()
+    {
+        throw new \Exception('Document or MongoId needed for reference query');
+    }
 }
