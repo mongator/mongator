@@ -18,6 +18,7 @@ use Mongator\Mongator;
  * The abstract class for documents.
  *
  * @author Pablo Díez <pablodip@gmail.com>
+ * @author Máximo Cuadros <mcuadros@gmail.com>
  *
  * @api
  */
@@ -27,6 +28,7 @@ abstract class AbstractDocument
 
     public $data = array();
     protected $fieldsModified = array();
+    protected $onceEnvents = array();
 
     /**
      * Constructor.
@@ -355,6 +357,108 @@ abstract class AbstractDocument
                 Archive::remove($this, 'embedded_one.'.$name);
             }
         }
+    }
+
+    /**
+     * Register a callback as preInsert event.
+     *
+     * @api
+     */
+    public function registerOncePreInsertEvent(Callable $event)
+    {
+        $this->registerOnceEvent($event, 'pre-insert');
+    }
+
+    /**
+     * Register a callback as postInsert event.
+     *
+     * @api
+     */
+    public function registerOncePostInsertEvent(Callable $event)
+    {
+        $this->registerOnceEvent($event, 'post-insert');
+    }
+
+    /**
+     * Register a callback as preUpdate event.
+     *
+     * @api
+     */
+    public function registerOncePreUpdateEvent(Callable $event)
+    {
+        $this->registerOnceEvent($event, 'pre-update');
+    }
+
+    /**
+     * Register a callback as postUpdate event.
+     *
+     * @api
+     */
+    public function registerOncePostUpdateEvent(Callable $event)
+    {
+        $this->registerOnceEvent($event, 'post-update');
+    }
+
+    protected function registerOnceEvent(Callable $event, $type)
+    {
+        if (!isset($this->onceEnvents[$type])) {
+            $this->onceEnvents[$type] = array();
+        }
+
+        $this->onceEnvents[$type][] = $event;
+    }
+
+    /**
+     * Execute all the stored callbacks in preInsert event and delete this events
+     *
+     * @api
+     */
+    public function oncePreInsertEvent()
+    {
+        $this->executeOnceEvent('pre-insert');
+    }
+
+    /**
+     * Execute all the stored callbacks in postInsert event and delete this events
+     *
+     * @api
+     */
+    public function oncePostInsertEvent()
+    {
+        $this->executeOnceEvent('post-insert');
+    }
+
+    /**
+     * Execute all the stored callbacks in preUpdate event and delete this events
+     *
+     * @api
+     */
+    public function oncePreUpdateEvent()
+    {
+        $this->executeOnceEvent('pre-update');
+    }
+
+    /**
+     * Execute all the stored callbacks in postUpdate event and delete this events
+     *
+     * @api
+     */
+    public function oncePostUpdateEvent()
+    {
+        $this->executeOnceEvent('post-update');
+    }
+
+    protected function executeOnceEvent($type)
+    {
+        if (!isset($this->onceEnvents[$type])) {
+            return;
+        }
+
+        foreach ($this->onceEnvents[$type] as $callback) {
+            $callback($this);
+        }
+
+        $this->onceEnvents[$type] = array();
     }
 
     /**

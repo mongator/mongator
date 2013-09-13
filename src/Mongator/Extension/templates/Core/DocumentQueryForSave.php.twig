@@ -21,12 +21,21 @@
 
 {% endif %}
 {% else %}
+        $rap = $this->getRootAndPath();
+
+        if ($isNew) {
 {% if config_class.events.preInsert or config_class._parent_events.preInsert %}
-        if ( $isNew ) $this->preInsertEvent();
+            $this->preInsertEvent();
 {% endif %}
+            $this->oncePreInsertEvent();
+  
+        } else {
 {% if config_class.events.preUpdate or config_class._parent_events.preUpdate %}
-        if ( !$isNew ) $this->preUpdateEvent();
+            $this->preUpdateEvent();
 {% endif %}
+            $this->oncePreUpdateEvent();
+        }
+        
 {% endif %}
 {# fields #}
 {% if config_class.fields|length %}
@@ -36,7 +45,7 @@
 {% if config_class.isEmbedded %}
                 $rootQuery = $query;
                 $query =& $rootQuery;
-                $rap = $this->getRootAndPath();
+                
                 if (true === $reset) {
                     $path = array('$set', $rap['path']);
                 } elseif ('deep' == $reset) {
@@ -68,7 +77,6 @@
 {# update #}
             } else {
 {% if config_class.isEmbedded %}
-                $rap = $this->getRootAndPath();
                 $documentPath = $rap['path'];
 {% endif %}
 {% for name, field in config_class.fields %}
@@ -166,12 +174,27 @@
 {% endif %}
 
 {% if config_class.isEmbedded %}
+        $embedded = $this;
+        $registerPostEventMethod = 'registerOncePostUpdateEvent';
+        if ($rap['root']->isNew()) {
+            $registerPostEventMethod = 'registerOncePostInsertEvent';
+        }
+
+        if ($isNew) {
+            $rap['root']->$registerPostEventMethod(function() use ($embedded) {
 {% if config_class.events.postInsert or config_class._parent_events.postInsert %}
-        if ( $isNew ) $this->postInsertEvent();
+                $embedded->postInsertEvent();
 {% endif %}
+                $embedded->oncePostInsertEvent();
+            });
+        } else {
+            $rap['root']->$registerPostEventMethod(function() use ($embedded) {
 {% if config_class.events.postUpdate or config_class._parent_events.postUpdate %}
-        if ( !$isNew ) $this->postUpdateEvent();
+                $embedded->postUpdateEvent();
 {% endif %}
+                $embedded->oncePostUpdateEvent();
+            });
+        }
 {% endif %}
 
         return $query;

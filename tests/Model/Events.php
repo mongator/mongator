@@ -34,34 +34,39 @@ class Events extends \Model\Base\Events
         return $this->myEventPrefix;
     }
 
+    public function addEvent($id)
+    {
+        $this->events[] = $this->myEventPrefix.$id.(int)$this->isNew().(int)$this->isModified();
+    }
+
     protected function myPreInsert()
     {
-        $this->events[] = $this->myEventPrefix.'PreInserting';
+        $this->addEvent('PreInserting');
     }
 
     protected function myPostInsert()
     {
-        $this->events[] = $this->myEventPrefix.'PostInserting';
+        $this->addEvent('PostInserting');
     }
 
     protected function myPreUpdate()
     {
-        $this->events[] = $this->myEventPrefix.'PreUpdating';
+        $this->addEvent('PreUpdating');
         $this->setName('preUpdating');
     }
 
     protected function myPostUpdate()
     {
-        $this->events[] = $this->myEventPrefix.'PostUpdating';
+        $this->addEvent('PostUpdating');
     }
 
     protected function myPreDelete()
     {
-        $this->events[] = $this->myEventPrefix.'PreDeleting';
+        $this->addEvent('PreDeleting');
     }
 
     protected function myPostDelete()
     {
-        $this->events[] = $this->myEventPrefix.'PostDeleting';
+        $this->addEvent('PostDeleting');
     }
 }

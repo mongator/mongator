@@ -174,42 +174,6 @@ class CoreRepositoryTest extends TestCase
         $this->assertSame($messages['pablodip']->getReplyToId(), $messages['barbelith']->getId());
     }
 
-    public function testSaveEventsInsert()
-    {
-        $documents = array(
-            $this->mongator->create('Model\Events')->setName('foo')->setMyEventPrefix('2'),
-            $this->mongator->create('Model\Events')->setName('bar')->setMyEventPrefix('1'),
-        );
-        $this->mongator->getRepository('Model\Events')->save($documents);
-
-        $this->assertSame(array(
-            '2PreInserting',
-            '2PostInserting',
-        ), $documents[0]->getEvents());
-        $this->assertSame(array(
-            '1PreInserting',
-            '1PostInserting',
-        ), $documents[1]->getEvents());
-    }
-
-    public function testSaveEventsUpdate()
-    {
-        $documents = array(
-            $this->mongator->create('Model\Events')->setName('foo')->save()->clearEvents()->setName('bar')->setMyEventPrefix('2')->save(),
-            $this->mongator->create('Model\Events')->setName('bar')->save()->clearEvents()->setName('foo')->setMyEventPrefix('1')->save()
-        );
-
-        $this->mongator->getRepository('Model\Events')->save($documents);
-
-        $this->assertSame(array(
-            '2PreUpdating',
-            '2PostUpdating',
-        ), $documents[0]->getEvents());
-        $this->assertSame(array(
-            '1PreUpdating',
-            '1PostUpdating',
-        ), $documents[1]->getEvents());
-    }
 
     public function testSaveEventsPreUpdateProcessQueryLater()
     {
@@ -304,17 +268,6 @@ class CoreRepositoryTest extends TestCase
             $this->assertNotNull($this->mongator->getRepository('Model\Article')->getCollection()->findOne(array('_id' => $articles[$key]->getId())));
             $this->assertTrue($this->mongator->getRepository('Model\Article')->getIdentityMap()->has($articles[$key]->getId()));
         }
-    }
-
-    public function testDeleteEventsSingleDocument()
-    {
-        $document = $this->mongator->create('Model\Events')->setName('foo')->save()->clearEvents()->setMyEventPrefix('ups')->setName('bar');
-        $document->delete();
-
-        $this->assertSame(array(
-            'upsPreDeleting',
-            'upsPostDeleting',
-        ), $document->getEvents());
     }
 
     public function testEnsureIndexesMethod()
