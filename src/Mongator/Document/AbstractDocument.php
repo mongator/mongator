@@ -364,7 +364,7 @@ abstract class AbstractDocument
      *
      * @api
      */
-    public function registerOncePreInsertEvent(Callable $event)
+    public function registerOncePreInsertEvent($event)
     {
         $this->registerOnceEvent($event, 'pre-insert');
     }
@@ -374,7 +374,7 @@ abstract class AbstractDocument
      *
      * @api
      */
-    public function registerOncePostInsertEvent(Callable $event)
+    public function registerOncePostInsertEvent($event)
     {
         $this->registerOnceEvent($event, 'post-insert');
     }
@@ -384,7 +384,7 @@ abstract class AbstractDocument
      *
      * @api
      */
-    public function registerOncePreUpdateEvent(Callable $event)
+    public function registerOncePreUpdateEvent($event)
     {
         $this->registerOnceEvent($event, 'pre-update');
     }
@@ -394,13 +394,17 @@ abstract class AbstractDocument
      *
      * @api
      */
-    public function registerOncePostUpdateEvent(Callable $event)
+    public function registerOncePostUpdateEvent($event)
     {
         $this->registerOnceEvent($event, 'post-update');
     }
 
-    protected function registerOnceEvent(Callable $event, $type)
+    protected function registerOnceEvent($event, $type)
     {
+        if (!is_callable($event)) {
+            throw new \Exception('Event parameter must be a callable');
+        }
+
         if (!isset($this->onceEnvents[$type])) {
             $this->onceEnvents[$type] = array();
         }
