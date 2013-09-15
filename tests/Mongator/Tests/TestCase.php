@@ -84,7 +84,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        Archive::clear();
         IdGeneratorContainer::reset();
         TypeContainer::reset();
     }

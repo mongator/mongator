@@ -3,7 +3,7 @@
 /*
  * This file is part of Mongator.
  *
- * (c) Pablo Díez <pablodip@gmail.com>
+ * (c) Máximo Cuadros <mcuadros@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -14,100 +14,92 @@ namespace Mongator;
 /**
  * Archive to save things related to objects.
  *
- * @author Pablo Díez <pablodip@gmail.com>
+ * @author Máximo Cuadros <mcuadros@gmail.com>
  */
 class Archive
 {
-    private static $archive = array();
+    private $archive = array();
 
     /**
-     * Returns if an object has a key in the archive.
+     * Returns if has a key in the archive.
      *
-     * @param object $object The object.
      * @param string $key    The key.
      *
-     * @return bool If an object has a key in the archive.
+     * @return bool If key in the archive.
      */
-    public static function has($object, $key)
+    public function has($key)
     {
-        $oid = spl_object_hash($object);
-
-        return isset(static::$archive[$oid]) && (isset(static::$archive[$oid][$key]) || array_key_exists($key, static::$archive[$oid]));
+        return isset($this->archive[$key]);
     }
 
     /**
-     * Returns the value of an object key.
+     * Returns the value of a key.
      *
      * It does not check if the object key exists, if you want to check it, do by yourself.
      *
-     * @param object $object The object.
      * @param string $key    The key.
      *
-     * @return mixed The value of the object key.
+     * @return mixed The value of the key.
      */
-    public static function get($object, $key)
+    public function get($key)
     {
-        return static::$archive[spl_object_hash($object)][$key];
+        return $this->archive[$key];
     }
 
     /**
-     * Set an object key value.
+     * Set a key value.
      *
-     * @param object $object The object.
      * @param string $key    The key.
      * @param mixed  $value  The value.
      */
-    public static function set($object, $key, $value)
+    public function set($key, $value)
     {
-        static::$archive[spl_object_hash($object)][$key] = $value;
+        if ($value === null) {
+            $value = false;
+        }
+
+        $this->archive[$key] = $value;
     }
 
     /**
-     * Remove an object key.
+     * Remove a key.
      *
-     * @param object $object The object.
      * @param string $key    The key.
      */
-    public static function remove($object, $key)
+    public function remove($key)
     {
-        unset(static::$archive[spl_object_hash($object)][$key]);
+        unset($this->archive[$key]);
     }
 
     /**
-     * Returns an object key by reference. It creates the key if the key does not exist.
+     * Returns a key by reference. It creates the key if the key does not exist.
      *
-     * @param object $object  The object
      * @param string $key     The key.
      * @param mixed  $default The default value, used to create the key if it does not exist (null by default).
      *
      * @return mixed The object key value.
      */
-    static public function &getByRef($object, $key, $default = null)
+    public function &getByRef($key, $default = null)
     {
-        $oid = spl_object_hash($object);
-
-        if (!isset(static::$archive[$oid][$key])) {
-            static::$archive[$oid][$key] = $default;
+        if (!$this->has($key)) {
+            $this->set($key, $default);
         }
 
-        return static::$archive[$oid][$key];
+        return $this->archive[$key];
     }
 
     /**
      * Returns an object key or returns a default value otherwise.
      *
-     * @param object $object  The object.
      * @param string $key     The key.
      * @param mixed  $default The value to return if the object key does not exist.
      *
      * @return mixed The object key value or the default value.
      */
-    public static function getOrDefault($object, $key, $default)
+    public function getOrDefault($key, $default)
     {
-        $oid = spl_object_hash($object);
-
-        if (isset(static::$archive[$oid]) && (isset(static::$archive[$oid][$key]) || array_key_exists($key, static::$archive[$oid]))) {
-            return static::$archive[$oid][$key];
+        if ($this->has($key)) {
+            return $this->get($key);
         }
 
         return $default;
@@ -118,50 +110,16 @@ class Archive
      *
      * @return array All objects data.
      */
-    public static function all()
+    public function all()
     {
-        return static::$archive;
+        return $this->archive;
     }
 
     /**
      * Clear all objects data.
      */
-    public static function clear()
+    public function clear()
     {
-        static::$archive = array();
-    }
-
-    /**
-     * Returns if an object exist in the archive.
-     *
-     * @param object $object The object.
-     *
-     * @return bool If the object exists in the archive.
-     */
-    public static function hasObject($object)
-    {
-        return isset(static::$archive[spl_object_hash($object)]);
-    }
-
-    /**
-     * Returns the object data in the archive.
-     *
-     * @param object $object The object.
-     *
-     * @return array The object data in the archive.
-     */
-    public static function getObject($object)
-    {
-        return static::$archive[spl_object_hash($object)];
-    }
-
-    /**
-     * Remove the object data in the archive.
-     *
-     * @param object $object The object.
-     */
-    public static function removeObject($object)
-    {
-        unset(static::$archive[spl_object_hash($object)]);
+        $this->archive = array();
     }
 }
