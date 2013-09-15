@@ -180,9 +180,9 @@ class RepositoryTest extends TestCase
     public function testIdsToMongo()
     {
         $ids = $this->mongator->getRepository('Model\Article')->idsToMongo(array(
-            '123',
-            $id1 = new \MongoId('234'),
-            '345',
+            '4af9f23d8ead0e1d32000000',
+            $id1 = new \MongoId(),
+            '1af9f23d8ead0e1d32000000',
         ));
         $this->assertSame(3, count($ids));
         $this->assertInstanceOf('MongoId', $ids[0]);

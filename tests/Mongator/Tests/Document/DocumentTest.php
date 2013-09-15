@@ -25,7 +25,7 @@ class DocumentTest extends TestCase
         $document = new Document($this->mongator);
         $this->assertNull($document->getId());
 
-        $id = new \MongoId('123');
+        $id = new \MongoId('4af9f23d8ead0e1d32000000');
         $this->assertSame($document, $document->setId($id));
         $this->assertSame($id, $document->getId());
     }

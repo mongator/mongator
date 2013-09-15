@@ -19,7 +19,7 @@ class IdentityMapTest extends TestCase
     {
         $articles = array();
         for ($i = 1; $i <= 10; $i ++) {
-            $articles[$i] = $this->mongator->create('Model\Article')->setId(new \MongoId($i));
+            $articles[$i] = $this->mongator->create('Model\Article')->setId(new \MongoId());
         }
 
         $identityMap = new IdentityMap();

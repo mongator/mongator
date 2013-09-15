@@ -72,7 +72,7 @@ class QueryTest extends TestCase
         $this->assertSame($query, $query->mergeCriteria($criteria1));
         $this->assertSame($criteria1, $query->getCriteria());
 
-        $criteria2 = array('author' => new \MongoId('123'));
+        $criteria2 = array('author' => new \MongoId());
         $query->mergeCriteria($criteria2);
         $this->assertSame(array('is_active' => true, 'author' => $criteria2['author']), $query->getCriteria());
 

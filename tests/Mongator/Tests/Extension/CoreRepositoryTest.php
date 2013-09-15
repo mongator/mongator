@@ -17,7 +17,7 @@ class CoreRepositoryTest extends TestCase
 {
     public function testIdToMongo()
     {
-        $id = '123';
+        $id = '4af9f23d8ead0e1d32000000';
         $idToMongo = $this->mongator->getRepository('Model\Article')->idToMongo($id);
         $this->assertInstanceOf('MongoId', $idToMongo);
     }

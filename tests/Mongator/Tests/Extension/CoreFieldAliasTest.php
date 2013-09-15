@@ -111,7 +111,7 @@ class CoreFieldAliasTest extends TestCase
     {
         $article = $this->mongator->create('Model\Article');
         $article->setDocumentData(array(
-            '_id' => new \MongoId('123'),
+            '_id' => new \MongoId(),
             'basatos' => '234',
         ));
 
@@ -146,7 +146,7 @@ class CoreFieldAliasTest extends TestCase
     {
         $article = $this->mongator->create('Model\Article');
         $article->setDocumentData(array(
-            '_id' => new \MongoId('123'),
+            '_id' => new \MongoId(),
             'source' => array(
                 'desde' => '234',
             ),
