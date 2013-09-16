@@ -112,16 +112,14 @@ class EmbeddedGroupTest extends TestCase
     public function assertSameGroups($groupA, $groupB)
     {
         if (!$groupA instanceOf Mongator\Group\AbstractGroup) {
-            $a = [$groupA];
-            $b = [$groupB];
+            $a = array($groupA);
+            $b = array($groupB);
         } else {
             $a = $groupA->all();
             $b = $groupB->all(); 
         }
 
         foreach ($a as $key => $document) {
-           // $a[$key]->getArchive()->remove('saved_data');
-           // $b[$key]->getArchive()->remove('saved_data');
 
             $this->assertEquals($a[$key], $b[$key]);
         }

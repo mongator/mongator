@@ -1263,8 +1263,8 @@ class CoreDocumentTest extends TestCase
     public function assertSameGroups($groupA, $groupB)
     {
         if (!$groupA instanceOf Mongator\Group\AbstractGroup) {
-            $a = [$groupA];
-            $b = [$groupB];
+            $a = array($groupA);
+            $b = array($groupB);
         } else {
             $a = $groupA->all();
             $b = $groupB->all(); 
@@ -1280,7 +1280,7 @@ class CoreDocumentTest extends TestCase
 
     public function testSetDocumentDataEmbeddedsMany()
     {
-        $this->markTestIncomplete(
+         $this->markTestIncomplete(
           'This test has not been implemented yet.'
         );
 
