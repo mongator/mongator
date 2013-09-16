@@ -33,7 +33,7 @@ class EmbeddedGroup extends Group
      */
     public function setRootAndPath(Document $root, $path)
     {
-        Archive::set($this, 'root_and_path', array('root' => $root, 'path' => $path));
+        $this->getArchive()->set('root_and_path', array('root' => $root, 'path' => $path));
 
         foreach ($this->getAdd() as $key => $document) {
             $document->setRootAndPath($root, $path.'._add'.$key);
@@ -47,7 +47,7 @@ class EmbeddedGroup extends Group
      */
     public function getRootAndPath()
     {
-        return Archive::getOrDefault($this, 'root_and_path', null);
+        return $this->getArchive()->getOrDefault('root_and_path', null);
     }
 
     /**
@@ -71,7 +71,7 @@ class EmbeddedGroup extends Group
      */
     public function setSavedData(array $data)
     {
-        Archive::set($this, 'saved_data', $data);
+        $this->getArchive()->set('saved_data', $data);
     }
 
     /**
@@ -81,7 +81,7 @@ class EmbeddedGroup extends Group
      */
     public function getSavedData()
     {
-        return Archive::getOrDefault($this, 'saved_data', null);
+        return $this->getArchive()->getOrDefault('saved_data', null);
     }
 
     /**

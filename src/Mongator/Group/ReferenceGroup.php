@@ -35,8 +35,8 @@ class ReferenceGroup extends Group
     {
         parent::__construct($documentClass);
 
-        Archive::set($this, 'parent', $parent);
-        Archive::set($this, 'field', $field);
+        $this->getArchive()->set('parent', $parent);
+        $this->getArchive()->set('field', $field);
     }
 
     /**
@@ -48,7 +48,7 @@ class ReferenceGroup extends Group
      */
     public function getParent()
     {
-        return Archive::get($this, 'parent');
+        return $this->getArchive()->get('parent');
     }
 
     /**
@@ -60,7 +60,7 @@ class ReferenceGroup extends Group
      */
     public function getField()
     {
-        return Archive::get($this, 'field');
+        return $this->getArchive()->get('field');
     }
 
     /**

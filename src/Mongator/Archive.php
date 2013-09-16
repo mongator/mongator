@@ -19,6 +19,7 @@ namespace Mongator;
 class Archive
 {
     private $archive = array();
+    private $keys = array();
 
     /**
      * Returns if has a key in the archive.
@@ -29,7 +30,7 @@ class Archive
      */
     public function has($key)
     {
-        return isset($this->archive[$key]);
+        return isset($this->keys[$key]);
     }
 
     /**
@@ -54,10 +55,7 @@ class Archive
      */
     public function set($key, $value)
     {
-        if ($value === null) {
-            $value = false;
-        }
-
+        $this->keys[$key] = true;
         $this->archive[$key] = $value;
     }
 
@@ -68,7 +66,13 @@ class Archive
      */
     public function remove($key)
     {
+        if (!$this->has($key)) {
+            return;
+        }
+
         unset($this->archive[$key]);
+        unset($this->keys[$key]);
+
     }
 
     /**

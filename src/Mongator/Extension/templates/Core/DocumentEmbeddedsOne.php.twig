@@ -25,11 +25,11 @@
             }
         }
 
-        if (!\Mongator\Archive::has($this, 'embedded_one.{{ name }}')) {
+        if (!$this->getArchive()->has('embedded_one.{{ name }}')) {
             $originalValue = isset($this->data['embeddedsOne']['{{ name }}']) ? $this->data['embeddedsOne']['{{ name }}'] : null;
-            \Mongator\Archive::set($this, 'embedded_one.{{ name }}', $originalValue);
-        } elseif (\Mongator\Archive::get($this, 'embedded_one.{{ name }}') === $value) {
-            \Mongator\Archive::remove($this, 'embedded_one.{{ name }}');
+            $this->getArchive()->set('embedded_one.{{ name }}', $originalValue);
+        } elseif ($this->getArchive()->get('embedded_one.{{ name }}') === $value) {
+            $this->getArchive()->remove('embedded_one.{{ name }}');
         }
 
         $this->data['embeddedsOne']['{{ name }}'] = $value;

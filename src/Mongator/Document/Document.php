@@ -153,7 +153,7 @@ abstract class Document extends AbstractDocument
      */
     public function addQueryHash($hash)
     {
-        $queryHashes =& Archive::getByRef($this, 'query_hashes', array());
+        $queryHashes =& $this->getArchive()->getByRef('query_hashes', array());
         $queryHashes[] = $hash;
     }
 
@@ -164,7 +164,7 @@ abstract class Document extends AbstractDocument
      */
     public function getQueryHashes()
     {
-        return Archive::getOrDefault($this, 'query_hashes', array());
+        return $this->getArchive()->getOrDefault('query_hashes', array());
     }
 
     /**
@@ -174,7 +174,7 @@ abstract class Document extends AbstractDocument
      */
     public function removeQueryHash($hash)
     {
-        $queryHashes =& Archive::getByRef($this, 'query_hashes', array());
+        $queryHashes =& $this->getArchive()->getByRef('query_hashes', array());
         unset($queryHashes[array_search($hash, $queryHashes)]);
         $queryHashes = array_values($queryHashes);
     }
@@ -184,7 +184,7 @@ abstract class Document extends AbstractDocument
      */
     public function clearQueryHashes()
     {
-        Archive::remove($this, 'query_hashes');
+        $this->getArchive()->remove('query_hashes');
     }
 
     /**

@@ -32,7 +32,8 @@ abstract class Group extends AbstractGroup
      */
     public function __construct($documentClass)
     {
-        Archive::set($this, 'document_class', $documentClass);
+        parent::__construct();
+        $this->getArchive()->set('document_class', $documentClass);
     }
 
     /**
@@ -42,6 +43,6 @@ abstract class Group extends AbstractGroup
      */
     public function getDocumentClass()
     {
-        return Archive::get($this, 'document_class');
+        return $this->getArchive()->get('document_class');
     }
 }

@@ -28,9 +28,17 @@ class EmbeddedGroupTest extends TestCase
         $group->setSavedData($data);
         $this->assertSame(2, $group->count());
         $saved = $group->getSaved();
-        $this->assertEquals($this->mongator->create('Model\Comment')->setDocumentData($data[0]), $saved[0]);
+
+        $a = $this->mongator->create('Model\Comment')->setDocumentData($data[0]);
+        $a->setRootAndPath($article, 'comments.0');
+
+        $this->assertSameGroups($a, $saved[0]);
         $this->assertSame(array('root' => $article, 'path' => 'comments.0'), $saved[0]->getRootAndPath());
-        $this->assertEquals($this->mongator->create('Model\Comment')->setDocumentData($data[0]), $saved[0]);
+       
+        $b = $this->mongator->create('Model\Comment')->setDocumentData($data[1]);
+        $b->setRootAndPath($article, 'comments.1');
+
+        $this->assertSameGroups($b, $saved[1]);
         $this->assertSame(array('root' => $article, 'path' => 'comments.1'), $saved[1]->getRootAndPath());
     }
 
@@ -99,5 +107,23 @@ class EmbeddedGroupTest extends TestCase
         }
 
         $article->delete();
+    }
+
+    public function assertSameGroups($groupA, $groupB)
+    {
+        if (!$groupA instanceOf Mongator\Group\AbstractGroup) {
+            $a = [$groupA];
+            $b = [$groupB];
+        } else {
+            $a = $groupA->all();
+            $b = $groupB->all(); 
+        }
+
+        foreach ($a as $key => $document) {
+           // $a[$key]->getArchive()->remove('saved_data');
+           // $b[$key]->getArchive()->remove('saved_data');
+
+            $this->assertEquals($a[$key], $b[$key]);
+        }
     }
 }

@@ -33,7 +33,7 @@ abstract class EmbeddedDocument extends AbstractDocument
      */
     public function setRootAndPath(Document $root, $path)
     {
-        Archive::set($this, 'root_and_path', array('root' => $root, 'path' => $path));
+        $this->getArchive()->set('root_and_path', array('root' => $root, 'path' => $path));
 
         if (isset($this->data['embeddedsOne'])) {
             foreach ($this->data['embeddedsOne'] as $name => $embedded) {
@@ -57,7 +57,7 @@ abstract class EmbeddedDocument extends AbstractDocument
      */
     public function getRootAndPath()
     {
-        return Archive::getOrDefault($this, 'root_and_path', null);
+        return $this->getArchive()->getOrDefault('root_and_path', null);
     }
 
     /**

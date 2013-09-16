@@ -21,7 +21,7 @@ use Mongator\Mongator;
  * @author Máximo Cuadros <mcuadros@gmail.com>
  *
  * @api
- */
+ */ 
 abstract class AbstractDocument
 {
     private $mongator;
@@ -29,6 +29,7 @@ abstract class AbstractDocument
     public $data = array();
     protected $fieldsModified = array();
     protected $onceEnvents = array();
+    private $archive;
 
     /**
      * Constructor.
@@ -38,14 +39,20 @@ abstract class AbstractDocument
     public function __construct(Mongator $mongator)
     {
         $this->setMongator($mongator);
+
+        $this->archive = new Archive();
     }
 
     /**
-     * Destructor - empties the Archive cache
+     * Return the Archive object
+     *
+     * @return \Mongator\Archive the archive object from this document
+     *
+     * @api
      */
-    public function __destruct()
+    public function getArchive()
     {
-        Archive::removeObject($this);
+        return $this->archive;
     }
 
     /**
@@ -299,7 +306,7 @@ abstract class AbstractDocument
             return false;
         }
 
-        return Archive::has($this, 'embedded_one.'.$name);
+        return $this->getArchive()->has('embedded_one.'.$name);
     }
 
     /**
@@ -313,8 +320,8 @@ abstract class AbstractDocument
      */
     public function getOriginalEmbeddedOneValue($name)
     {
-        if (Archive::has($this, 'embedded_one.'.$name)) {
-            return Archive::get($this, 'embedded_one.'.$name);
+        if ($this->getArchive()->has('embedded_one.'.$name)) {
+            return $this->getArchive()->get('embedded_one.'.$name);
         }
 
         if (isset($this->data['embeddedsOne'][$name])) {
@@ -354,7 +361,7 @@ abstract class AbstractDocument
     {
         if (isset($this->data['embeddedsOne'])) {
             foreach ($this->data['embeddedsOne'] as $name => $embedded) {
-                Archive::remove($this, 'embedded_one.'.$name);
+                $this->getArchive()->remove('embedded_one.'.$name);
             }
         }
     }
