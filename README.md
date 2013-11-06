@@ -1,3 +1,5 @@
+![Mongator ODM](http://s8.postimg.org/pgkij7g6d/logo.png)
+
 Mongator [![Build Status](https://secure.travis-ci.org/mongator/mongator.png)](http://travis-ci.org/mongator/mongator)
 ==============================
 
