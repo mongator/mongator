@@ -460,4 +460,13 @@ return array(
             'categories' => array('class' => 'Model\Category'),
         ),
     ),
+
+    'Model\CircularReference' => array(
+        'fields' => array(
+            'value' => 'integer',
+        ),
+        'referencesOne' => array(
+            'other' => array('class' => 'Model\CircularReference'),
+        ),
+    ),
 );
