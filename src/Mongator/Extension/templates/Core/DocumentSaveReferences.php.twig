@@ -5,6 +5,8 @@
      */
     public function saveReferences()
     {
+        if ($this->savingReferences) return;
+        $this->savingReferences = true;
 {# references one #}
 {% for name, reference in config_class.referencesOne %}
 {# not inherited #}
@@ -53,4 +55,5 @@
 {% endif %}
 {% endif %}
 {% endfor %}
+        $this->savingReferences = false;
     }

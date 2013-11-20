@@ -30,6 +30,7 @@ abstract class AbstractDocument
     protected $fieldsModified = array();
     protected $onceEnvents = array();
     private $archive;
+    protected $savingReferences = false;
 
     /**
      * Constructor.
