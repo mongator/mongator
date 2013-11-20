@@ -372,8 +372,8 @@ class CoreDocumentTest extends TestCase
 
         $one->save();
 
-        $this->assertTrue($one->getId() && !$one->isModified());
-        $this->assertTrue($two->getId() && !$two->isModified());
+        $this->assertFalse($one->isNew() || $one->isModified());
+        $this->assertFalse($two->isNew() || $two->isModified());
     }
 
     public function testEmbeddedsOneSettersGetters()
