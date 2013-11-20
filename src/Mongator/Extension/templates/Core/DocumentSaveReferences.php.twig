@@ -5,7 +5,10 @@
      */
     public function saveReferences()
     {
-        if ($this->savingReferences) return;
+        if ($this->savingReferences) {
+            return;
+        }
+
         $this->savingReferences = true;
 {# references one #}
 {% for name, reference in config_class.referencesOne %}

@@ -29,8 +29,8 @@ abstract class AbstractDocument
     public $data = array();
     protected $fieldsModified = array();
     protected $onceEnvents = array();
-    private $archive;
     protected $savingReferences = false;
+    private $archive;
 
     /**
      * Constructor.
