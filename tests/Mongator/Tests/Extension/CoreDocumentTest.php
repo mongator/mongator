@@ -362,6 +362,20 @@ class CoreDocumentTest extends TestCase
         }
     }
 
+    public function testSaveReferencesWithCircularReference()
+    {
+        $one = $this->mongator->create('Model\CircularReference');
+        $two = $this->mongator->create('Model\CircularReference');
+
+        $one->setValue(1)->setOther($two);
+        $two->setValue(2)->setOther($one);
+
+        $one->save();
+
+        $this->assertFalse($one->isNew() || $one->isModified());
+        $this->assertFalse($two->isNew() || $two->isModified());
+    }
+
     public function testEmbeddedsOneSettersGetters()
     {
         $article = $this->mongator->create('Model\Article');
