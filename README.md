@@ -96,3 +96,5 @@ License
 -------
 
 MIT, see [LICENSE](LICENSE)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mongator/mongator/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
