@@ -103,7 +103,7 @@
             $castValue = new \MongoDate($value->getTimestamp());
         } else if ($value instanceof \MongoDate) {
             $castValue = $value;
-        } else if (is_int($value)) {
+        } else if (is_numeric($value)) {
             $castValue = new \MongoDate($value);
         }
 
