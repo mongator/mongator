@@ -73,13 +73,13 @@ class QueryDefaultFindersTest extends TestCase
     public function testIntTypecheck()
     {
         $this->setExpectedException('\Exception');
-        $this->createQuery()->findByPosition('1');
+        $this->createQuery()->findByPosition('1.1');
     }
 
     public function testFloatTypecheck()
     {
         $this->setExpectedException('\Exception');
-        $this->createQuery()->findByAvg('1');
+        $this->createQuery()->findByAvg('1a');
     }
 
     public function testStringTypecheck()
