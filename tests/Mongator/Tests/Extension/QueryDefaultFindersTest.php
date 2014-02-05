@@ -94,6 +94,46 @@ class QueryDefaultFindersTest extends TestCase
         $this->createQuery()->findByDate('2013-05-17');
     }
 
+    public function testFindByFloatGt()
+    {
+        $query = $this->createQuery()->findByAvgGt(3.0);
+
+        $this->assertSame(
+            array('avg' =>  array('$gt' => 3.0)),
+            $query->getCriteria()
+        );
+    }
+
+    public function testFindByFloatLte()
+    {
+        $query = $this->createQuery()->findByAvgLte(3.0);
+
+        $this->assertSame(
+            array('avg' =>  array('$lte' => 3.0)),
+            $query->getCriteria()
+        );
+    }
+
+    public function testFindByFloatGte()
+    {
+        $query = $this->createQuery()->findByAvgGte(3.0);
+
+        $this->assertSame(
+            array('avg' =>  array('$gte' => 3.0)),
+            $query->getCriteria()
+        );
+    }
+
+    public function testFindByFloatLt()
+    {
+        $query = $this->createQuery()->findByAvgLt(3.0);
+
+        $this->assertSame(
+            array('avg' =>  array('$lt' => 3.0)),
+            $query->getCriteria()
+        );
+    }
+
     public function testFindByReferencesOne()
     {
         $this->doTestFindByReference('findByAuthor', 'Model\Author', 'author');

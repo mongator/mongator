@@ -33,6 +33,70 @@
      */
     public function findBy{{ name|ucfirst }}($value)
     {
+{% if field.type in ['float', 'int', 'date'] %}
+        return $this->findBy{{ name|ucfirst }}WithComparison($value, null);
+    }
+
+    /**
+     * Find by "{{ name }}" field with a value greater-than
+     *
+     * @param mixed $value The value.
+     *
+     * @return {{ class }}Query The query with added criteria (fluent interface).
+     */
+    public function findBy{{ name|ucfirst }}Gt($value)
+    {
+        return $this->findBy{{ name|ucfirst }}WithComparison($value, 'gt');
+    }
+
+    /**
+     * Find by "{{ name }}" field with a value greater-than or equal
+     *
+     * @param mixed $value The value.
+     *
+     * @return {{ class }}Query The query with added criteria (fluent interface).
+     */
+    public function findBy{{ name|ucfirst }}Gte($value)
+    {
+        return $this->findBy{{ name|ucfirst }}WithComparison($value, 'gte');
+    }
+
+    /**
+     * Find by "{{ name }}" field with a value greater-than
+     *
+     * @param mixed $value The value.
+     *
+     * @return {{ class }}Query The query with added criteria (fluent interface).
+     */
+    public function findBy{{ name|ucfirst }}Lt($value)
+    {
+        return $this->findBy{{ name|ucfirst }}WithComparison($value, 'lt');
+    }
+
+    /**
+     * Find by "{{ name }}" field with a value greater-than or equal
+     *
+     * @param mixed $value The value.
+     *
+     * @return {{ class }}Query The query with added criteria (fluent interface).
+     */
+    public function findBy{{ name|ucfirst }}Lte($value)
+    {
+        return $this->findBy{{ name|ucfirst }}WithComparison($value, 'lte');
+    }
+
+    /**
+     * Find by "{{ name }}" field.
+     *
+     * @param mixed $value The value.
+     * @param mixed $comparison 'lt', 'lte', 'gt', 'gte'
+     *
+     * @return {{ class }}Query The query with added criteria (fluent interface).
+     */
+    protected function findBy{{ name|ucfirst }}WithComparison($value, $comparison = null)
+    {
+{% endif %}
+
         {% if field.type == 'date' %}
         $castValue = null;
         if (($value instanceOf \DateTime)) {
@@ -51,10 +115,19 @@
         if ($castValue !== $value) throw new \Exception('Bad value: type {{field.type}} expected');
         {% endif %}
 
-        return $this->mergeCriteria(array('{{field.dbName}}' => $castValue ));
+{% if field.type in ['float', 'int', 'date'] %}
+        if ($comparison !== null) {
+            return $this->mergeCriteria(array('{{field.dbName}}' => array('$'.$comparison => $castValue )));
+        }
+{% endif %}
+
+        return $this->mergeCriteria(array('{{field.dbName}}' => $castValue));
+
+{% endif %}
     }
 
-    {% endif %}
+
+
 
 {% endif %}
 {% endfor %}
