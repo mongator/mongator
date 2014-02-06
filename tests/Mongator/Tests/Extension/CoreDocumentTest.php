@@ -20,6 +20,10 @@ class CoreDocumentTest extends TestCase
     public function testConstructorDefaultValues()
     {
         $book = $this->mongator->create('Model\Book');
+        $book->setTitle('foo');
+        $book->save();
+
+        $this->assertSame('foo', $book->getTitle());
         $this->assertSame('good', $book->getComment());
         $this->assertSame(true, $book->getIsHere());
     }
@@ -1353,7 +1357,7 @@ class CoreDocumentTest extends TestCase
     public function testIsModifiedNewFieldsDefaultValues()
     {
         $book = $this->mongator->create('Model\Book');
-        $this->assertTrue($book->isModified());
+        $this->assertFalse($book->isModified());
     }
 
     public function testIsModifiedNotNewFieldsNotModified()
@@ -1672,14 +1676,6 @@ class CoreDocumentTest extends TestCase
         $this->assertFalse($article->isFieldModified('note'));
     }
 
-    public function testIsFieldModifiedDefaultValues()
-    {
-        $book = $this->mongator->create('Model\Book');
-        $this->assertFalse($book->isFieldModified('title'));
-        $this->assertTrue($book->isFieldModified('comment'));
-        $this->assertTrue($book->isFieldModified('isHere'));
-    }
-
     /*
      * getOriginalFieldValue
      */
@@ -1752,15 +1748,6 @@ class CoreDocumentTest extends TestCase
             'title'   => null,
             'content' => null,
         ), $article->getFieldsModified());
-    }
-
-    public function testGetFieldsModifiedNewDefaultValues()
-    {
-        $book = $this->mongator->create('Model\Book');
-        $this->assertSame(array(
-            'comment' => null,
-            'isHere'  => null,
-        ), $book->getFieldsModified());
     }
 
     public function testGetFieldsModifiedNotNew()

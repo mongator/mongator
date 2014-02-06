@@ -122,6 +122,8 @@
                     continue;
                 }
 {% endif %}
+                $document->setDefaults();
+
 {% if config_class.events.preInsert or config_class._parent_events.preInsert %}
                 $document->preInsertEvent();
 {% endif %}
@@ -144,6 +146,7 @@
 {% if config_class._has_groups %}
                     $document->resetGroups();
 {% endif %}
+
 {% if config_class.events.postInsert or config_class._parent_events.postInsert %}
                 $document->postInsertEvent();
 {% endif %}
@@ -159,6 +162,7 @@
                     continue;
                 }
 {% endif %}
+                $document->setDefaults();
 {% if config_class.events.preInsert or config_class._parent_events.preInsert %}
                 $document->preInsertEvent();
 {% endif %}

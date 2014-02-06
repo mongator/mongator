@@ -259,7 +259,7 @@ abstract class Document extends AbstractDocument
      */
     public function loadFull()
     {
-        if ($this->queryFields === array()) return true;
+        if ($this->queryFields === array() || $this->isNew()) return true;
 
         $data = $this->getRepository()->getCollection()->findOne(array('_id' => $this->getId()));
         foreach (array_keys($this->fieldsModified) as $name) {

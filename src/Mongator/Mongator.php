@@ -317,7 +317,6 @@ class Mongator
     public function create($documentClass, array $initializeArgs = array())
     {
         $document = new $documentClass($this);
-        $document->initializeDefaults();
         if (method_exists($document, 'initialize')) {
             call_user_func_array(array($document, 'initialize'), $initializeArgs);
         }

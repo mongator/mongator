@@ -15,13 +15,7 @@
         parent::setDocumentData($data);
 
 {% else %}
-{% set force_clean = false %}
-{% for name, field in config_class.fields %}
-{% if field.default is defined %}
-{% set force_clean = true %}
-{% endif %}
-{% endfor %}
-        if ({% if force_clean %}true || {% endif %}$clean) {
+        if ($clean) {
             $this->data = array();
             $this->fieldsModified = array();
         }

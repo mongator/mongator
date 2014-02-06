@@ -182,11 +182,6 @@ class MongatorTest extends TestCase
 
         $author = $this->mongator->create('Model\Author');
         $this->assertInstanceOf('Model\Author', $author);
-
-        // defaults
-        $book = $this->mongator->create('Model\Book');
-        $this->assertSame('good', $book->getComment());
-        $this->assertSame(true, $book->getIsHere());
     }
 
     public function testCreateInitializeArgs()

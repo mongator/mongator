@@ -1,0 +1,16 @@
+<?php
+
+    /**
+     * Initializes the document defaults.
+     */
+    public function setDefaults()
+    {
+{% for name, field in config_class.fields %}
+{% if field.default is defined %}
+        if ($this->get{{ name|ucfirst }}() === null) {
+            $this->set{{ name|ucfirst }}({{ field.default|var_export }});
+        }
+        
+{% endif %}
+{% endfor %}
+    }

@@ -118,7 +118,7 @@ class Core extends Extension
 
         // document
         $templates = array(
-            'DocumentInitializeDefaults',
+            'DocumentSetDefaults',
             'DocumentSetDocumentData',
             'DocumentFields',
             'DocumentReferencesOne',

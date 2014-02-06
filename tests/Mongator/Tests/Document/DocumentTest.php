@@ -149,6 +149,16 @@ class DocumentTest extends TestCase
         $this->assertFalse($document->isNew());
     }
 
+    public function testLoadFullBug()
+    {
+        $article = $this->mongator->create('Model\Article');
+        $article->setTitle('foo');
+
+        $article->getAuthor();
+        $article->getContent();
+        $this->assertSame('foo', $article->getTitle());
+    }
+
     public function testLoadFullOnDemand()
     {
         $articleRaw = array(

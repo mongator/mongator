@@ -24,6 +24,7 @@
         $rap = $this->getRootAndPath();
 
         if ($isNew) {
+            $this->setDefaults();
 {% if config_class.events.preInsert or config_class._parent_events.preInsert %}
             $this->preInsertEvent();
 {% endif %}
