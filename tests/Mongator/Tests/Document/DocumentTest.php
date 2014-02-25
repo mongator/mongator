@@ -159,6 +159,26 @@ class DocumentTest extends TestCase
         $this->assertSame('foo', $article->getTitle());
     }
 
+    public function testLoadFullWithNewDocumentsCreateSaveAndUpdate()
+    {
+        $authorA = $this->mongator->create('Model\Author')->save();
+        $article = $this->mongator->create('Model\Article');
+        $article->setAuthor($authorA);
+        $article->save();
+
+        $authorB = $this->mongator->create('Model\Author')->save();
+        $article->setAuthor($authorB);
+        $article->loadFull();
+        $article->save();
+
+        $id = $article->getId();
+        $repository = $this->mongator->getRepository('Model\Article');
+        $repository->getIdentityMap()->clear();
+
+        $articles = $repository->findById(array($id));
+        $this->assertSame((string)$articles[(string)$id]->getAuthor()->getId(), (string)$authorB->getId());
+    }
+
     public function testLoadFullOnDemand()
     {
         $articleRaw = array(

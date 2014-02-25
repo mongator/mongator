@@ -122,6 +122,7 @@ abstract class Document extends AbstractDocument
     public function save(array $options = array())
     {
         if ($this->isNew()) {
+            $this->queryFields = array();
             $batchInsertOptions = $options;
             $updateOptions = array();
         } else {
@@ -259,12 +260,16 @@ abstract class Document extends AbstractDocument
      */
     public function loadFull()
     {
-        if ($this->queryFields === array() || $this->isNew()) return true;
+
+        if ($this->queryFields === array() || $this->isNew()) {
+            return true;
+        }
 
         $data = $this->getRepository()->getCollection()->findOne(array('_id' => $this->getId()));
         foreach (array_keys($this->fieldsModified) as $name) {
             unset($data[$name]);
         }
+
         $this->setDocumentData($data);
         $this->queryFields = array();
 
