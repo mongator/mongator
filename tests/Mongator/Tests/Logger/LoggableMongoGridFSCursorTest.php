@@ -18,7 +18,14 @@ use Mongator\Logger\LoggableMongoGridFSCursor;
 class LoggableMongoGridFSCursorTest extends TestCase
 {
     protected $log;
-
+    
+    protected function setUp()
+    {
+        if (!class_exists('Mongo')) {
+            $this->markTestSkipped('Mongo is not available.');
+        }
+    }
+    
     public function testConstructorAndGetCollection()
     {
         $mongo = new LoggableMongo();

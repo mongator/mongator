@@ -18,6 +18,13 @@ use Mongator\Logger\LoggableMongoCursor;
 class LoggableMongoCursorTest extends TestCase
 {
     protected $log;
+    
+    protected function setUp()
+    {
+        if (!class_exists('Mongo')) {
+            $this->markTestSkipped('Mongo is not available.');
+        }
+    }
 
     public function testConstructorAndGetCollection()
     {

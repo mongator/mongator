@@ -55,12 +55,12 @@ if (
 ) {
     %id% = \$commandResult['value']['sequence'];
 } else {
+    \$id = array('_id' => \$repository->getCollectionName(), 'sequence' => $start);
     \$repository
         ->getConnection()
         ->getMongoDB()
         ->selectCollection('Mongator_sequence_id_generator')
-        ->insert(array('_id' => \$repository->getCollectionName(), 'sequence' => $start)
-    );
+        ->insert(\$id);
     %id% = $start;
 }
 EOF;
