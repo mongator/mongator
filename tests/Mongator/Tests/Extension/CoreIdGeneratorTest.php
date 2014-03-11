@@ -22,9 +22,13 @@ class CoreIdGeneratorTest extends TestCase
         $document->setName('ups');
         $document->save();
 
-        $this->assertSame(array('_id' => 'my_id', 'name' => 'ups'), $document->getRepository()->getCollection()->findOne(array(
-            '_id' => 'my_id',
-        )));
+        $expected = array('_id' => 'my_id', 'name' => 'ups');
+        $document = $document
+            ->getRepository()
+            ->getCollection()
+            ->findOne(array('_id' => 'my_id'));
+
+        $this->assertEmpty(array_diff($expected, $document));
     }
 
     public function testNoneIdGeneratorMongo()

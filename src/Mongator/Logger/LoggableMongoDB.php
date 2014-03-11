@@ -78,7 +78,7 @@ class LoggableMongoDB extends \MongoDB
     /**
      * createCollection.
      */
-    public function createCollection($name, $capped = false, $size = 0, $max = 0)
+    public function createCollection($name)
     {
         $this->time->start();
         $return = parent::createCollection($name, $capped, $size, $max);
@@ -87,10 +87,7 @@ class LoggableMongoDB extends \MongoDB
         $this->log(array(
             'type'   => 'createCollection',
             'name'   => $name,
-            'capped' => $capped,
-            'size'   => $size,
-            'max'    => $max,
-            'time'    => $time,
+            'options' => $options
         ));
 
         return $return;
