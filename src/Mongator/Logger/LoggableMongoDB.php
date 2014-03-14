@@ -78,7 +78,7 @@ class LoggableMongoDB extends \MongoDB
     /**
      * createCollection.
      */
-    public function createCollection($name)
+    public function createCollection($name, $capped = null, $capped_size = null, $max_elements = null)
     {
         $this->time->start();
         $return = parent::createCollection($name, $capped, $size, $max);
