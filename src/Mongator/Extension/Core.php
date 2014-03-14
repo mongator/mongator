@@ -372,7 +372,7 @@ class Core extends Extension
 
     private function parseAndCheckFieldsProcess()
     {
-        foreach ($this->configClass['fields'] as $name => &$field) {
+        foreach ($this->configClass['fields'] as $name => $field) {
             if (is_string($field)) {
                 $field = array('type' => $field);
             }
@@ -380,10 +380,12 @@ class Core extends Extension
             if ($this->configClass['inheritance'] && !isset($field['inherited'])) {
                 $field['inherited'] = false;
             }
+
+            $this->configClass['fields'][$name] = $field;
         }
         unset($field);
 
-        foreach ($this->configClass['fields'] as $name => &$field) {
+        foreach ($this->configClass['fields'] as $name => $field) {
             if (!is_array($field)) {
                 throw new \RuntimeException(sprintf('The field "%s" of the class "%s" is not a string or array.', $name, $this->class));
             }
@@ -400,6 +402,8 @@ class Core extends Extension
             } elseif (!is_string($field['dbName'])) {
                 throw new \RuntimeException(sprintf('The dbName of the field "%s" of the class "%s" is not an string.', $name, $this->class));
             }
+
+            $this->configClass['fields'][$name] = $field;
         }
         unset($field);
     }
@@ -407,7 +411,7 @@ class Core extends Extension
     private function parseAndCheckReferencesProcess()
     {
         // one
-        foreach ($this->configClass['referencesOne'] as $name => &$reference) {
+        foreach ($this->configClass['referencesOne'] as $name => $reference) {
             $this->parseAndCheckAssociationClass($reference, $name);
 
             if ($this->configClass['inheritance'] && !isset($reference['inherited'])) {
@@ -422,10 +426,11 @@ class Core extends Extension
                 $field['inherited'] = true;
             }
             $this->configClass['fields'][$reference['field']] = $field;
+            $this->configClass['referencesOne'][$name] = $reference;
         }
 
         // many
-        foreach ($this->configClass['referencesMany'] as $name => &$reference) {
+        foreach ($this->configClass['referencesMany'] as $name => $reference) {
             $this->parseAndCheckAssociationClass($reference, $name);
 
             if ($this->configClass['inheritance'] && !isset($reference['inherited'])) {
@@ -440,61 +445,72 @@ class Core extends Extension
                 $field['inherited'] = true;
             }
             $this->configClass['fields'][$reference['field']] = $field;
+            $this->configClass['referencesMany'][$name] = $reference;
         }
     }
 
     private function parseAndCheckEmbeddedsProcess()
     {
         // one
-        foreach ($this->configClass['embeddedsOne'] as $name => &$embedded) {
+        foreach ($this->configClass['embeddedsOne'] as $name => $embedded) {
             $this->parseAndCheckAssociationClass($embedded, $name);
 
             if ($this->configClass['inheritance'] && !isset($embedded['inherited'])) {
                 $embedded['inherited'] = false;
             }
+
+            $this->configClass['embeddedsOne'][$name] = $embedded;
         }
 
         // many
-        foreach ($this->configClass['embeddedsMany'] as $name => &$embedded) {
+        foreach ($this->configClass['embeddedsMany'] as $name => $embedded) {
             $this->parseAndCheckAssociationClass($embedded, $name);
 
             if ($this->configClass['inheritance'] && !isset($embedded['inherited'])) {
                 $embedded['inherited'] = false;
             }
+
+            $this->configClass['embeddedsMany'][$name] = $embedded;
         }
     }
 
     private function parseAndCheckRelationsProcess()
     {
         // one
-        foreach ($this->configClass['relationsOne'] as $name => &$relation) {
+        foreach ($this->configClass['relationsOne'] as $name => $relation) {
             $this->parseAndCheckAssociationClass($relation, $name);
 
             if (!isset($relation['reference'])) {
                 throw new \RuntimeException(sprintf('The relation one "%s" of the class "%s" does not have reference.', $name, $this->class));
             }
+
+            $this->configClass['relationsOne'][$name] = $relation;
         }
 
         // many_one
-        foreach ($this->configClass['relationsManyOne'] as $name => &$relation) {
+        foreach ($this->configClass['relationsManyOne'] as $name => $relation) {
             $this->parseAndCheckAssociationClass($relation, $name);
 
             if (!isset($relation['reference'])) {
                 throw new \RuntimeException(sprintf('The relation many one "%s" of the class "%s" does not have reference.', $name, $this->class));
             }
+
+            $this->configClass['relationsManyOne'][$name] = $relation;
         }
 
         // many_many
-        foreach ($this->configClass['relationsManyMany'] as $name => &$relation) {
+        foreach ($this->configClass['relationsManyMany'] as $name => $relation) {
             $this->parseAndCheckAssociationClass($relation, $name);
 
             if (!isset($relation['reference'])) {
                 throw new \RuntimeException(sprintf('The relation many many "%s" of the class "%s" does not have reference.', $name, $this->class));
             }
+
+            $this->configClass['relationsManyMany'][$name] = $relation;
         }
 
         // many_through
-        foreach ($this->configClass['relationsManyThrough'] as $name => &$relation) {
+        foreach ($this->configClass['relationsManyThrough'] as $name => $relation) {
             if (!is_array($relation)) {
                 throw new \RuntimeException(sprintf('The relation_many_through "%s" of the class "%s" is not an array.', $name, $this->class));
             }
@@ -511,6 +527,8 @@ class Core extends Extension
             if (!isset($relation['foreign'])) {
                 throw new \RuntimeException(sprintf('The relation_many_through "%s" of the class "%s" does not have foreign.', $name, $this->class));
             }
+
+            $this->configClass['relationsManyThrough'][$name] = $relation;
         }
     }
 
@@ -539,12 +557,14 @@ class Core extends Extension
 
     private function parseOnDeleteProcess()
     {
-        foreach ($this->configClass['onDelete'] as &$onDelete) {
+        foreach ($this->configClass['onDelete'] as $key => $onDelete) {
             if ($onDelete['polymorphic']) {
                 $referenceTypeKey = 'references'.ucfirst($onDelete['referenceType']);
                 $reference = $this->configClasses[$onDelete['class']][$referenceTypeKey][$onDelete['referenceName']];
                 $onDelete['discriminatorField'] = $reference['discriminatorField'];
                 $onDelete['discriminatorMap'] = $reference['discriminatorMap'];
+
+                $this->configClass['onDelete'][$key] = $onDelete;
             }
         }
     }
@@ -687,7 +707,7 @@ EOF
     private function globalInheritableAndInheritanceProcess()
     {
         // inheritable
-        foreach ($this->configClasses as $class => &$configClass) {
+        foreach ($this->configClasses as $class => $configClass) {
             if ($configClass['inheritable']) {
                 if (!is_array($configClass['inheritable'])) {
                     throw new \RuntimeException(sprintf('The inheritable configuration of the class "%s" is not an array.', $class));
@@ -707,11 +727,13 @@ EOF
                     }
                     $configClass['inheritable']['values'] = array();
                 }
+
+                $this->configClasses[$class] = $configClass;
             }
         }
 
         // inheritance
-        foreach ($this->configClasses as $class => &$configClass) {
+        foreach ($this->configClasses as $class => $configClass) {
             if (!$configClass['inheritance']) {
                 $configClass['_parent_events'] = array(
                     'preInsert'  => array(),
@@ -765,43 +787,48 @@ EOF
             }
 
             // inherited fields
-            foreach ($inheritedFields as $name => &$field) {
+            foreach ($inheritedFields as $name => $field) {
                 if (is_string($field)) {
-                    $field = array('type' => $field);
+                    $inheritedFields[$name] = array('type' => $field);
                 }
 
-                $field['inherited'] = true;
+                $inheritedFields[$name]['inherited'] = true;
             }
+
             unset($field);
             $configClass['fields'] = array_merge($inheritedFields, $configClass['fields']);
 
             // inherited referencesOne
-            foreach ($inheritedReferencesOne as $name => &$referenceOne) {
-                $referenceOne['inherited'] = true;
+            foreach ($inheritedReferencesOne as $name => $referenceOne) {
+                $inheritedReferencesOne[$name]['inherited'] = true;
             }
+
             unset($referenceOne);
             $configClass['referencesOne'] = array_merge($inheritedReferencesOne, $configClass['referencesOne']);
 
             $configClass['inheritance']['type'] = $inheritable['type'];
 
             // inherited referencesMany
-            foreach ($inheritedReferencesMany as $name => &$referenceMany) {
-                $referenceMany['inherited'] = true;
+            foreach ($inheritedReferencesMany as $name => $referenceMany) {
+                $inheritedReferencesMany[$name]['inherited'] = true;
             }
+
             unset($referenceMany);
             $configClass['referencesMany'] = array_merge($inheritedReferencesMany, $configClass['referencesMany']);
 
             // inherited embeddedsOne
-            foreach ($inheritedEmbeddedsOne as $name => &$embeddedOne) {
-                $embeddedOne['inherited'] = true;
+            foreach ($inheritedEmbeddedsOne as $name => $embeddedOne) {
+                $inheritedEmbeddedsOne[$name]['inherited'] = true;
             }
+
             unset($embeddedOne);
             $configClass['embeddedsOne'] = array_merge($inheritedEmbeddedsOne, $configClass['embeddedsOne']);
 
             // inherited embeddedsMany
-            foreach ($inheritedEmbeddedsMany as $name => &$embeddedMany) {
-                $embeddedMany['inherited'] = true;
+            foreach ($inheritedEmbeddedsMany as $name => $embeddedMany) {
+                $inheritedEmbeddedsMany[$name]['inherited'] = true;
             }
+
             unset($embeddedMany);
             $configClass['embeddedsMany'] = array_merge($inheritedEmbeddedsMany, $configClass['embeddedsMany']);
 
@@ -862,8 +889,14 @@ EOF
                 }
 
                 $configClass['collection'] = $this->configClasses[$inheritableClass]['collection'];
-                $configClass['inheritance']['field'] = $inheritable['field'];
+                
+
+                if (isset($inheritable['field'])) {
+                    $configClass['inheritance']['field'] = $inheritable['field'];
+                }
             }
+
+            $this->configClasses[$class] = $configClass;
         }
 
     }
@@ -935,8 +968,9 @@ EOF
                         $this->configClasses[$discriminatorClass]['onDelete'][] = $onDelete;
                     }
                 } else {
-                    foreach ($this->configClasses as &$configClass) {
+                    foreach ($this->configClasses as $key => $configClass) {
                         $configClass['onDelete'][] = $onDelete;
+                        $this->configClasses[$key] = $configClass;
                     }
                 }
             }

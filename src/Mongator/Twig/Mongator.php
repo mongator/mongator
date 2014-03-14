@@ -25,7 +25,9 @@ class Mongator extends \Twig_Extension
     {
         return array(
             'ucfirst'    => new \Twig_Filter_Function('ucfirst'),
-            'var_export' => new \Twig_Filter_Function('var_export'),
+            'var_export' => new \Twig_Filter_Function(function($string) {
+                return var_export($string, true);
+            })
         );
     }
 
