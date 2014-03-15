@@ -13,15 +13,14 @@ namespace Mongator\Benchmarks;
 
 class DeletingEvent extends AthleticEvent
 {
-    const EXAMPLE_ID = '53233675acf164c2f80041a7';
-
     public function setUp()
     {
+        parent::setUp();
         $this->simpleDocument = $this->buildSimpleDocument()->save();
     }
     
     /**
-     * @iterations 1000
+     * @iterations 500
      */
     public function simpleDocument()
     {

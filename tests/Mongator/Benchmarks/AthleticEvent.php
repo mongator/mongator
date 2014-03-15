@@ -97,7 +97,7 @@ abstract class AthleticEvent extends Base
         $document = $this->create(self::SIMPLE_DOCUMENT_CLASS);
         $this->setBasicSimpleFields($document);
 
-        for ($i=0; $i < 50; $i++) { 
+        for ($i=0; $i < 30; $i++) { 
             $embedded = $this->buildSimpleEmbedded();
             $document->addNested($embedded);
         }
@@ -120,7 +120,7 @@ abstract class AthleticEvent extends Base
         $this->setBasicSimpleFields($document);
         $this->setBasicComplexFields($document);
 
-        for ($i=0; $i < 50; $i++) { 
+        for ($i=0; $i < 30; $i++) { 
             $embedded = $this->buildComplexEmbedded();
             $document->addNested($embedded);
         }

@@ -92,9 +92,19 @@ Example:
     $ phpunit --configuration phpunit.xml.dist
 
 
+Benchmarking
+---------
+
+A small suite of benchmarking is included with the package, you can run the suite with this command:
+
+``` bash
+php ./vendor/bin/athletic -b tests/bootstrap.php  -p tests/Mongator/Benchmarks/
+```
+
+Some results can be find at: https://gist.github.com/mcuadros/c5755ae267e38e70cd2d
+
+
 License
 -------
 
 MIT, see [LICENSE](LICENSE)
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mongator/mongator/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

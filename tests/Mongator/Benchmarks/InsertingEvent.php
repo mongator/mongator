@@ -14,7 +14,7 @@ namespace Mongator\Benchmarks;
 class InsertingEvent extends AthleticEvent
 {
     /**
-     * @iterations 1000
+     * @iterations 500
      */
     public function simpleDocument()
     {
@@ -22,7 +22,7 @@ class InsertingEvent extends AthleticEvent
     }
 
     /**
-     * @iterations 1000
+     * @iterations 500
      */
     public function simpleNestedDocument()
     {
@@ -30,7 +30,7 @@ class InsertingEvent extends AthleticEvent
     }
 
     /**
-     * @iterations 1000
+     * @iterations 500
      */
     public function complexDocument()
     {
@@ -38,7 +38,7 @@ class InsertingEvent extends AthleticEvent
     }
 
     /**
-     * @iterations 1000
+     * @iterations 500
      */
     public function complexNestedDocument()
     {

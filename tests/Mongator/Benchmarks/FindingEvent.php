@@ -15,7 +15,7 @@ use Exception;
 
 class FindingEvent extends AthleticEvent
 {
-    protected $recordCount = 200;
+    protected $recordCount = 100;
 
     protected function classSetUp()
     {

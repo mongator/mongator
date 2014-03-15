@@ -491,6 +491,7 @@ return array(
     'Model\SimpleEmbedded' => array(
         'isEmbedded' => true,
         'fields' => array(
+            'name' => 'string',
             'string' => 'string',
             'float'  => 'float',
             'int'    => 'string',
