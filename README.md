@@ -101,7 +101,7 @@ A small suite of benchmarking is included with the package, you can run the suit
 php ./vendor/bin/athletic -b tests/bootstrap.php  -p tests/Mongator/Benchmarks/
 ```
 
-Some results can be find at: https://gist.github.com/mcuadros/c5755ae267e38e70cd2d
+Some results can be find at: https://gist.github.com/mcuadros/9560576
 
 
 License
