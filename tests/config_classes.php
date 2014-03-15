@@ -469,4 +469,86 @@ return array(
             'other' => array('class' => 'Model\CircularReference'),
         ),
     ),
+
+    'Model\SimpleDocument' => array(
+        'collection' => 'simple',
+        'fields' => array(
+            'string' => 'string',
+            'float'  => 'float',
+            'int'    => 'string',
+            'field4' => 'string',
+            'field5' => 'string',
+            'field6' => 'string',
+            'field7' => 'string',
+            'field8' => 'string',
+            'field9' => 'string'
+        ),
+        'embeddedsMany' => array(
+            'nested' => array('class' => 'Model\SimpleEmbedded'),
+        )
+    ),
+
+    'Model\SimpleEmbedded' => array(
+        'isEmbedded' => true,
+        'fields' => array(
+            'string' => 'string',
+            'float'  => 'float',
+            'int'    => 'string',
+            'field4' => 'string',
+            'field5' => 'string',
+            'field6' => 'string',
+            'field7' => 'string',
+            'field8' => 'string',
+            'field9' => 'string'
+        )
+    ),
+
+    'Model\ComplexDocument' => array(
+        'collection' => 'complex',
+        'fields' => array(
+            'string' => 'string',
+            'float'  => 'float',
+            'int'    => 'string',
+            'field4' => 'string',
+            'field5' => 'string',
+            'field6' => 'string',
+            'field7' => 'string',
+            'field8' => 'string',
+            'field9' => 'string',
+            'date' => 'date',
+            'bin' => 'raw'
+        ),
+        'embeddedsMany' => array(
+            'nested' => array('class' => 'Model\ComplexEmbedded'),
+        ),
+        'referencesOne' => array(
+            'referencesOne' => array('class' => 'Model\SimpleDocument'),
+        ),
+        'referencesMany' => array(
+            'referencesMany' => array('class' => 'Model\SimpleDocument'),
+        ),
+    ),
+
+    'Model\ComplexEmbedded' => array(
+        'isEmbedded' => true,
+        'fields' => array(
+            'string' => 'string',
+            'float'  => 'float',
+            'int'    => 'string',
+            'field4' => 'string',
+            'field5' => 'string',
+            'field6' => 'string',
+            'field7' => 'string',
+            'field8' => 'string',
+            'field9' => 'string',
+            'date' => 'date',
+            'bin' => 'raw'
+        ),
+        'referencesOne' => array(
+            'referencesOne' => array('class' => 'Model\SimpleDocument'),
+        ),
+        'referencesMany' => array(
+            'referencesMany' => array('class' => 'Model\SimpleDocument'),
+        ),
+    ),
 );

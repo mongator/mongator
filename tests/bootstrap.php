@@ -1,16 +1,12 @@
 <?php
-if ( file_exists(__DIR__.'/../vendor/autoload.php') ) {
-    $loader = require __DIR__.'/../vendor/autoload.php';
-} else {
-    $loader = require __DIR__.'/../../../../vendor/autoload.php';
-}
+$configClasses = require __DIR__.'/config_classes.php';
 
+$loader = require __DIR__ . "/../vendor/autoload.php";
 $loader->add('Mongator\Tests', __DIR__);
+$loader->add('Mongator\Benchmarks', __DIR__);
 $loader->add('Model', __DIR__);
 
 // mondator
-$configClasses = require __DIR__.'/config_classes.php';
-
 use Mandango\Mondator\Mondator;
 use Mongator\Id\IdGeneratorContainer;
 
@@ -25,5 +21,6 @@ $mondator->setExtensions(array(
     new Mongator\Extension\DocumentArrayAccess(),
     new Mongator\Extension\DocumentPropertyOverloading(),
 ));
+
 IdGeneratorContainer::add('ab-id', 'Mongator\Tests\Id\ABIdGenerator');
 $mondator->process();

@@ -8,7 +8,7 @@
     "authors": [
         {
             "name":  "Máximo Cuadros",
-            "email": "maximo@yunait.com"
+            "email": "mcuadros@gmail.com"
         },
         {
             "name":  "Daniel Ripollés",
@@ -23,7 +23,9 @@
         "php": ">=5.3.0",
         "mongator/mondator": ">=1.0.0"
     },
-
+    "require-dev": {
+        "athletic/athletic": "dev-master"
+    },
     "suggest": {
         "ext-apc": "Allow caching on APC",
         "ext-redis": "Allow caching on Redis",
