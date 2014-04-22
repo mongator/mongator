@@ -183,7 +183,7 @@ class LoggableMongoCollection extends \MongoCollection
     /**
      * findOne.
      */
-    public function findOne($query = null, $fields = null, array $options = null)
+    public function findOne($query = array(), $fields = array(), array $options = null)
     {
         $cursor = new LoggableMongoCursor($this, $query, $fields, 'findOne' , $options);
         $cursor->limit(-1);
