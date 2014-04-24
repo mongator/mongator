@@ -424,6 +424,27 @@ abstract class Repository
         return $this->getConnection()->getMongoDB()->selectCollection($result['result'])->find();
     }
 
+    /**
+     * Shortcut to make an aggregation.
+     *
+     * @param array $pipeline   The pipeline for aggregation
+     * @param array $options    Extra options for the command (optional).
+     *
+     * @return array With the aggregation
+     *
+     * @throws \RuntimeException If the database returns an error.
+     */
+    public function aggregate(array $pipeline, array $options = array())
+    {
+        $command = array(
+            'aggregate' => $this->getCollectionName(),
+            'pipeline' => $pipeline
+        );
+        $result = $this->command($command, $options);
+
+        return $result['result'];
+    }
+
     private function command($command, $options)
     {
         $result = $this->getConnection()->getMongoDB()->command($command, $options);

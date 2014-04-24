@@ -558,4 +558,63 @@ class RepositoryTest extends TestCase
         $repository->setConnection($connection);
         $repository->mapReduce('foo', 'bar', array('inline' => 1));
     }
+
+    public function testAggregate()
+    {
+        $collectionName = 'myCollectionName';
+
+        $options = array();
+        $pipeline = array(
+            array('$limit' => 2),
+            array(
+                '$group' => array(
+                    '_id' => '1',
+                    'count' => array(
+                        '$sum' => 1
+                    )
+                )
+            )
+        );
+
+        $aggregationResult = array(
+            'result' => array(
+                array(
+                  '_id' => '1',
+                  'count' => 2
+                )
+            ),
+            'ok' => 1
+        );
+
+        $aggregationResultShouldBe = $aggregationResult['result'];
+
+        $mongoDB = $this->getMockBuilder('MongoDB')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $mongoDB
+            ->expects($this->once())
+            ->method('command')
+            ->with(
+                array(
+                    'aggregate' => $collectionName,
+                    'pipeline' => $pipeline
+                ),
+                $options
+            )
+            ->will($this->returnValue($aggregationResult))
+        ;
+
+        $connection = $this->getMock('Mongator\ConnectionInterface');
+        $connection
+            ->expects($this->any())
+            ->method('getMongoDB')
+            ->will($this->returnValue($mongoDB))
+        ;
+
+        $repository = new RepositoryMock($this->mongator);
+        $repository->setCollectionName($collectionName);
+        $repository->setConnection($connection);
+        $this->assertSame($aggregationResultShouldBe, $repository->aggregate($pipeline, $options));
+    }
 }
