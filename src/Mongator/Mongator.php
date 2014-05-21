@@ -12,6 +12,8 @@
 namespace Mongator;
 
 use Mongator\Cache\AbstractCache;
+use Mongator\Document\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Mongator.
@@ -426,5 +428,28 @@ class Mongator
     public function flush()
     {
         $this->unitOfWork->commit();
+    }
+
+    /**
+     * Set the EventDispatcher
+     *
+     * @api
+     */
+    public function setEventDispatcher(EventDispatcher $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+    }
+
+    /**
+     * Dispatch a DocumentEvent to the dispatcher
+     *
+     * @param string $name
+     * @param Mongator\Document\Event $event
+     *
+     * @api
+     */
+    public function dispatchEvent($name, Event $event)
+    {
+        $this->dispatcher->dispatch($name, $event);
     }
 }

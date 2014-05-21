@@ -14,6 +14,7 @@ namespace Mongator\Tests;
 use Mongator\Mongator;
 use Mongator\Connection;
 use Mongator\Cache\ArrayCache;
+use Mongator\Document\Event;
 
 class MongatorTest extends TestCase
 {
@@ -273,5 +274,20 @@ class MongatorTest extends TestCase
     public function testGetRepositoryNotValidOtherClass()
     {
         $this->mongator->getRepository('DateTime');
+    }
+
+    public function testDispatchEvent()
+    {
+        $event = new Event();
+
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $dispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($this->equalTo('foo'), $this->equalTo($event));
+
+
+        $this->mongator->setEventDispatcher($dispatcher);
+        $this->mongator->dispatchEvent('foo', $event);
     }
 }
