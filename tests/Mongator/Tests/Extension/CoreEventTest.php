@@ -35,6 +35,16 @@ class CoreEventTest extends TestCase
         $article->save();
     }
 
+    public function testInsertEventsWithCustomPattern()
+    {
+        $this->assertDispatchEvent('author.pre.insert', 0);
+        $this->assertDispatchEvent('author.post.insert', 1);
+
+        $article = $this->mongator->create('Model\Author');
+        $article->setName('foo');
+        $article->save();
+    }
+
     public function testUpdateEvents()
     {
         $article = $this->mongator->create('Model\Article');

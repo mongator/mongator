@@ -76,6 +76,7 @@ return array(
         ),
     ),
     'Model\Author' => array(
+        'eventPattern' => 'author.%s',
         'fields' => array(
             'name' => 'string',
         ),
