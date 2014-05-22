@@ -92,7 +92,6 @@ class Core extends Extension
             $this->initRelationsProcess();
         }
 
-        $this->initEventsProcess();
         $this->initOnDeleteProcess();
         $this->initIsFileProcess();
     }
@@ -313,26 +312,6 @@ class Core extends Extension
                 'mongator.%s.%%s',
                 strtolower(str_replace('\\', '.', $this->class))
             );
-        }
-    }
-
-    private function initEventsProcess()
-    {
-        foreach (array(
-            'preInsert',
-            'postInsert',
-            'preUpdate',
-            'postUpdate',
-            'preDelete',
-            'postDelete',
-        ) as $event) {
-            if (!isset($this->configClass['events']) || !isset($this->configClass['events'][$event])) {
-                $this->configClass['events'][$event] = array();
-            }
-        }
-
-        if (!isset($this->configClass['events'])) {
-            $this->configClass['events'] = array();
         }
     }
 
@@ -747,14 +726,6 @@ EOF
         // inheritance
         foreach ($this->configClasses as $class => $configClass) {
             if (!$configClass['inheritance']) {
-                $configClass['_parent_events'] = array(
-                    'preInsert'  => array(),
-                    'postInsert' => array(),
-                    'preUpdate'  => array(),
-                    'postUpdate' => array(),
-                    'preDelete'  => array(),
-                    'postDelete' => array(),
-                );
                 continue;
             }
 
@@ -858,18 +829,8 @@ EOF
                 }
             } while ($continue);
 
-            // parent events
-            $parentEvents = array(
-                'preInsert'  => array(),
-                'postInsert' => array(),
-                'preUpdate'  => array(),
-                'postUpdate' => array(),
-                'preDelete'  => array(),
-                'postDelete' => array(),
-            );
             $loopClass = $inheritableClass;
             do {
-                $parentEvents = array_merge_recursive($this->configClasses[$loopClass]['events'], $parentEvents);
                 if ($this->configClasses[$loopClass]['inheritance']) {
                     $loopClass = $this->configClasses[$loopClass]['inheritance']['class'];
                     $continue = true;
@@ -877,7 +838,6 @@ EOF
                     $continue = false;
                 }
             } while ($continue);
-            $configClass['_parent_events'] = $parentEvents;
 
             // type
             if ('single' == $inheritable['type']) {
