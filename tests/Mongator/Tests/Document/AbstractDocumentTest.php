@@ -56,9 +56,10 @@ class AbstractDocumentTest extends TestCase
     {
         $document = new AbstractDocument($this->mongator);
 
-        $validator = function($arg) use ($document) {
-            $this->assertInstanceOf('Mongator\Document\Event', $arg);
-            $this->assertSame($document, $arg->getDocument());
+        $self = $this;
+        $validator = function($arg) use ($document, $self) {
+            $self->assertInstanceOf('Mongator\Document\Event', $arg);
+            $self->assertSame($document, $arg->getDocument());
 
             return true;
         };

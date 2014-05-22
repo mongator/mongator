@@ -140,8 +140,9 @@ class CoreEventTest extends TestCase
 
     private function assertDispatchEvent($eventName, $at)
     {
-        $assert = function($arg) {
-            $this->assertInstanceOf('Mongator\Document\Event', $arg);
+        $self = $this;
+        $assert = function($arg) use ($self) {
+            $self->assertInstanceOf('Mongator\Document\Event', $arg);
         
             return true;
         };
