@@ -209,50 +209,6 @@ return array(
             'isHere'  => array('type' => 'boolean', 'default' => true),
         ),
     ),
-    // events
-    'Model\Events' => array(
-        'fields' => array(
-            'name' => 'string',
-        ),
-        'events' => array(
-            'preInsert'  => array('myPreInsert'),
-            'postInsert' => array('myPostInsert'),
-            'preUpdate'  => array('myPreUpdate'),
-            'postUpdate' => array('myPostUpdate'),
-            'preDelete'  => array('myPreDelete'),
-            'postDelete' => array('myPostDelete'),
-        ),
-    ),
-    'Model\EventsEmbeddedOne' => array(
-        'fields' => array(
-            'name' => 'string',
-        ),
-        'embeddedsOne' => array(
-            'embedded' => array('class' => 'Model\EmbeddedEvents'),
-        ),
-    ),
-    'Model\EventsEmbeddedMany' => array(
-        'fields' => array(
-            'name' => 'string',
-        ),
-        'embeddedsMany' => array(
-            'embedded' => array('class' => 'Model\EmbeddedEvents'),
-        ),
-    ),
-    'Model\EmbeddedEvents' => array(
-        'isEmbedded' => true,
-        'fields' => array(
-            'name' => 'string',
-        ),
-        'events' => array(
-            'preInsert'  => array('myPreInsert'),
-            'postInsert' => array('myPostInsert'),
-            'preUpdate'  => array('myPreUpdate'),
-            'postUpdate' => array('myPostUpdate'),
-            'preDelete'  => array('myPreDelete'),
-            'postDelete' => array('myPostDelete'),
-        ),
-    ),
     'Model\InitializeArgs' => array(
         'fields' => array(
             'name' => 'string',
@@ -287,14 +243,6 @@ return array(
         'embeddedsOne' => array(
             'source' => array('class' => 'Model\Source'),
         ),
-        'events' => array(
-            'preInsert'  => array('elementPreInsert'),
-            'postInsert' => array('elementPostInsert'),
-            'preUpdate'  => array('elementPreUpdate'),
-            'postUpdate' => array('elementPostUpdate'),
-            'preDelete'  => array('elementPreDelete'),
-            'postDelete' => array('elementPostDelete'),
-        ),
     ),
     'Model\TextElement' => array(
         'inheritable' => array('type' => 'single'),
@@ -308,9 +256,6 @@ return array(
         'fields' => array(
             'text_text' => 'string',
         ),
-        'events' => array(
-            'preInsert' => array('textTextElementPreInsert'),
-        ),
     ),
     'Model\FormElement' => array(
         'inheritable' => array('type' => 'single'),
@@ -321,14 +266,6 @@ return array(
         'referencesOne' => array(
             'author' => array('class' => 'Model\Author'),
         ),
-        'events' => array(
-            'preInsert'  => array('formElementPreInsert'),
-            'postInsert' => array('formElementPostInsert'),
-            'preUpdate'  => array('formElementPreUpdate'),
-            'postUpdate' => array('formElementPostUpdate'),
-            'preDelete'  => array('formElementPreDelete'),
-            'postDelete' => array('formElementPostDelete'),
-        ),
         'embeddedsMany' => array(
             'comments' => array('class' => 'Model\Comment'),
         ),
@@ -337,14 +274,6 @@ return array(
         'inheritance' => array('class' => 'Model\FormElement', 'value' => 'textarea'),
         'fields' => array(
             'default' => 'string',
-        ),
-        'events' => array(
-            'preInsert'  => array('textareaPreInsert'),
-            'postInsert' => array('textareaPostInsert'),
-            'preUpdate'  => array('textareaPreUpdate'),
-            'postUpdate' => array('textareaPostUpdate'),
-            'preDelete'  => array('textareaPreDelete'),
-            'postDelete' => array('textareaPostDelete'),
         ),
     ),
     'Model\RadioFormElement' => array(

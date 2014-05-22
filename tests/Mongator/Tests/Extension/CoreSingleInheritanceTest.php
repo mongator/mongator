@@ -408,38 +408,6 @@ class CoreSingleInheritanceTest extends TestCase
         $this->assertSame(1, $this->mongator->getRepository('Model\RadioFormElement')->createQuery()->count());
     }
 
-    public function testParentEvents()
-    {
-        $formElement = $this->mongator->create('Model\FormElement')->setLabel('Element')->save();
-        $this->assertSame(array(
-            'ElementPreInserting',
-            'FormElementPreInserting',
-            'ElementPostInserting',
-            'FormElementPostInserting',
-        ), $formElement->getEvents());
-
-        $formElement = $this->mongator->create('Model\TextTextElement')->setLabel('Element')->save();
-        $this->assertSame(array(
-            'ElementPreInserting',
-            'TextTextElementPreInsert',
-            'ElementPostInserting',
-        ), $formElement->getEvents());
-    }
-
-    public function testGrandParentEvents()
-    {
-
-        $textareaFormElement = $this->mongator->create('Model\TextareaFormElement')->setLabel('Textarea')->save();
-        $this->assertSame(array(
-            'ElementPreInserting',
-            'FormElementPreInserting',
-            'TextareaPreInserting',
-            'ElementPostInserting',
-            'FormElementPostInserting',
-            'TextareaPostInserting',
-        ), $textareaFormElement->getEvents());
-    }
-
     public function testRepositoryGetParentRepository()
     {
         $elementRepository = $this->mongator->getRepository('Model\Element');

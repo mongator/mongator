@@ -79,9 +79,11 @@ class Core extends Extension
             $this->initUseBatchInsertProcess();
             $this->initConnectionNameProcess();
             $this->initCollectionNameProcess();
+
         }
         $this->initIndexesProcess();
         $this->initBehaviorsProcess();
+        $this->initEventPatternProcess();
 
         $this->initFieldsProcess();
         $this->initReferencesProcess();
@@ -118,6 +120,7 @@ class Core extends Extension
 
         // document
         $templates = array(
+            'Document',
             'DocumentSetDefaults',
             'DocumentSetDocumentData',
             'DocumentFields',
@@ -139,7 +142,6 @@ class Core extends Extension
         }
         $templates[] = 'DocumentSetGet';
         $templates[] = 'DocumentFromToArray';
-        $templates[] = 'DocumentEventsMethods';
         $templates[] = 'DocumentQueryForSave';
 
         foreach ($templates as $template) {
@@ -301,6 +303,16 @@ class Core extends Extension
     {
         if (!isset($this->configClass['behaviors'])) {
             $this->configClass['behaviors'] = array();
+        }
+    }
+
+    private function initEventPatternProcess()
+    {
+        if (!isset($this->configClass['eventPattern'])) {
+            $this->configClass['eventPattern'] = sprintf(
+                'mongator.%s.%%s',
+                strtolower(str_replace('\\', '.', $this->class))
+            );
         }
     }
 
