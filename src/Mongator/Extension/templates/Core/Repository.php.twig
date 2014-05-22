@@ -123,11 +123,7 @@
                 }
 {% endif %}
                 $document->setDefaults();
-
-{% if config_class.events.preInsert or config_class._parent_events.preInsert %}
                 $document->preInsertEvent();
-{% endif %}
-                $document->oncePreInsertEvent();
 
                 $a[$oid] = $document->queryForSave();
                 {{ Mongator_id_generator(config_class, "$a[$oid]['_id']", 16) }}
@@ -147,10 +143,8 @@
                     $document->resetGroups();
 {% endif %}
 
-{% if config_class.events.postInsert or config_class._parent_events.postInsert %}
+
                 $document->postInsertEvent();
-{% endif %}
-                $document->oncePostInsertEvent();
 
                 }
             }
@@ -163,10 +157,7 @@
                 }
 {% endif %}
                 $document->setDefaults();
-{% if config_class.events.preInsert or config_class._parent_events.preInsert %}
                 $document->preInsertEvent();
-{% endif %}
-                $document->oncePreInsertEvent();
 
                 $data = $document->queryForSave();
                 {{ Mongator_id_generator(config_class, "$data['_id']", 16) }}
@@ -181,11 +172,7 @@
 {% if config_class._has_groups %}
                 $document->resetGroups();
 {% endif %}
-{% if config_class.events.postInsert or config_class._parent_events.postInsert %}
                 $document->postInsertEvent();
-{% endif %}
-                $document->oncePostInsertEvent();
-
             }
 {% endif %}
         }
@@ -193,10 +180,7 @@
         // updates
         foreach ($updates as $document) {
             if ($document->isModified()) {
-{% if config_class.events.preUpdate or config_class._parent_events.preUpdate %}
                 $document->preUpdateEvent();
-{% endif %}
-                $document->oncePreUpdateEvent();
 
                 $query = $document->queryForSave();
                 $collection->update(array('_id' => $this->idToMongo($document->getId())), $query, $updateOptions);
@@ -204,10 +188,7 @@
 {% if config_class._has_groups %}
                 $document->resetGroups();
 {% endif %}
-{% if config_class.events.postUpdate or config_class._parent_events.postUpdate %}
                 $document->postUpdateEvent();
-{% endif %}
-                $document->oncePostUpdateEvent();
             }
         }
     }
@@ -225,9 +206,7 @@
 
         $ids = array();
         foreach ($documents as $document) {
-{% if config_class.events.preDelete or config_class._parent_events.preDelete %}
             $document->preDeleteEvent();
-{% endif %}
             $ids[] = $id = $this->idToMongo($document->getId());
         }
 
@@ -237,11 +216,9 @@
 
         $this->getCollection()->remove(array('_id' => array('$in' => $ids)));
 
-{% if config_class.events.postDelete or config_class._parent_events.postDelete %}
         foreach ($documents as $document) {
             $document->postDeleteEvent();
         }
-{% endif %}
 
         $identityMap =& $this->getIdentityMap()->allByReference();
         foreach ($documents as $document) {

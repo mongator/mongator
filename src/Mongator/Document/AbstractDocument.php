@@ -25,12 +25,12 @@ use Mongator\Mongator;
 abstract class AbstractDocument
 {
     private $mongator;
-
+    private $archive;
     public $data = array();
     protected $fieldsModified = array();
     protected $onceEnvents = array();
     protected $savingReferences = false;
-    private $archive;
+    protected $eventPattern;
 
     /**
      * Constructor.
@@ -421,46 +421,98 @@ abstract class AbstractDocument
     }
 
     /**
-     * Execute all the stored callbacks in preInsert event and delete this events
+     * Triggers the pre instert events
      *
      * @api
      */
-    public function oncePreInsertEvent()
+    public function preInsertEvent()
+    {
+        $this->oncePreInsertEvent();
+        $this->dispatchEvent('pre.insert');
+    }
+
+    /**
+     * Triggers the post insert events
+     *
+     * @api
+     */
+    public function postInsertEvent()
+    {
+        $this->oncePostInsertEvent();
+        $this->dispatchEvent('post.insert');
+    }
+
+    /**
+     * Triggers the pre update events
+     *
+     * @api
+     */
+    public function preUpdateEvent()
+    {
+        $this->oncePreUpdateEvent();
+        $this->dispatchEvent('pre.update');
+    }
+
+    /**
+     * Triggers the post update events
+     *
+     * @api
+     */
+    public function postUpdateEvent()
+    {
+        $this->oncePostUpdateEvent();
+        $this->dispatchEvent('post.update');
+    }
+
+    /**
+     * Triggers the pre delete events
+     *
+     * @api
+     */
+    public function preDeleteEvent()
+    {
+        $this->dispatchEvent('pre.delete');
+    }
+
+    /**
+     * Triggers the post delete events
+     *
+     * @api
+     */
+    public function postDeleteEvent()
+    {
+        $this->dispatchEvent('post.delete');
+    }
+
+    protected function dispatchEvent($eventName)
+    {
+        $event = new Event($this);
+        $fullEventName = sprintf($this->eventPattern, $eventName);
+
+        $this->mongator->dispatchEvent($fullEventName, $event);
+    }
+
+    private function oncePreInsertEvent()
     {
         $this->executeOnceEvent('pre-insert');
     }
 
-    /**
-     * Execute all the stored callbacks in postInsert event and delete this events
-     *
-     * @api
-     */
-    public function oncePostInsertEvent()
+    private function oncePostInsertEvent()
     {
         $this->executeOnceEvent('post-insert');
     }
 
-    /**
-     * Execute all the stored callbacks in preUpdate event and delete this events
-     *
-     * @api
-     */
-    public function oncePreUpdateEvent()
+    private function oncePreUpdateEvent()
     {
         $this->executeOnceEvent('pre-update');
     }
 
-    /**
-     * Execute all the stored callbacks in postUpdate event and delete this events
-     *
-     * @api
-     */
-    public function oncePostUpdateEvent()
+    private function oncePostUpdateEvent()
     {
         $this->executeOnceEvent('post-update');
     }
 
-    protected function executeOnceEvent($type)
+    private function executeOnceEvent($type)
     {
         if (!isset($this->onceEnvents[$type])) {
             return;

@@ -174,19 +174,6 @@ class CoreRepositoryTest extends TestCase
         $this->assertSame($messages['pablodip']->getReplyToId(), $messages['barbelith']->getId());
     }
 
-
-    public function testSaveEventsPreUpdateProcessQueryLater()
-    {
-        $document = $this->mongator->create('Model\Events');
-        $document->setName('foo');
-        $document->save();
-        $document->setName('bar');
-        $document->save();
-
-        $doc = $document->getRepository()->getCollection()->findOne();
-        $this->assertSame('preUpdating', $doc['name']);
-    }
-
     public function testSaveResetGroups()
     {
         // insert

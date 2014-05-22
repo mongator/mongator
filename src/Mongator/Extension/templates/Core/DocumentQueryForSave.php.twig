@@ -25,16 +25,9 @@
 
         if ($isNew) {
             $this->setDefaults();
-{% if config_class.events.preInsert or config_class._parent_events.preInsert %}
             $this->preInsertEvent();
-{% endif %}
-            $this->oncePreInsertEvent();
-  
         } else {
-{% if config_class.events.preUpdate or config_class._parent_events.preUpdate %}
             $this->preUpdateEvent();
-{% endif %}
-            $this->oncePreUpdateEvent();
         }
         
 {% endif %}
@@ -183,17 +176,11 @@
 
         if ($isNew) {
             $rap['root']->$registerPostEventMethod(function() use ($embedded) {
-{% if config_class.events.postInsert or config_class._parent_events.postInsert %}
                 $embedded->postInsertEvent();
-{% endif %}
-                $embedded->oncePostInsertEvent();
             });
         } else {
             $rap['root']->$registerPostEventMethod(function() use ($embedded) {
-{% if config_class.events.postUpdate or config_class._parent_events.postUpdate %}
                 $embedded->postUpdateEvent();
-{% endif %}
-                $embedded->oncePostUpdateEvent();
             });
         }
 {% endif %}

@@ -1,0 +1,10 @@
+<?php
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(\Mongator\Mongator $mongator)
+    {
+        $this->eventPattern = '{{ config_class.eventPattern }}';
+
+        parent::__construct($mongator);
+    }
