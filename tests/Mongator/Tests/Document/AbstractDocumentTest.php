@@ -16,6 +16,8 @@ use Mongator\Document\AbstractDocument as BaseAbstractDocument;
 
 class AbstractDocument extends BaseAbstractDocument
 {
+    protected $eventPattern = 'foo.%s';
+
     public function setDocumentData($data)
     {
         $this->data = $data;
@@ -45,5 +47,68 @@ class AbstractDocumentTest extends TestCase
         $data = array('fields' => array('foo' => 'bar'));
         $document->setDocumentData($data);
         $this->assertSame($data, $document->getDocumentData());
+    }
+
+    /**
+     * @dataProvider providerDispatchEvent
+     */
+    public function testDispatchEvent($method, $expectedEvent)
+    {
+        $document = new AbstractDocument($this->mongator);
+
+        $validator = function($arg) use ($document) {
+            $this->assertInstanceOf('Mongator\Document\Event', $arg);
+            $this->assertSame($document, $arg->getDocument());
+
+            return true;
+        };
+
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $dispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($this->equalTo($expectedEvent), $this->callback($validator));
+
+        $this->mongator->setEventDispatcher($dispatcher);
+
+        $document->$method();
+    }
+
+    public function providerDispatchEvent()
+    {
+        return array(
+            array('preInsertEvent', 'foo.pre.insert'),
+            array('postInsertEvent', 'foo.post.insert'),
+            array('preUpdateEvent', 'foo.pre.update'),
+            array('postUpdateEvent', 'foo.post.update'),
+            array('preDeleteEvent', 'foo.pre.delete'),
+            array('postDeleteEvent', 'foo.post.delete')
+        );
+    }
+
+    /**
+     * @dataProvider providerOnceDispatchEvent
+     */
+    public function testOnceDispatchEvent($method, $registerMethod)
+    {
+        $called = false;
+        $document = new AbstractDocument($this->mongator);
+        $document->$registerMethod(function() use (&$called) {
+            $called = true;
+        });
+        $document->$method();
+
+        $this->assertTrue($called);
+    }
+
+    public function providerOnceDispatchEvent()
+    {
+        return array(
+            array('preInsertEvent', 'registerOncePreInsertEvent'),
+            array('postInsertEvent', 'registerOncePostInsertEvent'),
+            array('preUpdateEvent', 'registerOncePreUpdateEvent'),
+            array('postUpdateEvent', 'registerOncePostUpdateEvent')
+
+        );
     }
 }

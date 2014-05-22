@@ -34,6 +34,7 @@ class Mongator
     private $connections;
     private $defaultConnectionName;
     private $repositories;
+    private $dispatcher;
 
     /**
      * Constructor.
@@ -450,6 +451,10 @@ class Mongator
      */
     public function dispatchEvent($name, Event $event)
     {
+        if (!$this->dispatcher) {
+            return;
+        }
+
         $this->dispatcher->dispatch($name, $event);
     }
 }

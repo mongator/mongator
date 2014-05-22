@@ -278,7 +278,11 @@ class MongatorTest extends TestCase
 
     public function testDispatchEvent()
     {
-        $event = new Event();
+        $document = $this->getMockBuilder('Mongator\Document\AbstractDocument')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $event = new Event($document);
 
         $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
         $dispatcher
@@ -288,6 +292,16 @@ class MongatorTest extends TestCase
 
 
         $this->mongator->setEventDispatcher($dispatcher);
+        $this->mongator->dispatchEvent('foo', $event);
+    }
+
+    public function testDispatchEventWithOutDispatcher()
+    {
+        $document = $this->getMockBuilder('Mongator\Document\AbstractDocument')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $event = new Event($document);       
         $this->mongator->dispatchEvent('foo', $event);
     }
 }
