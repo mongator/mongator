@@ -79,12 +79,12 @@ class Core extends Extension
             $this->initUseBatchInsertProcess();
             $this->initConnectionNameProcess();
             $this->initCollectionNameProcess();
-
         }
+
         $this->initIndexesProcess();
         $this->initBehaviorsProcess();
         $this->initEventPatternProcess();
-
+        $this->initEventsProcess();
         $this->initFieldsProcess();
         $this->initReferencesProcess();
         $this->initEmbeddedsProcess();
@@ -126,6 +126,7 @@ class Core extends Extension
             'DocumentReferencesOne',
             'DocumentReferencesMany',
             'DocumentProcessOnDelete',
+            'DocumentEventsMethods'
         );
         if ($this->configClass['_has_references']) {
             $templates[] = 'DocumentUpdateReferenceFields';
@@ -302,6 +303,26 @@ class Core extends Extension
     {
         if (!isset($this->configClass['behaviors'])) {
             $this->configClass['behaviors'] = array();
+        }
+    }
+
+    private function initEventsProcess()
+    {
+        if (!isset($this->configClass['events'])) {
+            $this->configClass['events'] = array();
+        }
+
+        foreach (array(
+            'preInsert',
+            'postInsert',
+            'preUpdate',
+            'postUpdate',
+            'preDelete',
+            'postDelete',
+        ) as $event) {
+            if (!isset($this->configClass['events'][$event])) {
+                $this->configClass['events'][$event] = array();
+            }
         }
     }
 

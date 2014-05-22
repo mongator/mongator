@@ -1,0 +1,15 @@
+<?php
+
+{% for event, methods in config_class.events %}
+{% if methods|length %}
+    public function {{ event }}Event()
+    {
+{# methods #}
+{% for method in methods|sort %}
+        $this->{{ method }}();
+{% endfor %}
+
+        parent::{{ event }}Event();
+    }
+{% endif %}
+{% endfor %}

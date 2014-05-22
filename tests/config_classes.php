@@ -482,4 +482,19 @@ return array(
             'referencesMany' => array('class' => 'Model\SimpleDocument'),
         ),
     ),
+
+    // events
+    'Model\Events' => array(
+        'fields' => array(
+            'name' => 'string',
+        ),
+        'events' => array(
+            'preInsert'  => array('myPreInsert'),
+            'postInsert' => array('myPostInsert'),
+            'preUpdate'  => array('myPreUpdate'),
+            'postUpdate' => array('myPostUpdate'),
+            'preDelete'  => array('myPreDelete'),
+            'postDelete' => array('myPostDelete'),
+        ),
+    ),
 );
