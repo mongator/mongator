@@ -9,6 +9,10 @@
      */
     public function fromArray(array $array)
     {
+{% if not config_class.isEmbedded %}
+        $this->queryFields = array();
+{% endif %}
+
 {# inheritance #}
 {% if config_class.inheritance %}
         parent::fromArray($array);

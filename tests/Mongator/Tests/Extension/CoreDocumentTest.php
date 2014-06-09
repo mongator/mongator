@@ -897,6 +897,27 @@ class CoreDocumentTest extends TestCase
         $this->assertSame(array($category2), $article->getCategories()->all());
     }
 
+    public function testFromArrayQueryFields()
+    {
+        $origin = $this->mongator->create('Model\Book');
+        $origin->setTitle('foo');
+        $origin->setComment('bar');
+        $origin->save();
+
+        $book = $this->mongator->create('Model\Book');
+
+        $book->fromArray(array(
+            'id' => $origin->getId(),
+            'comment' => 'qux'
+        ));
+
+        $book->setIsNew(false);
+
+        $this->assertSame('qux', $book->getComment());
+        $this->assertSame(null, $book->getTitle());
+    }
+
+
     public function testToArray()
     {
         $article = $this->mongator->create('Model\Article')
